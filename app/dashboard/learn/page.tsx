@@ -36,6 +36,7 @@ export default function LearnBySubjectsPage() {
   const [activeChapterId, setActiveChapterId] = useState<string>(CBSE_CHAPTERS_CATALOG[0].id)
   const [activeViewTab, setActiveViewTab] = useState<'animation' | 'sandbox' | 'test'>('animation')
   const [selectedAiModel, setSelectedAiModel] = useState<string>('gemini-3.6-flash')
+  const [mobileChapterSheetOpen, setMobileChapterSheetOpen] = useState<boolean>(false)
 
   // Animation Step Player State
   const [currentStepIdx, setCurrentStepIdx] = useState<number>(0)
@@ -262,10 +263,99 @@ export default function LearnBySubjectsPage() {
         ))}
       </div>
 
+      {/* Mobile Chapter Quick Selector Bar (Shown only on mobile) */}
+      <div className="lg:hidden p-4 rounded-2xl bg-gradient-to-r from-white/5 to-cyan-400/10 border border-cyan-400/30 flex items-center justify-between shadow-lg">
+        <div className="min-w-0 flex-1 mr-3">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-extrabold text-cyan-400 bg-cyan-400/10 px-2 py-0.5 rounded-full">
+              {activeChapter.standard}
+            </span>
+            <span className="text-[10px] font-bold text-green-400 flex items-center gap-1">
+              <TrendingUp className="w-3 h-3" /> {activeChapter.weightageMarks}
+            </span>
+          </div>
+          <h3 className="text-sm font-black text-white truncate">{activeChapter.title}</h3>
+        </div>
+        <button
+          onClick={() => setMobileChapterSheetOpen(true)}
+          className="px-3 py-2 rounded-xl bg-cyan-400 text-midnight-950 font-extrabold text-xs shrink-0 flex items-center gap-1.5 shadow-[0_0_12px_rgba(0,212,255,0.4)] active:scale-95 transition-transform cursor-pointer"
+        >
+          <Layers className="w-3.5 h-3.5" />
+          Chapters ({filteredChapters.length})
+        </button>
+      </div>
+
+      {/* Mobile Chapter Bottom Sheet Modal */}
+      <AnimatePresence>
+        {mobileChapterSheetOpen && (
+          <div className="fixed inset-0 z-50 flex items-end lg:hidden">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileChapterSheetOpen(false)}
+              className="fixed inset-0 bg-black/75 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 26, stiffness: 280 }}
+              className="relative w-full max-h-[80vh] bg-midnight-900 border-t border-cyan-400/30 rounded-t-3xl p-5 z-10 flex flex-col shadow-2xl pb-10"
+            >
+              <div className="w-12 h-1 bg-white/20 rounded-full mx-auto mb-4 shrink-0" />
+              <div className="flex items-center justify-between pb-3 border-b border-white/10 shrink-0">
+                <span className="font-extrabold text-white text-sm flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-cyan-400" />
+                  Select {selectedSubject} Chapter ({filteredChapters.length})
+                </span>
+                <button
+                  onClick={() => setMobileChapterSheetOpen(false)}
+                  className="p-1 rounded-lg bg-white/5 text-gray-400 hover:text-white"
+                >
+                  <XCircle className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-2.5 overflow-y-auto mt-3 pr-1 flex-1">
+                {filteredChapters.map(chap => {
+                  const isActive = chap.id === activeChapterId
+                  return (
+                    <div
+                      key={chap.id}
+                      onClick={() => {
+                        setActiveChapterId(chap.id)
+                        setMobileChapterSheetOpen(false)
+                      }}
+                      className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
+                        isActive
+                          ? 'bg-cyan-400/20 border-cyan-400 shadow-[0_0_12px_rgba(0,212,255,0.25)]'
+                          : 'bg-white/5 border-white/10 hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[10px] font-extrabold text-cyan-400 bg-cyan-400/10 px-2 py-0.5 rounded-full">
+                          {chap.standard}
+                        </span>
+                        <span className="text-[10px] font-bold text-green-400">
+                          {chap.weightageMarks}
+                        </span>
+                      </div>
+                      <h4 className="font-bold text-white text-xs">{chap.title}</h4>
+                      <p className="text-[11px] text-gray-400 line-clamp-1 mt-0.5">{chap.description}</p>
+                    </div>
+                  )
+                })}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* Main Learning Workspace Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column: Chapters Navigation List */}
-        <div className="lg:col-span-4 bg-white/5 border border-white/10 rounded-3xl p-5 space-y-4 backdrop-blur-xl">
+        {/* Left Column: Chapters Navigation List (Visible only on Desktop) */}
+        <div className="hidden lg:block lg:col-span-4 bg-white/5 border border-white/10 rounded-3xl p-5 space-y-4 backdrop-blur-xl">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
             <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
               <Layers className="w-3.5 h-3.5" /> {selectedSubject} Chapters
