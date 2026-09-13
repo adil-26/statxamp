@@ -94,7 +94,7 @@ Do NOT include markdown fences. Return pure JSON.`
         }
 
         const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash',
+          model: 'gemini-3.6-flash',
           contents: prompt
         })
 
@@ -108,10 +108,42 @@ Do NOT include markdown fences. Return pure JSON.`
           .trim()
 
         const parsedJson = JSON.parse(cleanedJson)
+
+        // Normalize questions for option indexing & safety
+        if (parsedJson.items && Array.isArray(parsedJson.items)) {
+          parsedJson.items = parsedJson.items.map((item: any, idx: number) => {
+            let correctIdx = 0
+            if (typeof item.correctAnswer === 'number') {
+              correctIdx = item.correctAnswer
+            } else if (typeof item.correctAnswer === 'string' && Array.isArray(item.options)) {
+              const cleanedAns = item.correctAnswer.toLowerCase().trim()
+              const matchIdx = item.options.findIndex((opt: string) => 
+                opt.toLowerCase().trim() === cleanedAns ||
+                opt.toLowerCase().includes(cleanedAns) ||
+                cleanedAns.includes(opt.toLowerCase())
+              )
+              if (matchIdx !== -1) {
+                correctIdx = matchIdx
+              } else if (['a', 'b', 'c', 'd'].includes(cleanedAns)) {
+                correctIdx = cleanedAns.charCodeAt(0) - 97
+              }
+            }
+
+            return {
+              ...item,
+              id: item.id || idx + 1,
+              correctAnswer: correctIdx,
+              marks: item.marks || 1,
+              negativeMarks: item.negativeMarks || 0,
+              chapter: item.chapter || topic
+            }
+          })
+        }
+
         return NextResponse.json({
           ...parsedJson,
           source: 'gemini-live',
-          notice: 'Generated in real-time via Google Gemini AI Engine.'
+          notice: '⚡ Generated in real-time via Google Gemini AI Engine.'
         })
       } catch (geminiError: any) {
         console.warn('Gemini API call failed or timed out, falling back to smart syllabus synthesizer:', geminiError?.message)
