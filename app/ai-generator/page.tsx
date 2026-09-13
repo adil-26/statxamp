@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sparkles, Brain, Download, Copy, Play, CheckCircle2, RefreshCw, ArrowRight, BookOpen, Lightbulb, Info } from 'lucide-react'
 import Link from 'next/link'
+import { MathRenderer } from '@/components/math-renderer'
 
 export default function AIGeneratorPage() {
   const router = useRouter()
@@ -306,54 +307,62 @@ export default function AIGeneratorPage() {
                     </div>
                   </div>
 
-                  {/* Body Content */}
                   <div className="mt-6 space-y-6 overflow-y-auto max-h-[380px] pr-2">
                     {generatedOutput.type === 'quiz' && (
                       <div className="space-y-6">
-                        {generatedOutput.items.map((item: any, i: number) => (
-                          <div key={i} className="space-y-3 bg-midnight-900/40 border border-white/5 p-4 rounded-2xl">
-                            <div className="flex items-center gap-2">
-                              <span className="w-6 h-6 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-cyan-400 text-xs font-bold flex items-center justify-center">
-                                {i + 1}
-                              </span>
-                              <span className="text-sm font-semibold text-white">{item.q}</span>
-                            </div>
+                        {(generatedOutput.items || []).map((item: any, i: number) => {
+                          const questionText = item.question || item.q || ''
+                          const optionsList: string[] = item.options || item.o || []
+                          const correctIdx = item.correctAnswer !== undefined ? item.correctAnswer : (item.a !== undefined ? item.a : 0)
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-                              {item.o.map((opt: string, optI: number) => (
-                                <div 
-                                  key={optI} 
-                                  className={`p-3 rounded-xl border text-xs text-left ${
-                                    optI === item.a 
-                                      ? 'border-green-500/50 bg-green-500/10 text-green-300 font-semibold' 
-                                      : 'border-white/10 bg-white/5 text-gray-300'
-                                  }`}
-                                >
-                                  <span className="font-bold mr-2 text-gray-400">{String.fromCharCode(65 + optI)}.</span>
-                                  {opt}
+                          return (
+                            <div key={i} className="space-y-3 bg-midnight-900/40 border border-white/5 p-4 rounded-2xl">
+                              <div className="flex items-start gap-2.5">
+                                <span className="w-6 h-6 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-cyan-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                                  {i + 1}
+                                </span>
+                                <div className="text-sm font-semibold text-white flex-1">
+                                  <MathRenderer content={questionText} />
                                 </div>
-                              ))}
-                            </div>
-
-                            {item.explanation && (
-                              <div className="text-[11px] text-gray-400 bg-white/5 p-2.5 rounded-xl border border-white/5 mt-2">
-                                <strong className="text-cyan-400">Answer Explanation:</strong> {item.explanation}
                               </div>
-                            )}
-                          </div>
-                        ))}
+
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                                {optionsList.map((opt: string, optI: number) => (
+                                  <div 
+                                    key={optI} 
+                                    className={`p-3 rounded-xl border text-xs text-left flex items-center gap-2 ${
+                                      optI === correctIdx 
+                                        ? 'border-green-500/50 bg-green-500/10 text-green-300 font-semibold' 
+                                        : 'border-white/10 bg-white/5 text-gray-300'
+                                    }`}
+                                  >
+                                    <span className="font-bold text-gray-400 shrink-0">{String.fromCharCode(65 + optI)}.</span>
+                                    <MathRenderer content={opt} className="flex-1" />
+                                  </div>
+                                ))}
+                              </div>
+
+                              {item.explanation && (
+                                <div className="text-[11px] text-gray-400 bg-white/5 p-2.5 rounded-xl border border-white/5 mt-2 space-y-1">
+                                  <strong className="text-cyan-400 block">Answer Explanation:</strong>
+                                  <MathRenderer content={item.explanation} />
+                                </div>
+                              )}
+                            </div>
+                          )
+                        })}
                       </div>
                     )}
 
                     {generatedOutput.type === 'formulas' && (
                       <div className="grid grid-cols-1 gap-3">
-                        {generatedOutput.items.map((form: any, i: number) => (
-                          <div key={i} className="bg-white/5 border border-white/10 p-4 rounded-2xl space-y-1.5">
+                        {(generatedOutput.items || []).map((form: any, i: number) => (
+                          <div key={i} className="bg-white/5 border border-white/10 p-4 rounded-2xl space-y-2">
                             <span className="text-xs text-gray-400 font-semibold flex items-center gap-1.5">
                               <Lightbulb className="w-3.5 h-3.5 text-cyan-400" /> {form.name}
                             </span>
-                            <div className="font-mono text-cyan-400 font-bold text-sm bg-midnight-900/60 p-3 rounded-xl border border-cyan-400/20">
-                              {form.eq}
+                            <div className="text-cyan-300 font-bold text-sm bg-midnight-900/60 p-3 rounded-xl border border-cyan-400/20">
+                              <MathRenderer content={`$ ${form.eq} $`} />
                             </div>
                           </div>
                         ))}
