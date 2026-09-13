@@ -19,18 +19,33 @@ export default function AIAssistantPage() {
     { title: 'Daily study planner', desc: 'Schedule calendar rules', icon: Calendar, prompt: 'Help me plan a 4-hour daily study schedule for JEE exam prep.' }
   ]
 
-  const handleSendMessage = (text: string) => {
+  const handleSendMessage = async (text: string) => {
     if (!text.trim()) return
-    setMessages((prev) => [...prev, { sender: 'user', text }])
+    const userMsg = text.trim()
+    setMessages((prev) => [...prev, { sender: 'user', text: userMsg }])
     setInputVal('')
     setIsTyping(true)
 
-    // Simulate AI response delay
-    setTimeout(() => {
-      let aiResponse = `I have received your request regarding: "${text}".\n\nHere is a detailed study guide breakdown:\n1. Key Theoretical Concept: We need to analyze constraints and assumptions.\n2. Analytical steps: Formulate the model representation.\n3. Summary cheat-sheet notes generated directly by Gemini LLM model API integration.`
-      setMessages((prev) => [...prev, { sender: 'ai', text: aiResponse }])
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMsg })
+      })
+
+      const data = await res.json()
+      setMessages((prev) => [
+        ...prev, 
+        { sender: 'ai', text: data.reply || data.error || 'I was unable to process your request.' }
+      ])
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev, 
+        { sender: 'ai', text: 'Connection error while communicating with Gemini AI Assistant. Please check your network or try again.' }
+      ])
+    } finally {
       setIsTyping(false)
-    }, 1500)
+    }
   }
 
   return (

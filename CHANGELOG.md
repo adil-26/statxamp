@@ -14,12 +14,19 @@ This release transforms the initial frontend prototype into a functional, type-s
 
 ### 🛠️ Detailed Component & File Changes
 
-#### 0. [NEW] Live Backend API & Gemini AI Engine
+#### 0. [NEW] Live Conversational AI Tutor & Doubts Solver API
+- **Files**: `app/api/chat/route.ts`, `app/dashboard/ai-assistant/page.tsx`, `app/dashboard/doubts/page.tsx`
+- **What was added**:
+  - Full conversational tutor endpoint (`/api/chat`) using Google Gemini `gemini-3.6-flash`.
+  - Expert persona specialized in Class 10 & 12 Board exams (CBSE, ICSE) and Competitive entrance exams (JEE/NEET).
+  - Replaced fake `setTimeout` in the **AI Assistant** (`/dashboard/ai-assistant`) with live interactive AI chat.
+  - Connected the **Syllabus Doubts Solver** (`/dashboard/doubts`) to provide real-time step-by-step problem resolutions and board scoring tips.
+
+#### 0.1. [NEW] Live Exam & Syllabus Question Generation API
 - **File**: `app/api/generate-exam/route.ts`
 - **What was added**:
-  - Full serverless backend API route utilizing `@google/genai` with input validation via `zod`.
+  - Serverless backend route utilizing `@google/genai` with input validation via `zod`.
   - Generates authentic multiple-choice questions, formulas, or summaries tailored to CBSE/ICSE Class 10 & 12 Board blueprints and JEE/NEET patterns.
-  - Zero-crash resilient fallback: gracefully synthesizes syllabus questions if `GEMINI_API_KEY` is not yet configured.
 
 #### 0.1. [NEW] Database & Storage Architecture (Supabase)
 - **Files**: `lib/supabase.ts`, `.env.example`, `.env.local`
