@@ -51,6 +51,7 @@ Return ONLY a valid JSON object strictly matching this schema:
       "question": "Clear question text (use standard mathematical symbols or LaTeX if needed)",
       "options": ["Option A", "Option B", "Option C", "Option D"],
       "correctAnswer": 0,
+      "hint": "Strategic conceptual clue, relevant formula or first step without giving away the final answer directly",
       "explanation": "Detailed step-by-step solution explaining why this option is correct and where other options fail",
       "chapter": "${topic}",
       "marks": 1,
@@ -172,6 +173,7 @@ Do NOT include markdown fences. Return pure JSON.`
               'Oscillatory amplitude is strictly independent of damping coefficient'
             ],
             correctAnswer: 0,
+            hint: 'Recall Gauss Law and conservative field divergence theorems applied to enclosed boundaries.',
             explanation: `Standard 10-year recurring theorem in ${topic}: Conservative source fields follow Gauss theorem or conservation boundary conditions in this syllabus tier.`,
             chapter: topic,
             marks: 1,
@@ -188,6 +190,7 @@ Do NOT include markdown fences. Return pure JSON.`
               'Gravitational interaction exceeds electromagnetic force by 10^36 times'
             ],
             correctAnswer: 0,
+            hint: 'Think about standard textbook assumptions regarding non-conservative friction and air resistance.',
             explanation: `Under ${board} standard syllabus rules for ${topic}, ideal boundary conditions are assumed to be isolated and conservative unless specified.`,
             chapter: topic,
             marks: 1,
@@ -204,6 +207,7 @@ Do NOT include markdown fences. Return pure JSON.`
               'Spatial energy amplitude'
             ],
             correctAnswer: 0,
+            hint: 'Which parameter depends exclusively on the emitting source rather than the material medium?',
             explanation: 'Frequency is determined solely by the emitter/source and remains unchanged when transitioning across media boundaries.',
             chapter: topic,
             marks: 1,
@@ -220,6 +224,7 @@ Do NOT include markdown fences. Return pure JSON.`
               '(A) is false but (R) is true.'
             ],
             correctAnswer: 0,
+            hint: 'Consider whether the dimension of every additive term in a verified physical equation must match.',
             explanation: 'The principle of homogeneity of dimensions states that each term on both sides of a physical equation must possess the same dimensions.',
             chapter: topic,
             marks: 1,
