@@ -14,7 +14,24 @@ This release transforms the initial frontend prototype into a functional, type-s
 
 ### 🛠️ Detailed Component & File Changes
 
-#### 0. [NEW] Live Conversational AI Tutor & Doubts Solver API
+#### 0. [NEW] KaTeX Mathematical Typography & Scientific Formula Rendering
+- **Files**: `components/math-renderer.tsx`, `app/globals.css`
+- **What was added**:
+  - Full textbook-grade LaTeX rendering engine powered by **KaTeX**.
+  - Automatically parses inline math (`$...$`) and block math equations (`$$...$$`), fractions, integrals ($\int$), summations ($\sum$), derivatives ($\frac{dy}{dx}$), and Greek symbols ($\delta, \lambda, \theta, \Delta$).
+  - Integrated across the **AI Assistant**, **Syllabus Doubts Solver**, and the **CBT Exam Room**.
+
+#### 0.1. [NEW] Calculator-Style Virtual Scientific Keyboard
+- **File**: `components/virtual-scientific-keyboard.tsx`
+- **What was added**:
+  - Interactive on-screen scientific keyboard with 4 specialized subject tabs:
+    - **Calculus & Math**: $\int dx$, $\int_{a}^{b}$, $\frac{dy}{dx}$, $\frac{\partial}{\partial x}$, $\lim$, $\sum$, $\sqrt{x}$, $\frac{a}{b}$, $x^2$, $x^n$, $\pi$, $\infty$, $\log$, $\ln$, $\sin$, $\cos$.
+    - **Physics Symbols**: $\Delta x$, $\delta(x)$, $\lambda$, $\theta$, $\omega$, $\mu$, $\varepsilon_0$, $\mu_0$, $\vec{F}$, $\vec{E}$, $\vec{B}$, $\Omega$, $\hbar$.
+    - **Chemistry**: $\rightleftharpoons$, $\rightarrow$, $\uparrow$, $\downarrow$, $\Delta H$, $\text{pH}$, $K_{\text{eq}}$, $\alpha$, $\beta$, $\gamma$, $\text{H}^+$, $\text{OH}^-$.
+    - **Operators & Logic**: $\le$, $\ge$, $\ne$, $\approx$, $\propto$, $\in$, $\notin$, $\cup$, $\cap$, $^\circ$, $\angle$, $\perp$, $\parallel$.
+  - 1-click symbol insertion directly into question textareas without losing cursor focus.
+
+#### 0.2. [NEW] Live Conversational AI Tutor & Doubts Solver API
 - **Files**: `app/api/chat/route.ts`, `app/dashboard/ai-assistant/page.tsx`, `app/dashboard/doubts/page.tsx`
 - **What was added**:
   - Full conversational tutor endpoint (`/api/chat`) using Google Gemini `gemini-3.6-flash`.

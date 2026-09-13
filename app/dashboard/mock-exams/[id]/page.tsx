@@ -21,6 +21,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { MOCK_EXAMS_DATABASE, MockExam, ExamQuestion } from '@/lib/exam-data'
+import { MathRenderer } from '@/components/math-renderer'
 
 type QuestionStatus = 'not_visited' | 'not_answered' | 'answered' | 'marked_review' | 'answered_marked_review'
 
@@ -277,9 +278,7 @@ export default function ExamRoomPage() {
 
               {/* Question Text */}
               <div className="mt-6">
-                <p className="text-base sm:text-lg font-medium text-white leading-relaxed whitespace-pre-line">
-                  {currentQ.question}
-                </p>
+                <MathRenderer content={currentQ.question} className="text-base sm:text-lg font-medium text-white leading-relaxed" />
               </div>
 
               {/* Options List */}
@@ -305,9 +304,7 @@ export default function ExamRoomPage() {
                       }`}>
                         {String.fromCharCode(65 + optIdx)}
                       </div>
-                      <span className="text-sm sm:text-base font-medium leading-normal flex-1">
-                        {option}
-                      </span>
+                      <MathRenderer content={option} className="text-sm sm:text-base font-medium leading-normal flex-1" />
                     </motion.div>
                   )
                 })}
@@ -580,9 +577,7 @@ export default function ExamRoomPage() {
                         <Sparkles className="w-3.5 h-3.5" />
                         AI Step-by-Step Explanation:
                       </div>
-                      <p className="text-xs text-gray-300 leading-relaxed font-sans whitespace-pre-line">
-                        {q.explanation}
-                      </p>
+                      <MathRenderer content={q.explanation} className="text-xs text-gray-300 leading-relaxed font-sans" />
                     </div>
                   </div>
                 )

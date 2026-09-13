@@ -3,11 +3,14 @@
 import { motion } from 'framer-motion'
 import { MessageSquare, HelpCircle, Send, Brain } from 'lucide-react'
 import { useState } from 'react'
+import { MathRenderer } from '@/components/math-renderer'
+import { VirtualScientificKeyboard } from '@/components/virtual-scientific-keyboard'
 
 export default function DoubtsPage() {
   const [doubtText, setDoubtText] = useState('')
   const [resolvedList, setResolvedList] = useState<Array<{ doubt: string; answer: string; loading?: boolean }>>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -59,11 +62,17 @@ export default function DoubtsPage() {
         <div className="lg:col-span-5 bg-white/5 border border-white/10 p-6 rounded-3xl glow-hover h-fit space-y-6">
           <h3 className="font-bold text-white text-lg">Submit Doubt</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
+            <VirtualScientificKeyboard
+              isOpen={isKeyboardOpen}
+              onToggle={() => setIsKeyboardOpen(!isKeyboardOpen)}
+              onInsert={(sym) => setDoubtText((prev) => prev + sym)}
+            />
+
             <textarea
               value={doubtText}
               onChange={(e) => setDoubtText(e.target.value)}
-              placeholder="e.g. Differentiate Schottky defects vs Frenkel defects in crystals, or solve ∫ x*ln(x) dx"
-              className="w-full h-36 p-4 bg-midnight-900 border border-white/10 rounded-xl text-sm focus:outline-none focus:border-cyan-400/50 text-white resize-none"
+              placeholder="e.g. Solve dy/dx = x+y using RK4, Dirac delta integrals, or explain Schottky defect"
+              className="w-full h-36 p-4 bg-midnight-900 border border-white/10 rounded-xl text-sm focus:outline-none focus:border-cyan-400/50 text-white font-medium resize-none placeholder-gray-500"
             />
             <button 
               type="submit" 
@@ -71,7 +80,7 @@ export default function DoubtsPage() {
               className="w-full h-12 bg-cyan-400 hover:bg-cyan-300 disabled:opacity-50 text-midnight-900 font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all text-xs cursor-pointer shadow-[0_0_12px_rgba(0,212,255,0.2)]"
             >
               <Send className="w-4 h-4" />
-              {isSubmitting ? 'AI is solving...' : 'Ask AI Assistant'}
+              {isSubmitting ? 'AI is solving with step-by-step math...' : 'Ask AI Assistant'}
             </button>
           </form>
         </div>
@@ -93,10 +102,10 @@ export default function DoubtsPage() {
                         {item.loading ? (
                           <div className="flex items-center gap-2 text-cyan-300 py-1">
                             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-                            <span>Synthesizing step-by-step solution...</span>
+                            <span>Synthesizing step-by-step mathematical solution...</span>
                           </div>
                         ) : (
-                          <p className="leading-relaxed whitespace-pre-line text-gray-300">{item.answer}</p>
+                          <MathRenderer content={item.answer} />
                         )}
                       </div>
                     </div>
@@ -104,7 +113,7 @@ export default function DoubtsPage() {
                 ))
               ) : (
                 <div className="text-center py-12 text-gray-500 text-xs">
-                  No active doubts submitted. Type a question on the left to get instant AI answers.
+                  No active doubts submitted. Type a question or use the scientific keypad above to get instant AI answers.
                 </div>
               )}
             </div>

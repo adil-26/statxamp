@@ -3,13 +3,16 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Send, Sparkles, Brain, Calculator, FileText, CheckSquare, Calendar, RefreshCw } from 'lucide-react'
+import { MathRenderer } from '@/components/math-renderer'
+import { VirtualScientificKeyboard } from '@/components/virtual-scientific-keyboard'
 
 export default function AIAssistantPage() {
   const [messages, setMessages] = useState<Array<{ sender: 'user' | 'ai'; text: string }>>([
-    { sender: 'ai', text: "Hello! I am your AI Study Assistant. I can explain complex syllabus concepts, solve maths, write revision notes, create custom quizzes, or organize a personalized study plan for you. What would you like to build today?" }
+    { sender: 'ai', text: "Hello! I am your AI Study Assistant. I can explain complex syllabus concepts, solve maths with exact mathematical symbols, derive formulas, or organize a personalized study plan for you. What would you like to solve today?" }
   ])
   const [inputVal, setInputVal] = useState('')
   const [isTyping, setIsTyping] = useState(false)
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false)
 
   const capabilities = [
     { title: 'Explain concepts', desc: 'Break down complex theory', icon: Brain, prompt: 'Explain the theory of general relativity in simple terms.' },
@@ -83,12 +86,16 @@ export default function AIAssistantPage() {
               animate={{ opacity: 1, y: 0 }}
               className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              <div className={`max-w-[80%] p-4 rounded-2xl text-sm leading-relaxed border ${
+              <div className={`max-w-[85%] p-4 rounded-2xl text-sm leading-relaxed border ${
                 m.sender === 'user'
-                  ? 'bg-cyan-400/10 border-cyan-400/30 text-white rounded-tr-none'
-                  : 'bg-white/5 border-white/10 text-gray-300 rounded-tl-none'
+                  ? 'bg-cyan-400/15 border-cyan-400/40 text-white rounded-tr-none shadow-[0_0_12px_rgba(0,212,255,0.15)]'
+                  : 'bg-white/5 border-white/10 text-gray-200 rounded-tl-none'
               }`}>
-                <div className="whitespace-pre-line">{m.text}</div>
+                {m.sender === 'user' ? (
+                  <div className="whitespace-pre-line font-medium">{m.text}</div>
+                ) : (
+                  <MathRenderer content={m.text} />
+                )}
               </div>
             </motion.div>
           ))}
@@ -96,17 +103,22 @@ export default function AIAssistantPage() {
           {/* Typing Indicator */}
           {isTyping && (
             <div className="flex justify-start">
-              <div className="bg-white/5 border border-white/10 p-4 rounded-2xl rounded-tl-none flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
-                <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+              <div className="bg-white/5 border border-white/10 p-4 rounded-2xl rounded-tl-none flex items-center gap-2 text-cyan-400 text-xs font-semibold">
+                <span className="w-2 h-2 bg-cyan-400 rounded-full animate-ping" />
+                <span>StatXam AI is deriving step-by-step formulas...</span>
               </div>
             </div>
           )}
         </div>
 
-        {/* Input box */}
-        <div className="p-4 border-t border-white/10 bg-midnight-900/40">
+        {/* Input box with Virtual Scientific Keyboard */}
+        <div className="p-4 border-t border-white/10 bg-midnight-900/60 space-y-3">
+          <VirtualScientificKeyboard
+            isOpen={isKeyboardOpen}
+            onToggle={() => setIsKeyboardOpen(!isKeyboardOpen)}
+            onInsert={(sym) => setInputVal((prev) => prev + sym)}
+          />
+
           <form 
             onSubmit={(e) => {
               e.preventDefault()
@@ -118,12 +130,13 @@ export default function AIAssistantPage() {
               type="text"
               value={inputVal}
               onChange={(e) => setInputVal(e.target.value)}
-              placeholder="Ask anything (explain Coulomb's law, write organic chem formulas...)"
-              className="flex-1 h-12 px-4 bg-white/5 border border-white/10 rounded-xl text-sm focus:outline-none focus:border-cyan-400/50 text-white"
+              placeholder="Ask math/physics formulas (e.g. Solve dy/dx = x+y using RK4, Dirac delta...)"
+              className="flex-1 h-12 px-4 bg-white/5 border border-white/10 rounded-xl text-sm focus:outline-none focus:border-cyan-400/50 text-white font-medium placeholder-gray-500"
             />
             <button 
               type="submit"
-              className="w-12 h-12 bg-cyan-400 hover:bg-cyan-300 text-midnight-900 font-bold rounded-xl flex items-center justify-center transition-all shadow-[0_0_15px_rgba(0,212,255,0.3)]"
+              disabled={!inputVal.trim() || isTyping}
+              className="w-12 h-12 bg-cyan-400 hover:bg-cyan-300 disabled:opacity-50 text-midnight-900 font-bold rounded-xl flex items-center justify-center transition-all shadow-[0_0_15px_rgba(0,212,255,0.3)] cursor-pointer shrink-0"
             >
               <Send className="w-5 h-5" />
             </button>
