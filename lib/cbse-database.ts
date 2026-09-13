@@ -7,11 +7,26 @@ export interface CalculationStep {
   visualState: string
 }
 
+export const INDIAN_BOARDS_LIST = [
+  'All Boards',
+  'CBSE',
+  'ICSE / ISC',
+  'Maharashtra State Board (HSC/SSC)',
+  'UP Board',
+  'Karnataka State Board',
+  'Tamil Nadu Board',
+  'West Bengal Board',
+  'NTA (JEE / NEET)'
+] as const
+
+export type IndianBoard = typeof INDIAN_BOARDS_LIST[number]
+
 export interface ChapterData {
   id: string
   title: string
   subject: 'Mathematics' | 'Physics' | 'Chemistry' | 'Biology'
   standard: 'Class 10' | 'Class 12' | 'Competitive'
+  boards?: string[]
   weightageMarks: string
   description: string
   topics: string[]
@@ -919,5 +934,253 @@ export const CBSE_CHAPTERS_CATALOG: ChapterData[] = [
         explanation: 'A dihybrid cross produces 9 Round Yellow, 3 Round Green, 3 Wrinkled Yellow, and 1 Wrinkled Green (9:3:3:1).'
       }
     ]
+  },
+
+  // ==========================================
+  // MAHARASHTRA STATE BOARD (HSC & SSC)
+  // ==========================================
+  {
+    id: 'mah-hsc-rotational-dynamics',
+    title: 'Rotational Dynamics & Moment of Inertia (Maharashtra Board HSC)',
+    subject: 'Physics',
+    standard: 'Class 12',
+    boards: ['Maharashtra State Board (HSC/SSC)', 'All Boards'],
+    weightageMarks: '7 Marks (Maharashtra HSC Blueprint)',
+    description: 'Characteristics of circular motion, banking of roads, vertical circular motion, moment of inertia, and parallel & perpendicular axes theorems.',
+    topics: ['Banking of Roads (v = √[rg tan θ])', 'Vertical Circular Motion & Tension Difference', 'Theorem of Parallel Axes', 'Theorem of Perpendicular Axes', 'Rolling Motion & Conservation of Angular Momentum'],
+    formulaOverview: [
+      { name: 'Theorem of Parallel Axes', latex: 'I_O = I_C + M h^2' },
+      { name: 'Theorem of Perpendicular Axes', latex: 'I_Z = I_X + I_Y' },
+      { name: 'Banking Speed (No Friction)', latex: 'v = \\sqrt{r g \\tan(\\theta)}' },
+      { name: 'Tension Difference in VCM', latex: 'T_{\\text{bottom}} - T_{\\text{top}} = 6 M g' }
+    ],
+    animationTopic: 'Maharashtra HSC Derivation: Theorem of Parallel Axes (I_O = I_C + M h²)',
+    calculationSteps: [
+      {
+        stepNumber: 1,
+        title: 'Step 1: Consider Rigid Body Rotating About Parallel Axes',
+        formula: 'I_O = \\int r_O^2 \\, dm, \\quad I_C = \\int r_C^2 \\, dm',
+        explanation: 'Let C be the center of mass of a rigid body of mass M. Axis through O is parallel to axis through C at distance h. Consider mass element dm at point P.',
+        activeHighlight: 'Distance between parallel axes = h',
+        visualState: 'Two parallel axes through O and C separated by distance h.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Step 2: Express Distance OP in Geometry Using Pythagoras',
+        formula: 'OP^2 = ON^2 + PN^2 = (OC + CN)^2 + PN^2 = (h + x)^2 + y^2',
+        explanation: 'Drop perpendicular PN onto OC extended. Expanding (h + x)² gives h² + 2hx + x² + y².',
+        activeHighlight: 'OP² = h² + 2hx + (x² + y²)',
+        visualState: 'Coordinate breakdown: CP² = x² + y².'
+      },
+      {
+        stepNumber: 3,
+        title: 'Step 3: Integrate Over the Entire Mass of the Body',
+        formula: 'I_O = \\int OP^2 \\, dm = \\int (x^2 + y^2) \\, dm + 2h \\int x \\, dm + h^2 \\int dm',
+        explanation: 'Since CP² = x² + y², the first integral is I_C. The integral ∫ dm is total mass M.',
+        activeHighlight: '∫ (x² + y²) dm = I_C and ∫ dm = M',
+        visualState: 'I_O = I_C + 2h ∫ x dm + M h².'
+      },
+      {
+        stepNumber: 4,
+        title: 'Step 4: Center of Mass Coordinate Property',
+        formula: '\\int x \\, dm = 0 \\implies I_O = I_C + M h^2',
+        explanation: 'Because C is the center of mass, the first moment of mass about C is zero: ∫ x dm = 0. This completes the classic Maharashtra Board 3-mark proof: I_O = I_C + M h².',
+        activeHighlight: '∫ x dm = 0 eliminates middle term',
+        visualState: 'Q.E.D. Parallel axis theorem verified.'
+      }
+    ],
+    interactiveSandbox: {
+      defaultParam: 0.2,
+      label: 'Distance between axes h (Disc M = 2 kg, R = 0.4 m)',
+      unit: ' m',
+      options: [0.1, 0.2, 0.3, 0.4],
+      computeFormula: (h) => {
+        const M = 2
+        const R = 0.4
+        const Ic = 0.5 * M * R * R // 0.16
+        const Mh2 = M * h * h
+        const Io = Ic + Mh2
+        return {
+          step1: `M = 2\\text{ kg}, \\quad R = 0.4\\text{ m}, \\quad I_C = \\frac{1}{2} M R^2 = ${Ic.toFixed(3)}\\text{ kg}\\cdot\\text{m}^2`,
+          step2: `h = ${h}\\text{ m} \\implies M h^2 = 2 \\times (${h})^2 = ${Mh2.toFixed(3)}\\text{ kg}\\cdot\\text{m}^2`,
+          step3: `I_O = I_C + M h^2 = ${Ic.toFixed(3)} + ${Mh2.toFixed(3)}`,
+          result: `I_O = \\mathbf{${Io.toFixed(3)}\\text{ kg}\\cdot\\text{m}^2}`
+        }
+      }
+    },
+    testQuestions: [
+      {
+        id: 1,
+        question: 'According to the Maharashtra HSC syllabus, what is the maximum safe velocity on a banked road of radius $r$ without friction?',
+        options: ['\\sqrt{r g \\tan(\\theta)}', '\\sqrt{r g \\sin(\\theta)}', '\\sqrt{\\frac{r g}{\\tan(\\theta)}}', 'r g \\cos(\\theta)'],
+        correctAnswer: 0,
+        hint: 'Resolve normal reaction $N \\sin\\theta = m v^2/r$ and $N \\cos\\theta = m g$, then divide the equations.',
+        explanation: 'Dividing $N\\sin\\theta = mv^2/r$ by $N\\cos\\theta = mg$ gives $\\tan\\theta = v^2/(rg) \\implies v = \\sqrt{rg\\tan\\theta}$.'
+      }
+    ]
+  },
+
+  // ==========================================
+  // ICSE / ISC BOARD
+  // ==========================================
+  {
+    id: 'icse-class10-banking',
+    title: 'Commercial Mathematics: Banking & Recurring Deposit (ICSE Class 10)',
+    subject: 'Mathematics',
+    standard: 'Class 10',
+    boards: ['ICSE / ISC', 'All Boards'],
+    weightageMarks: '8 Marks (Mandatory ICSE Question)',
+    description: 'Recurring Deposit (RD) accounts, monthly deposits, total principal deposited, interest calculation, and maturity value formulation.',
+    topics: ['Concept of Recurring Deposit (Cumulative Deposit)', 'Formula for Total Interest on RD Accounts', 'Maturity Value (MV = P·n + I)', 'Solving for Monthly Deposit P, Period n, and Rate r'],
+    formulaOverview: [
+      { name: 'Recurring Deposit Interest', latex: 'I = P \\times \\frac{n(n + 1)}{2 \\times 12} \\times \\frac{r}{100}' },
+      { name: 'Maturity Value', latex: 'MV = (P \\times n) + I' },
+      { name: 'Total Deposit', latex: '\\text{Total Principal} = P \\times n' }
+    ],
+    animationTopic: 'ICSE Step-by-Step Derivation of Recurring Deposit Interest Formula',
+    calculationSteps: [
+      {
+        stepNumber: 1,
+        title: 'Step 1: Time for Which Each Monthly Deposit Earns Interest',
+        formula: '1^{\\text{st}} \\text{ deposit earns for } n \\text{ months}, \\; 2^{\\text{nd}} \\text{ for } (n-1) \\text{ months}, \\; \\dots, \\; n^{\\text{th}} \\text{ for } 1 \\text{ month}',
+        explanation: 'Each installment of principal P stays in the bank for a different duration. The first deposit stays for n months, the last for 1 month.',
+        activeHighlight: 'Variable deposit duration: n, n-1, ..., 1',
+        visualState: 'Timeline of n monthly deposits.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Step 2: Equivalent Principal for 1 Month (Sum of AP)',
+        formula: '\\text{Total Equivalent Months} = n + (n-1) + (n-2) + \\dots + 1 = \\frac{n(n+1)}{2}',
+        explanation: 'By the sum of the first n natural numbers, the cumulative principal corresponds to P earning interest for n(n+1)/2 months.',
+        activeHighlight: 'Sum of n natural numbers = n(n+1)/2',
+        visualState: 'Summation converted into closed formula.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Step 3: Convert Months to Years',
+        formula: 'T = \\frac{n(n+1)}{2 \\times 12} \\text{ years}',
+        explanation: 'Since interest rate r is quoted per annum (annual), dividing by 12 converts months into years.',
+        activeHighlight: 'Divide by 12 to convert months into years',
+        visualState: 'Time T in years.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Step 4: Apply Simple Interest Formula I = (P · T · r) / 100',
+        formula: 'I = P \\times \\frac{n(n+1)}{2 \\times 12} \\times \\frac{r}{100}',
+        explanation: 'Proven! The total interest earned on any ICSE Recurring Deposit account is exactly P · n(n+1)/(24) · (r/100).',
+        activeHighlight: 'Final verified ICSE board formula',
+        visualState: 'Maturity value MV = P·n + I.'
+      }
+    ],
+    interactiveSandbox: {
+      defaultParam: 12,
+      label: 'Deposit Duration n (Monthly P = ₹1,000, Rate r = 9% p.a.)',
+      unit: ' months',
+      options: [6, 12, 24, 36],
+      computeFormula: (n) => {
+        const P = 1000
+        const r = 9
+        const I = Math.round((P * n * (n + 1) * r) / (24 * 100))
+        const totalPrincipal = P * n
+        const MV = totalPrincipal + I
+        return {
+          step1: `P = ₹1,000, \\quad r = 9\\% \\text{ p.a.}, \\quad n = ${n}\\text{ months}`,
+          step2: `\\text{Principal Deposited} = 1000 \\times ${n} = ₹${totalPrincipal.toLocaleString()}`,
+          step3: `I = \\frac{1000 \\times ${n} \\times ${n+1} \\times 9}{2400} = ₹${I.toLocaleString()}`,
+          result: `\\text{Maturity Value (MV)} = ₹${totalPrincipal.toLocaleString()} + ₹${I.toLocaleString()} = \\mathbf{₹${MV.toLocaleString()}}`
+        }
+      }
+    },
+    testQuestions: [
+      {
+        id: 1,
+        question: 'In an ICSE Class 10 problem, a person deposits ₹500 per month for 2 years (24 months) at 10% p.a. in an RD account. What is the total interest earned?',
+        options: ['₹1,250', '₹1,500', '₹1,000', '₹1,150'],
+        correctAnswer: 0,
+        hint: 'Use $I = P \\times \\frac{n(n+1)}{24} \\times \\frac{r}{100}$. Here $P = 500, n = 24, r = 10$.',
+        explanation: '$I = 500 \\times \\frac{24 \\times 25}{24} \\times \\frac{10}{100} = 500 \\times 25 \\times 0.10 = 12500 \\times 0.10 = ₹1,250$.'
+      }
+    ]
+  },
+  {
+    id: 'isc-class12-wave-optics',
+    title: 'Wave Optics & Interference: YDSE (ISC Class 12)',
+    subject: 'Physics',
+    standard: 'Class 12',
+    boards: ['ICSE / ISC', 'CBSE', 'All Boards'],
+    weightageMarks: '9 Marks (ISC Board Blueprint)',
+    description: 'Huygens’ principle, wavefronts, Young’s double slit experiment (YDSE), expression for fringe width β = λD/d, and diffraction.',
+    topics: ['Huygens’ Wave Theory of Light', 'Interference of Light Waves & Coherent Sources', 'Derivation of Fringe Width in YDSE (β = λD/d)', 'Diffraction at a Single Slit', 'Polarisation of Light Waves'],
+    formulaOverview: [
+      { name: 'Fringe Width (YDSE)', latex: '\\beta = \\frac{\\lambda D}{d}' },
+      { name: 'Path Difference for Bright Fringe', latex: '\\Delta x = n \\lambda' },
+      { name: 'Path Difference for Dark Fringe', latex: '\\Delta x = (2n - 1)\\frac{\\lambda}{2}' },
+      { name: 'Brewster’s Law', latex: '\\mu = \\tan(i_p)' }
+    ],
+    animationTopic: 'ISC Board Derivation: Fringe Width β = λD/d in Young’s Double Slit Experiment',
+    calculationSteps: [
+      {
+        stepNumber: 1,
+        title: 'Step 1: Geometric Setup of Slits S₁ and S₂',
+        formula: 'S_1 S_2 = d, \\quad \\text{Screen Distance} = D, \\quad \\text{Point on Screen} = P(y)',
+        explanation: 'Two coherent narrow slits S₁ and S₂ separated by small distance d emit light of wavelength λ onto a screen placed at distance D (where D >> d).',
+        activeHighlight: 'Slit distance d, Screen distance D',
+        visualState: 'Two coherent slit sources illuminating screen.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Step 2: Path Difference Between Two Interfering Rays',
+        formula: '\\Delta x = S_2 P - S_1 P = \\sqrt{D^2 + \\left(y + \\frac{d}{2}\\right)^2} - \\sqrt{D^2 + \\left(y - \\frac{d}{2}\\right)^2}',
+        explanation: 'Expand using binomial approximation since y << D and d << D.',
+        activeHighlight: 'S₂P² - S₁P² = 2yd',
+        visualState: 'Path difference Δx represented geometrically.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Step 3: Approximate Path Difference as Δx = y d / D',
+        formula: '(S_2 P - S_1 P)(S_2 P + S_1 P) = 2yd \\implies \\Delta x (2D) = 2yd \\implies \\Delta x = \\frac{yd}{D}',
+        explanation: 'Since S₂P + S₁P ≈ 2D, the path difference simplifies directly to yd/D.',
+        activeHighlight: 'Path difference Δx = yd/D',
+        visualState: 'Linear relation between path difference and position y.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Step 4: Separation Between Consecutive Bright Fringes (Fringe Width β)',
+        formula: 'y_n = \\frac{n \\lambda D}{d} \\implies \\beta = y_{n+1} - y_n = \\frac{\\lambda D}{d}',
+        explanation: 'Proven! The fringe width β is constant, proving that all interference fringes in YDSE are of equal width.',
+        activeHighlight: 'β = λD/d (Uniform Fringe Width)',
+        visualState: 'Alternating bright and dark interference pattern.'
+      }
+    ],
+    interactiveSandbox: {
+      defaultParam: 600,
+      label: 'Light Wavelength λ (Slit d = 0.5 mm, Screen D = 1.0 m)',
+      unit: ' nm',
+      options: [400, 500, 600, 700],
+      computeFormula: (lambdaNm) => {
+        const d = 0.5e-3
+        const D = 1.0
+        const lambdaM = lambdaNm * 1e-9
+        const betaM = (lambdaM * D) / d
+        const betaMm = betaM * 1000
+        return {
+          step1: `\\lambda = ${lambdaNm}\\text{ nm} = ${lambdaM.toExponential(1)}\\text{ m}, \\quad D = 1.0\\text{ m}, \\quad d = 0.5\\text{ mm}`,
+          step2: `\\beta = \\frac{\\lambda D}{d} = \\frac{(${lambdaM.toExponential(1)})(1.0)}{0.5 \\times 10^{-3}}`,
+          step3: `\\beta = ${(betaM).toExponential(3)}\\text{ m}`,
+          result: `\\text{Fringe Width } \\beta = \\mathbf{${betaMm.toFixed(2)}\\text{ mm}}`
+        }
+      }
+    },
+    testQuestions: [
+      {
+        id: 1,
+        question: 'In Young’s double slit experiment, if the distance between the screen and slits ($D$) is doubled, the fringe width becomes:',
+        options: ['Doubled', 'Halved', 'Four times', 'Remains unchanged'],
+        correctAnswer: 0,
+        hint: 'Use the fringe width formula: $\\beta = \\frac{\\lambda D}{d}$. Fringe width is directly proportional to $D$.',
+        explanation: 'Since $\\beta \\propto D$, doubling $D$ doubles the fringe width $\\beta$.'
+      }
+    ]
   }
 ]
+

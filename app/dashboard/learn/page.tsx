@@ -25,12 +25,13 @@ import {
 } from 'lucide-react'
 import { MathRenderer } from '@/components/math-renderer'
 import Link from 'next/link'
-import { CBSE_CHAPTERS_CATALOG, ChapterData, CalculationStep } from '@/lib/cbse-database'
+import { CBSE_CHAPTERS_CATALOG, ChapterData, CalculationStep, INDIAN_BOARDS_LIST } from '@/lib/cbse-database'
 
 const CHAPTERS_DATABASE: ChapterData[] = CBSE_CHAPTERS_CATALOG
 
 export default function LearnBySubjectsPage() {
   const [selectedStandard, setSelectedStandard] = useState<'All' | 'Class 10' | 'Class 12' | 'Competitive'>('All')
+  const [selectedBoard, setSelectedBoard] = useState<string>('All Boards')
   const [selectedSubject, setSelectedSubject] = useState<string>('Mathematics')
   const [activeChapterId, setActiveChapterId] = useState<string>(CBSE_CHAPTERS_CATALOG[0].id)
   const [activeViewTab, setActiveViewTab] = useState<'animation' | 'sandbox' | 'test'>('animation')
@@ -107,7 +108,7 @@ export default function LearnBySubjectsPage() {
         body: JSON.stringify({
           topic: `${activeChapter.subject}: ${activeChapter.title}`,
           classLevel: activeChapter.standard === 'Competitive' ? 'Class 12' : activeChapter.standard,
-          board: 'CBSE',
+          board: selectedBoard === 'All Boards' ? 'CBSE' : selectedBoard,
           difficulty: 'Medium',
           format: 'MCQ Quiz',
           count: 4,
@@ -132,7 +133,7 @@ export default function LearnBySubjectsPage() {
         setRevealedHints({})
         setHintsRemaining(3)
         setTestSubmitted(false)
-        setAiNotice('⚡ Generated fresh exam questions via Google Gemini AI!')
+        setAiNotice(`⚡ Generated fresh exam questions for ${selectedBoard === 'All Boards' ? 'All Boards' : selectedBoard} via AI Engine!`)
       }
     } catch (err) {
       console.error('Error generating AI test:', err)
@@ -147,9 +148,10 @@ export default function LearnBySubjectsPage() {
     return CHAPTERS_DATABASE.filter(chap => {
       const matchStd = selectedStandard === 'All' || chap.standard === selectedStandard
       const matchSubj = chap.subject.toLowerCase() === selectedSubject.toLowerCase()
-      return matchStd && matchSubj
+      const matchBoard = selectedBoard === 'All Boards' || !chap.boards || chap.boards.includes('All Boards') || chap.boards.includes(selectedBoard)
+      return matchStd && matchSubj && matchBoard
     })
-  }, [selectedStandard, selectedSubject])
+  }, [selectedStandard, selectedSubject, selectedBoard])
 
   // 3-Hints Request Handler
   const handleRequestHint = (qId: number) => {
@@ -200,21 +202,40 @@ export default function LearnBySubjectsPage() {
           </p>
         </div>
 
-        {/* Standard Selector Filter */}
-        <div className="flex items-center gap-1.5 bg-white/5 p-1 rounded-2xl border border-white/10 text-xs">
-          {(['All', 'Class 10', 'Class 12', 'Competitive'] as const).map(std => (
-            <button
-              key={std}
-              onClick={() => setSelectedStandard(std)}
-              className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
-                selectedStandard === std 
-                  ? 'bg-cyan-400 text-midnight-900 shadow-md' 
-                  : 'text-gray-400 hover:text-white'
-              }`}
+        {/* Board & Standard Selector Filters */}
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Board Selector */}
+          <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-2xl border border-white/10 text-xs">
+            <span className="text-gray-400 font-semibold">Board:</span>
+            <select
+              value={selectedBoard}
+              onChange={(e) => setSelectedBoard(e.target.value)}
+              className="bg-transparent text-xs text-cyan-300 font-bold focus:outline-none cursor-pointer"
             >
-              {std}
-            </button>
-          ))}
+              {INDIAN_BOARDS_LIST.map(b => (
+                <option key={b} value={b} className="bg-midnight-900 text-white font-medium">
+                  {b}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Standard Selector Filter */}
+          <div className="flex items-center gap-1.5 bg-white/5 p-1 rounded-2xl border border-white/10 text-xs">
+            {(['All', 'Class 10', 'Class 12', 'Competitive'] as const).map(std => (
+              <button
+                key={std}
+                onClick={() => setSelectedStandard(std)}
+                className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
+                  selectedStandard === std 
+                    ? 'bg-cyan-400 text-midnight-900 shadow-md' 
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                {std}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

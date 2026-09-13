@@ -197,7 +197,12 @@ export default function AIGeneratorPage() {
                 >
                   <option>CBSE</option>
                   <option>ICSE / ISC</option>
-                  <option>NTA (National)</option>
+                  <option>Maharashtra State Board (HSC/SSC)</option>
+                  <option>UP Board</option>
+                  <option>Karnataka State Board</option>
+                  <option>Tamil Nadu Board</option>
+                  <option>West Bengal Board</option>
+                  <option>NTA (JEE / NEET)</option>
                   <option>State Board</option>
                 </select>
               </div>
