@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { GoogleGenAI } from '@google/genai'
+import OpenAI from 'openai'
 
 const RequestSchema = z.object({
   topic: z.string().min(2, 'Topic must have at least 2 characters'),
@@ -8,7 +9,8 @@ const RequestSchema = z.object({
   board: z.string().default('CBSE'),
   format: z.enum(['MCQ Quiz', 'Formula Sheet', 'Detailed Summary']).default('MCQ Quiz'),
   difficulty: z.string().default('Medium'),
-  count: z.number().min(1).max(20).default(5)
+  count: z.number().min(1).max(20).default(5),
+  model: z.string().default('gemini-3.6-flash')
 })
 
 export async function POST(req: NextRequest) {
@@ -23,7 +25,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { topic, classLevel, board, format, difficulty, count } = parsed.data
+    const { topic, classLevel, board, format, difficulty, count, model } = parsed.data
     const apiKey = process.env.GEMINI_API_KEY
 
     // If Gemini API Key is available, generate dynamically using Google Gemini
@@ -94,13 +96,45 @@ Return ONLY a valid JSON object strictly matching this schema:
 Do NOT include markdown fences. Return pure JSON.`
         }
 
-        const response = await ai.models.generateContent({
-          model: 'gemini-3.6-flash',
-          contents: prompt
-        })
+        const validModels = ['gemini-3.6-flash', 'gemini-1.5-pro', 'gemini-1.5-flash', 'gemini-2.0-flash']
+        const primaryModel = validModels.includes(model) ? model : 'gemini-3.6-flash'
 
-        const textOutput = response.text ? response.text.trim() : ''
-        
+        let textOutput = ''
+        let modelUsed = primaryModel
+
+        if (model.startsWith('gpt-') && process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.trim() !== '') {
+          try {
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+            const comp = await openai.chat.completions.create({
+              model: model,
+              messages: [{ role: 'user', content: prompt }],
+              response_format: { type: 'json_object' }
+            })
+            textOutput = comp.choices[0]?.message?.content || ''
+            modelUsed = model
+          } catch (oaiErr: any) {
+            console.warn('OpenAI error, falling back to Gemini:', oaiErr?.message)
+          }
+        }
+
+        if (!textOutput) {
+          try {
+            const response = await ai.models.generateContent({
+              model: primaryModel,
+              contents: prompt
+            })
+            textOutput = response.text ? response.text.trim() : ''
+          } catch (modelErr: any) {
+            console.warn(`Model ${primaryModel} failed, trying fallback gemini-3.6-flash:`, modelErr?.message)
+            const response = await ai.models.generateContent({
+              model: 'gemini-3.6-flash',
+              contents: prompt
+            })
+            textOutput = response.text ? response.text.trim() : ''
+            modelUsed = 'gemini-3.6-flash'
+          }
+        }
+
         // Clean JSON string if model wrapped in markdown fences
         const cleanedJson = textOutput
           .replace(/^```json\s*/i, '')
@@ -144,7 +178,8 @@ Do NOT include markdown fences. Return pure JSON.`
         return NextResponse.json({
           ...parsedJson,
           source: 'gemini-live',
-          notice: '⚡ Generated in real-time via Google Gemini AI Engine.'
+          modelUsed,
+          notice: `⚡ Generated in real-time via Google ${modelUsed} Engine.`
         })
       } catch (geminiError: any) {
         console.warn('Gemini API call failed or timed out, falling back to smart syllabus synthesizer:', geminiError?.message)

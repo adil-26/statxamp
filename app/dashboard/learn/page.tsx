@@ -25,312 +25,16 @@ import {
 } from 'lucide-react'
 import { MathRenderer } from '@/components/math-renderer'
 import Link from 'next/link'
+import { CBSE_CHAPTERS_CATALOG, ChapterData, CalculationStep } from '@/lib/cbse-database'
 
-interface CalculationStep {
-  stepNumber: number
-  title: string
-  formula: string
-  explanation: string
-  activeHighlight: string
-  visualState: string
-}
-
-interface ChapterData {
-  id: string
-  title: string
-  subject: string
-  standard: 'Class 10' | 'Class 12' | 'Competitive'
-  weightageMarks: string
-  description: string
-  formulaOverview: { name: string; latex: string }[]
-  animationTopic: string
-  calculationSteps: CalculationStep[]
-  interactiveSandbox: {
-    defaultParam: number
-    label: string
-    unit: string
-    options: number[]
-    computeFormula: (val: number) => { step1: string; step2: string; step3: string; result: string }
-  }
-  testQuestions: {
-    id: number
-    question: string
-    options: string[]
-    correctAnswer: number
-    hint: string
-    explanation: string
-  }[]
-}
-
-const CHAPTERS_DATABASE: ChapterData[] = [
-  {
-    id: 'math-trigonometry',
-    title: 'Trigonometry & Identities',
-    subject: 'Mathematics',
-    standard: 'Class 10',
-    weightageMarks: '12 Marks (Board Blueprint)',
-    description: 'Master right-triangle ratios, Pythagorean identities, and step-by-step derivations with animated calculation proofs.',
-    formulaOverview: [
-      { name: 'Fundamental Pythagorean Identity', latex: '\\sin^2(\\theta) + \\cos^2(\\theta) = 1' },
-      { name: 'Secant-Tangent Identity', latex: '1 + \\tan^2(\\theta) = \\sec^2(\\theta)' },
-      { name: 'Cosecant-Cotangent Identity', latex: '1 + \\cot^2(\\theta) = \\csc^2(\\theta)' },
-      { name: 'Double Angle Sine', latex: '\\sin(2\\theta) = 2\\sin(\\theta)\\cos(\\theta)' }
-    ],
-    animationTopic: 'Step-by-Step Derivation of sin²(θ) + cos²(θ) = 1',
-    calculationSteps: [
-      {
-        stepNumber: 1,
-        title: 'Step 1: Construct Right-Angled Triangle ABC',
-        formula: 'AB^2 + BC^2 = AC^2 \\quad \\text{(Pythagoras Theorem)}',
-        explanation: 'Consider a right triangle ABC right-angled at B with angle θ at vertex A. Let AB = Base, BC = Perpendicular (opposite), and AC = Hypotenuse.',
-        activeHighlight: 'AC = Hypotenuse, BC = Perpendicular, AB = Base',
-        visualState: 'Triangle defined with sides a, b, and hypotenuse c.'
-      },
-      {
-        stepNumber: 2,
-        title: 'Step 2: Define Basic Trigonometric Ratios',
-        formula: '\\sin(\\theta) = \\frac{\\text{Perpendicular}}{\\text{Hypotenuse}} = \\frac{BC}{AC}, \\quad \\cos(\\theta) = \\frac{\\text{Base}}{\\text{Hypotenuse}} = \\frac{AB}{AC}',
-        explanation: 'By the definitions of sine and cosine in right-angled trigonometry, sine represents opposite/hypotenuse and cosine represents adjacent/hypotenuse.',
-        activeHighlight: 'sin(θ) = BC/AC and cos(θ) = AB/AC',
-        visualState: 'Ratios expressed in terms of triangle sides.'
-      },
-      {
-        stepNumber: 3,
-        title: 'Step 3: Square and Add Both Ratios',
-        formula: '\\sin^2(\\theta) + \\cos^2(\\theta) = \\left(\\frac{BC}{AC}\\right)^2 + \\left(\\frac{AB}{AC}\\right)^2 = \\frac{BC^2 + AB^2}{AC^2}',
-        explanation: 'Squaring both fractions yields denominators of AC². Combining the fractions over a common denominator gives (BC² + AB²) / AC².',
-        activeHighlight: 'Common denominator AC²',
-        visualState: 'Fractions combined into a single algebraic quotient.'
-      },
-      {
-        stepNumber: 4,
-        title: 'Step 4: Apply Pythagoras Theorem to Numerator',
-        formula: '\\text{Since } BC^2 + AB^2 = AC^2 \\implies \\frac{AC^2}{AC^2} = \\mathbf{1}',
-        explanation: 'From Pythagoras theorem, the sum of squares of perpendicular and base equals the square of hypotenuse (BC² + AB² = AC²). Substituting AC² in the numerator gives AC² / AC² = 1. Proven!',
-        activeHighlight: 'Numerator cancels with denominator = 1',
-        visualState: 'Q.E.D. Identity confirmed for all real angles θ.'
-      }
-    ],
-    interactiveSandbox: {
-      defaultParam: 30,
-      label: 'Select Angle (θ)',
-      unit: '°',
-      options: [0, 30, 45, 60, 90],
-      computeFormula: (angle) => {
-        const rad = (angle * Math.PI) / 180
-        const sinVal = Math.sin(rad)
-        const cosVal = Math.cos(rad)
-        const sinSq = (sinVal * sinVal).toFixed(4)
-        const cosSq = (cosVal * cosVal).toFixed(4)
-        const total = (parseFloat(sinSq) + parseFloat(cosSq)).toFixed(2)
-
-        return {
-          step1: `\\sin(${angle}^\\circ) = ${sinVal.toFixed(3)}, \\quad \\cos(${angle}^\\circ) = ${cosVal.toFixed(3)}`,
-          step2: `\\sin^2(${angle}^\\circ) = (${sinVal.toFixed(3)})^2 = ${sinSq}`,
-          step3: `\\cos^2(${angle}^\\circ) = (${cosVal.toFixed(3)})^2 = ${cosSq}`,
-          result: `${sinSq} + ${cosSq} = \\mathbf{${total}} \\equiv 1`
-        }
-      }
-    },
-    testQuestions: [
-      {
-        id: 1,
-        question: 'If $\\sin(\\theta) = \\frac{3}{5}$ in a standard right-angled triangle, what is the exact value of $\\cos(\\theta)$?',
-        options: ['\\frac{4}{5}', '\\frac{5}{4}', '\\frac{3}{4}', '\\frac{1}{5}'],
-        correctAnswer: 0,
-        hint: 'Use the fundamental identity: $\\cos(\\theta) = \\sqrt{1 - \\sin^2(\\theta)}$. Compute $1 - (3/5)^2$.',
-        explanation: 'Using $\\sin^2\\theta + \\cos^2\\theta = 1$, we have $\\cos\\theta = \\sqrt{1 - (3/5)^2} = \\sqrt{1 - 9/25} = \\sqrt{16/25} = 4/5$.'
-      },
-      {
-        id: 2,
-        question: 'Simplify the expression: $(1 + \\tan^2\\theta) \\cdot \\cos^2\\theta$',
-        options: ['1', '\\sin^2\\theta', '\\tan^2\\theta', '\\sec^2\\theta'],
-        correctAnswer: 0,
-        hint: 'Remember that $1 + \\tan^2\\theta = \\sec^2\\theta$, and $\\sec\\theta = \\frac{1}{\\cos\\theta}$.',
-        explanation: 'Substitute the secant identity: $(1 + \\tan^2\\theta) = \\sec^2\\theta$. Then $\\sec^2\\theta \\cdot \\cos^2\\theta = \\frac{1}{\\cos^2\\theta} \\cdot \\cos^2\\theta = 1$.'
-      },
-      {
-        id: 3,
-        question: 'What is the value of $\\frac{\\sin(60^\\circ)}{\\cos(30^\\circ)} + \\tan(45^\\circ)$?',
-        options: ['2', '1', '\\sqrt{3}', '0'],
-        correctAnswer: 0,
-        hint: 'Recall that $\\sin(60^\\circ) = \\frac{\\sqrt{3}}{2}$, $\\cos(30^\\circ) = \\frac{\\sqrt{3}}{2}$, and $\\tan(45^\\circ) = 1$.',
-        explanation: 'Since $\\sin(60^\\circ) = \\cos(30^\\circ) = \\sqrt{3}/2$, their ratio is $1$. Adding $\\tan(45^\\circ) = 1$ gives $1 + 1 = 2$.'
-      },
-      {
-        id: 4,
-        question: 'Which of the following is equivalent to $\\frac{1 - \\cos(2\\theta)}{2}$?',
-        options: ['\\sin^2(\\theta)', '\\cos^2(\\theta)', '\\tan^2(\\theta)', '\\sin(\\theta)'],
-        correctAnswer: 0,
-        hint: 'Use the double-angle cosine formula: $\\cos(2\\theta) = 1 - 2\\sin^2(\\theta)$ and isolate $\\sin^2(\\theta)$.',
-        explanation: 'From $\\cos(2\\theta) = 1 - 2\\sin^2\\theta$, rearranging gives $2\\sin^2\\theta = 1 - \\cos(2\\theta) \\implies \\sin^2\\theta = \\frac{1 - \\cos(2\\theta)}{2}$.'
-      }
-    ]
-  },
-  {
-    id: 'math-calculus',
-    title: 'Calculus: Derivatives & Limits',
-    subject: 'Mathematics',
-    standard: 'Class 12',
-    weightageMarks: '35 Marks (Board + JEE)',
-    description: 'Understand limits, chain rule differentiation, and rate of change derivations step-by-step.',
-    formulaOverview: [
-      { name: 'First Principle Derivative', latex: 'f\'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}' },
-      { name: 'Power Rule', latex: '\\frac{d}{dx}(x^n) = n x^{n-1}' },
-      { name: 'Product Rule (Leibniz)', latex: '\\frac{d}{dx}(u \\cdot v) = u \\frac{dv}{dx} + v \\frac{du}{dx}' },
-      { name: 'Chain Rule', latex: '\\frac{dy}{dx} = \\frac{dy}{du} \\cdot \\frac{du}{dx}' }
-    ],
-    animationTopic: 'First Principle Derivation of d/dx (x²)',
-    calculationSteps: [
-      {
-        stepNumber: 1,
-        title: 'Step 1: Set up the Definition of Derivative',
-        formula: 'f\'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}, \\quad \\text{where } f(x) = x^2',
-        explanation: 'The instantaneous rate of change is defined as the limiting value of the average slope as step-size h approaches 0.',
-        activeHighlight: 'Definition of derivative limit quotient',
-        visualState: 'Secant line transitioning into tangent slope.'
-      },
-      {
-        stepNumber: 2,
-        title: 'Step 2: Expand f(x+h) using Binomial Theorem',
-        formula: 'f(x+h) = (x+h)^2 = x^2 + 2xh + h^2',
-        explanation: 'Expand the squared term algebraically to express the numerator in terms of powers of x and h.',
-        activeHighlight: 'Expansion: x² + 2xh + h²',
-        visualState: 'Square geometric area breakdown into x², 2xh, and h².'
-      },
-      {
-        stepNumber: 3,
-        title: 'Step 3: Substitute and Subtract f(x)',
-        formula: '\\frac{f(x+h) - f(x)}{h} = \\frac{(x^2 + 2xh + h^2) - x^2}{h} = \\frac{2xh + h^2}{h}',
-        explanation: 'Notice that x² cancels with -x², eliminating the constant term and leaving terms containing h.',
-        activeHighlight: 'x² cancels out, leaving (2xh + h²)/h',
-        visualState: 'Algebraic cancellation.'
-      },
-      {
-        stepNumber: 4,
-        title: 'Step 4: Factor Out h and Evaluate the Limit',
-        formula: '\\lim_{h \\to 0} \\frac{h(2x + h)}{h} = \\lim_{h \\to 0} (2x + h) = \\mathbf{2x}',
-        explanation: 'Dividing numerator and denominator by h yields (2x + h). As h -> 0, the term h vanishes, leaving 2x. Thus d/dx (x²) = 2x!',
-        activeHighlight: 'Limit evaluation: 2x + 0 = 2x',
-        visualState: 'Exact tangent slope function derived.'
-      }
-    ],
-    interactiveSandbox: {
-      defaultParam: 3,
-      label: 'Evaluate Tangent Slope at x',
-      unit: '',
-      options: [1, 2, 3, 4, 5],
-      computeFormula: (val) => {
-        const slope = 2 * val
-        return {
-          step1: `\\text{Function: } f(x) = x^2 \\implies f(${val}) = ${val * val}`,
-          step2: `\\text{Derivative Function: } f'(x) = 2x`,
-          step3: `\\text{Substitute } x = ${val}: f'(${val}) = 2 \\times ${val}`,
-          result: `\\text{Slope of Tangent at } x = ${val} \\text{ is } \\mathbf{${slope}}`
-        }
-      }
-    },
-    testQuestions: [
-      {
-        id: 1,
-        question: 'Evaluate the derivative of $f(x) = x^3 - 5x + 7$ at $x = 2$.',
-        options: ['7', '12', '5', '9'],
-        correctAnswer: 0,
-        hint: 'First find $f\'(x) = 3x^2 - 5$. Then substitute $x = 2$.',
-        explanation: '$f\'(x) = 3x^2 - 5$. For $x = 2$, $f\'(2) = 3(2)^2 - 5 = 3(4) - 5 = 12 - 5 = 7$.'
-      },
-      {
-        id: 2,
-        question: 'What is the limit: $\\lim_{x \\to 0} \\frac{\\sin(3x)}{x}$?',
-        options: ['3', '1', '0', '\\frac{1}{3}'],
-        correctAnswer: 0,
-        hint: 'Use the standard limit $\\lim_{u \\to 0} \\frac{\\sin(u)}{u} = 1$. Multiply and divide by 3.',
-        explanation: '$\\lim_{x \\to 0} \\frac{\\sin(3x)}{x} = 3 \\cdot \\lim_{x \\to 0} \\frac{\\sin(3x)}{3x} = 3 \\cdot 1 = 3$.'
-      }
-    ]
-  },
-  {
-    id: 'phy-optics',
-    title: 'Ray Optics & Refraction',
-    subject: 'Physics',
-    standard: 'Class 12',
-    weightageMarks: '14 Marks (Board Blueprint)',
-    description: 'Snell\'s law, total internal reflection, lens maker formula derivations, and step-by-step ray tracing.',
-    formulaOverview: [
-      { name: 'Snell\'s Law of Refraction', latex: 'n_1 \\sin(\\theta_1) = n_2 \\sin(\\theta_2)' },
-      { name: 'Lens Maker\'s Formula', latex: '\\frac{1}{f} = (n - 1) \\left(\\frac{1}{R_1} - \\frac{1}{R_2}\\right)' },
-      { name: 'Critical Angle for TIR', latex: '\\sin(\\theta_c) = \\frac{n_2}{n_1} \\quad (n_1 > n_2)' }
-    ],
-    animationTopic: 'Step-by-Step Derivation of Critical Angle & Total Internal Reflection',
-    calculationSteps: [
-      {
-        stepNumber: 1,
-        title: 'Step 1: Ray Propagating from Denser to Rarer Medium',
-        formula: 'n_1 \\sin(\\theta_1) = n_2 \\sin(\\theta_2), \\quad \\text{where } n_1 > n_2',
-        explanation: 'When light travels from an optically denser medium (refractive index n1) into a rarer medium (n2), the refracted ray bends away from the normal.',
-        activeHighlight: 'n1 > n2 implies θ2 > θ1',
-        visualState: 'Ray bending away from the normal.'
-      },
-      {
-        stepNumber: 2,
-        title: 'Step 2: Condition for Critical Angle (θ1 = θc)',
-        formula: '\\text{At } \\theta_1 = \\theta_c, \\quad \\text{Angle of Refraction } \\theta_2 = 90^\\circ',
-        explanation: 'As the incident angle increases, the angle of refraction reaches 90 degrees, grazing along the interface boundary.',
-        activeHighlight: 'θ2 = 90° (sin(90°) = 1)',
-        visualState: 'Refracted ray grazes the boundary line.'
-      },
-      {
-        stepNumber: 3,
-        title: 'Step 3: Substitute into Snell\'s Law',
-        formula: 'n_1 \\sin(\\theta_c) = n_2 \\sin(90^\\circ) = n_2 \\cdot 1',
-        explanation: 'Substitute sin(90°) = 1 into the Snell\'s law formulation.',
-        activeHighlight: 'n1 · sin(θc) = n2',
-        visualState: 'Algebraic substitution completed.'
-      },
-      {
-        stepNumber: 4,
-        title: 'Step 4: Solve for Critical Angle θc',
-        formula: '\\sin(\\theta_c) = \\frac{n_2}{n_1} \\implies \\mathbf{\\theta_c = \\sin^{-1}\\left(\\frac{n_2}{n_1}\\right)}',
-        explanation: 'For any angle of incidence greater than θc, no refraction can occur and the entire energy reflects back into the denser medium (TIR).',
-        activeHighlight: 'θc = arcsin(n2 / n1)',
-        visualState: 'Total internal reflection condition verified.'
-      }
-    ],
-    interactiveSandbox: {
-      defaultParam: 1.5,
-      label: 'Denser Medium Refractive Index (n₁)',
-      unit: '',
-      options: [1.33, 1.5, 1.6, 2.42],
-      computeFormula: (n1) => {
-        const n2 = 1.0 // Air
-        const ratio = n2 / n1
-        const angleDeg = (Math.asin(ratio) * 180 / Math.PI).toFixed(2)
-        return {
-          step1: `\\text{Denser Medium } n_1 = ${n1}, \\quad \\text{Air } n_2 = 1.0`,
-          step2: `\\sin(\\theta_c) = \\frac{n_2}{n_1} = \\frac{1.0}{${n1}} = ${ratio.toFixed(4)}`,
-          step3: `\\theta_c = \\sin^{-1}(${ratio.toFixed(4)})`,
-          result: `\\text{Critical Angle } \\theta_c = \\mathbf{${angleDeg}^\\circ}`
-        }
-      }
-    },
-    testQuestions: [
-      {
-        id: 1,
-        question: 'Calculate the critical angle for glass with refractive index $n = 1.5$ entering air ($n = 1$).',
-        options: ['41.8^\\circ', '30^\\circ', '45^\\circ', '60^\\circ'],
-        correctAnswer: 0,
-        hint: '$\\sin(\\theta_c) = \\frac{1}{1.5} = \\frac{2}{3} \\approx 0.6667$. Find $\\arcsin(0.6667)$.',
-        explanation: '$\\sin\\theta_c = 1 / 1.5 = 2/3 \\approx 0.6667$. Thus $\\theta_c = \\sin^{-1}(2/3) \\approx 41.8^\\circ$.'
-      }
-    ]
-  }
-]
+const CHAPTERS_DATABASE: ChapterData[] = CBSE_CHAPTERS_CATALOG
 
 export default function LearnBySubjectsPage() {
   const [selectedStandard, setSelectedStandard] = useState<'All' | 'Class 10' | 'Class 12' | 'Competitive'>('All')
   const [selectedSubject, setSelectedSubject] = useState<string>('Mathematics')
-  const [activeChapterId, setActiveChapterId] = useState<string>('math-trigonometry')
+  const [activeChapterId, setActiveChapterId] = useState<string>(CBSE_CHAPTERS_CATALOG[0].id)
   const [activeViewTab, setActiveViewTab] = useState<'animation' | 'sandbox' | 'test'>('animation')
+  const [selectedAiModel, setSelectedAiModel] = useState<string>('gemini-3.6-flash')
 
   // Animation Step Player State
   const [currentStepIdx, setCurrentStepIdx] = useState<number>(0)
@@ -406,7 +110,8 @@ export default function LearnBySubjectsPage() {
           board: 'CBSE',
           difficulty: 'Medium',
           format: 'MCQ Quiz',
-          count: 4
+          count: 4,
+          model: selectedAiModel
         })
       })
 
@@ -823,13 +528,30 @@ export default function LearnBySubjectsPage() {
 
                   {/* Actions & Hints Remaining Badge */}
                   <div className="flex flex-wrap items-center gap-3">
+                    {/* Model Selector Dropdown */}
+                    <div className="flex items-center gap-1.5 bg-midnight-900/90 border border-cyan-400/30 rounded-xl px-2.5 py-1.5 shadow-inner">
+                      <Brain className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                      <select
+                        value={selectedAiModel}
+                        onChange={(e) => setSelectedAiModel(e.target.value)}
+                        disabled={isAiGenerating || testSubmitted}
+                        className="bg-transparent text-xs text-cyan-300 font-bold focus:outline-none cursor-pointer"
+                        title="Select AI Model Engine"
+                      >
+                        <option value="gemini-3.6-flash" className="bg-midnight-900 text-white">Gemini 3.6 Flash (Fast & Accurate)</option>
+                        <option value="gemini-1.5-pro" className="bg-midnight-900 text-white">Gemini 1.5 Pro (Deep Scientific Reasoning)</option>
+                        <option value="gemini-1.5-flash" className="bg-midnight-900 text-white">Gemini 1.5 Flash (Lightweight)</option>
+                        <option value="gemini-2.0-flash" className="bg-midnight-900 text-white">Gemini 2.0 Flash (Next-Gen)</option>
+                      </select>
+                    </div>
+
                     <button
                       onClick={handleGenerateAiQuestions}
                       disabled={isAiGenerating || testSubmitted}
                       className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-50 text-midnight-900 font-extrabold text-xs flex items-center gap-2 shadow-[0_0_15px_rgba(0,212,255,0.3)] transition-all cursor-pointer"
                     >
                       <Sparkles className={`w-3.5 h-3.5 ${isAiGenerating ? 'animate-spin' : ''}`} />
-                      {isAiGenerating ? 'Synthesizing with AI...' : 'Generate New Questions with AI'}
+                      {isAiGenerating ? 'Synthesizing with AI...' : 'Generate Questions with AI'}
                     </button>
 
                     <div className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 border ${

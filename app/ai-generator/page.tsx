@@ -13,6 +13,7 @@ export default function AIGeneratorPage() {
   const [board, setBoard] = useState('CBSE')
   const [format, setFormat] = useState('MCQ Quiz') // 'MCQ Quiz', 'Formula Sheet', 'Detailed Summary'
   const [difficulty, setDifficulty] = useState('Medium')
+  const [aiModel, setAiModel] = useState('gemini-3.6-flash')
   
   const [loading, setLoading] = useState(false)
   const [generatedOutput, setGeneratedOutput] = useState<any>(null)
@@ -42,7 +43,8 @@ export default function AIGeneratorPage() {
           board: board,
           format: format,
           difficulty: difficulty,
-          count: 5
+          count: 5,
+          model: aiModel
         })
       })
 
@@ -199,6 +201,22 @@ export default function AIGeneratorPage() {
                   <option>State Board</option>
                 </select>
               </div>
+            </div>
+
+            <div>
+              <label className="text-xs text-gray-400 font-bold block mb-1.5 flex items-center gap-1.5">
+                <Brain className="w-3.5 h-3.5 text-cyan-400" /> AI Engine Model
+              </label>
+              <select 
+                value={aiModel} 
+                onChange={(e) => setAiModel(e.target.value)}
+                className="w-full h-10 px-3 bg-midnight-900/80 border border-cyan-400/30 rounded-xl text-xs font-semibold text-cyan-300 focus:outline-none focus:border-cyan-400"
+              >
+                <option value="gemini-3.6-flash">Google Gemini 3.6 Flash (Fast & Accurate)</option>
+                <option value="gemini-1.5-pro">Google Gemini 1.5 Pro (Deep Scientific Reasoning)</option>
+                <option value="gemini-1.5-flash">Google Gemini 1.5 Flash (Lightweight)</option>
+                <option value="gemini-2.0-flash">Google Gemini 2.0 Flash (Next-Gen)</option>
+              </select>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
