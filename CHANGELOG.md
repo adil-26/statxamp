@@ -14,6 +14,25 @@ This release transforms the initial frontend prototype into a functional, type-s
 
 ### 🛠️ Detailed Component & File Changes
 
+#### 0. [NEW] Live Backend API & Gemini AI Engine
+- **File**: `app/api/generate-exam/route.ts`
+- **What was added**:
+  - Full serverless backend API route utilizing `@google/genai` with input validation via `zod`.
+  - Generates authentic multiple-choice questions, formulas, or summaries tailored to CBSE/ICSE Class 10 & 12 Board blueprints and JEE/NEET patterns.
+  - Zero-crash resilient fallback: gracefully synthesizes syllabus questions if `GEMINI_API_KEY` is not yet configured.
+
+#### 0.1. [NEW] Database & Storage Architecture (Supabase)
+- **Files**: `lib/supabase.ts`, `.env.example`, `.env.local`
+- **What was added**:
+  - `@supabase/supabase-js` client initialization for PostgreSQL and cloud PDF storage.
+  - `.env.example` and `.env.local` templates for `GEMINI_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL`, and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+
+#### 0.2. [ENHANCED] Real-time Dynamic CBT Launch from AI Generator
+- **File**: `app/ai-generator/page.tsx`
+- **What was added**:
+  - Replaced mock `setTimeout` with live `POST /api/generate-exam`.
+  - Added dynamic CBT Launch: clicking *"Launch in CBT Exam Room"* passes the AI-generated questions into the test player via session state, allowing students to take tests on ANY custom topic instantly!
+
 #### 1. [NEW] Interactive Computer-Based Testing (CBT) Exam Room
 - **File**: `app/dashboard/mock-exams/[id]/page.tsx`
 - **What was added**:

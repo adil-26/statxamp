@@ -29,10 +29,31 @@ export default function ExamRoomPage() {
   const router = useRouter()
   const examId = (params?.id as string) || 'cbse-12-physics-2024'
 
+  const [customExam, setCustomExam] = useState<MockExam | null>(null)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && examId === 'custom') {
+      const saved = sessionStorage.getItem('statxam_custom_exam')
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved)
+          if (parsed && parsed.questions && parsed.questions.length > 0) {
+            setCustomExam(parsed)
+            setTimeLeft(parsed.durationMinutes * 60)
+          }
+        } catch (e) {
+          console.error('Failed to parse custom exam', e)
+        }
+      }
+    }
+  }, [examId])
+
   // Load exam data or fallback to default
-  const examData: MockExam = useMemo(() => {
+  const defaultExamData: MockExam = useMemo(() => {
     return MOCK_EXAMS_DATABASE[examId] || MOCK_EXAMS_DATABASE['cbse-12-physics-2024']
   }, [examId])
+
+  const examData: MockExam = customExam || defaultExamData
 
   const [currentIdx, setCurrentIdx] = useState(0)
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({})

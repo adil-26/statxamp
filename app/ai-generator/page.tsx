@@ -1,11 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sparkles, Brain, Download, Copy, Play, CheckCircle2, RefreshCw, ArrowRight, BookOpen, Lightbulb } from 'lucide-react'
+import { Sparkles, Brain, Download, Copy, Play, CheckCircle2, RefreshCw, ArrowRight, BookOpen, Lightbulb, Info } from 'lucide-react'
 import Link from 'next/link'
 
 export default function AIGeneratorPage() {
+  const router = useRouter()
   const [topic, setTopic] = useState('')
   const [classVal, setClassVal] = useState('Class 12')
   const [board, setBoard] = useState('CBSE')
@@ -25,78 +27,71 @@ export default function AIGeneratorPage() {
     'Life Processes & Nutrition'
   ]
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!topic.trim()) return
     setLoading(true)
     setGeneratedOutput(null)
 
-    setTimeout(() => {
-      setLoading(false)
-      if (format === 'MCQ Quiz') {
-        setGeneratedOutput({
-          title: `10-Year High-Yield Quiz: ${topic}`,
-          type: 'quiz',
-          classVal,
-          board,
-          difficulty,
-          items: [
-            { 
-              q: `In the context of ${topic}, which of the following statements represents the fundamental governing relationship?`, 
-              o: [
-                'Inversely proportional to distance squared under equilibrium', 
-                'Directly proportional to temperature gradient (Standard condition)', 
-                'Independent of spatial permittivity or resistance', 
-                'Exponential decay governed by relaxation time'
-              ], 
-              a: 0,
-              explanation: `Standard 10-year recurring theorem in ${topic}: Governing physical relationships follow inverse-square laws or standard boundary conservation in this syllabus tier.`
-            },
-            { 
-              q: `When evaluating standard ${classVal} ${board} examination problems for ${topic}, what is the critical assumption required?`, 
-              o: [
-                'Non-conservative dissipative dissipation is considered zero', 
-                'Temperature fluctuates dynamically during testing', 
-                'Relativistic corrections are required at room state', 
-                'Mass remains variable throughout integration'
-              ], 
-              a: 0,
-              explanation: `Under ${board} syllabus guidelines for ${topic}, ideal constraints assume conservative fields and closed boundary conditions unless friction/viscosity is specified.`
-            },
-            {
-              q: `Which parameter remains strictly invariant when ${topic} is subjected to an external medium transition?`,
-              o: [
-                'Frequency of oscillation / Wave cycle',
-                'Wavelength of propagation',
-                'Velocity of propagation',
-                'Amplitude'
-              ],
-              a: 0,
-              explanation: 'Frequency is determined strictly by the source and remains invariant when transitioning across different media.'
-            }
-          ]
+    try {
+      const res = await fetch('/api/generate-exam', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          topic: topic.trim(),
+          classLevel: classVal,
+          board: board,
+          format: format,
+          difficulty: difficulty,
+          count: 5
         })
-      } else if (format === 'Formula Sheet') {
-        setGeneratedOutput({
-          title: `${topic} - High-Yield Formula Sheet`,
-          type: 'formulas',
-          classVal,
-          board,
-          items: [
-            { name: `${topic} Primary Governing Formulation`, eq: 'F = (1 / 4πε₀) * (|q₁·q₂| / r²)' },
-            { name: `${topic} Energy Density & Flux Integration`, eq: 'u = (1/2) * ε₀ * E²' },
-            { name: `${topic} Conservation Continuity Equation`, eq: '∇ · J + ∂ρ/∂t = 0' }
-          ]
-        })
-      } else {
-        setGeneratedOutput({
-          title: `${topic} Master Study Guide & 10-Year Trend Summary`,
-          type: 'summary',
-          classVal,
-          board,
-          text: `Comprehensive 10-Year Blueprint Breakdown for: ${topic} (${classVal} - ${board})\n\n1. Exam Weightage & Trend:\nOver the past 10 years, ${topic} has accounted for approximately 12-14 marks in Board examinations and ~8% in competitive shifts. Questions frequently target multi-step derivations, numerical problem-solving, and assertion-reason relationships.\n\n2. High-Yield Recurring Focus Areas:\n• Core Derivations: Principle formulation and limiting boundary values.\n• Graphical Interpretations: Variation with distance, potential curves, and slope analysis.\n• Common Traps: Watch out for unit conversions (e.g. µC to C, cm to m) and negative signs in vector calculations.\n\n3. Quick Scoring Strategy:\nEnsure definitions are memorized with exact NCERT keywords, and always include standard circuit/ray diagrams where applicable to secure full presentation marks.`
-        })
+      })
+
+      if (!res.ok) {
+        throw new Error('Failed to generate study material')
       }
-    }, 1200)
+
+      const data = await res.json()
+      setGeneratedOutput(data)
+    } catch (err: any) {
+      console.error('Error generating study material:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleLaunchExam = () => {
+    if (!generatedOutput || !generatedOutput.items) return
+
+    const customExamData = {
+      id: 'custom',
+      title: generatedOutput.title || `${topic} Practice Test`,
+      type: 'Practice Test',
+      classLevel: classVal,
+      board: board,
+      subject: topic,
+      durationMinutes: Math.max(15, generatedOutput.items.length * 3),
+      totalMarks: generatedOutput.items.reduce((acc: number, q: any) => acc + (q.marks || 1), 0),
+      questionsCount: generatedOutput.items.length,
+      dateBadge: 'AI Generated',
+      description: `Dynamic syllabus mock test generated for ${topic} based on ${board} ${classVal} blueprints.`,
+      highWeightageTopics: [topic],
+      questions: generatedOutput.items.map((item: any, idx: number) => ({
+        id: item.id || idx + 1,
+        question: item.question || item.q,
+        options: item.options || item.o,
+        correctAnswer: item.correctAnswer !== undefined ? item.correctAnswer : (item.a || 0),
+        explanation: item.explanation || 'Detailed AI step-by-step solution.',
+        chapter: item.chapter || topic,
+        marks: item.marks || 1,
+        negativeMarks: item.negativeMarks || 0,
+        type: item.type || 'MCQ'
+      }))
+    }
+
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('statxam_custom_exam', JSON.stringify(customExamData))
+    }
+    router.push('/dashboard/mock-exams/custom')
   }
 
   const handleCopy = () => {
@@ -350,19 +345,38 @@ export default function AIGeneratorPage() {
                   </div>
                 </div>
 
+                {/* Notice banner if present */}
+                {generatedOutput.notice && (
+                  <div className="flex items-center gap-2 text-[11px] text-cyan-300 bg-cyan-400/10 border border-cyan-400/20 p-2.5 rounded-xl">
+                    <Info className="w-4 h-4 text-cyan-400 shrink-0" />
+                    <span>{generatedOutput.notice}</span>
+                  </div>
+                )}
+
                 {/* Bottom Action Footer */}
                 <div className="border-t border-white/10 pt-4 flex flex-wrap items-center justify-between gap-3">
                   <span className="text-xs text-gray-400">
                     Topic: <strong className="text-white">{topic}</strong> ({classVal})
                   </span>
 
-                  <Link href="/dashboard/mock-exams">
-                    <button className="px-5 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-midnight-900 font-bold text-xs flex items-center gap-2 transition-all shadow-[0_0_12px_rgba(0,212,255,0.25)] cursor-pointer">
+                  {generatedOutput.type === 'quiz' ? (
+                    <button 
+                      onClick={handleLaunchExam}
+                      className="px-5 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-midnight-900 font-bold text-xs flex items-center gap-2 transition-all shadow-[0_0_12px_rgba(0,212,255,0.25)] cursor-pointer"
+                    >
                       <Play className="w-3.5 h-3.5 fill-midnight-900" />
                       Launch in CBT Exam Room
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
-                  </Link>
+                  ) : (
+                    <Link href="/dashboard/mock-exams">
+                      <button className="px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer">
+                        <Play className="w-3.5 h-3.5 text-cyan-400" />
+                        Explore Mock Exams
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </Link>
+                  )}
                 </div>
               </motion.div>
             ) : (
