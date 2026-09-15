@@ -37,6 +37,7 @@ export default function LearnBySubjectsPage() {
   const [activeViewTab, setActiveViewTab] = useState<'animation' | 'sandbox' | 'test'>('animation')
   const [selectedAiModel, setSelectedAiModel] = useState<string>('gemini-3.6-flash')
   const [mobileChapterSheetOpen, setMobileChapterSheetOpen] = useState<boolean>(false)
+  const [isSightFocusMode, setIsSightFocusMode] = useState<boolean>(false)
 
   // Animation Step Player State
   const [currentStepIdx, setCurrentStepIdx] = useState<number>(0)
@@ -354,95 +355,112 @@ export default function LearnBySubjectsPage() {
 
       {/* Main Learning Workspace Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column: Chapters Navigation List (Visible only on Desktop) */}
-        <div className="hidden lg:block lg:col-span-4 bg-white/5 border border-white/10 rounded-3xl p-5 space-y-4 backdrop-blur-xl">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
-              <Layers className="w-3.5 h-3.5" /> {selectedSubject} Chapters
-            </span>
-            <span className="text-[11px] text-gray-500 font-semibold">{filteredChapters.length} Chapters</span>
-          </div>
+        {/* Left Column: Chapters Navigation List (Hidden in Sight Focus Mode) */}
+        {!isSightFocusMode && (
+          <div className="hidden lg:block lg:col-span-4 bg-white/5 border border-white/10 rounded-3xl p-5 space-y-4 backdrop-blur-xl">
+            <div className="flex items-center justify-between pb-3 border-b border-white/10">
+              <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5" /> {selectedSubject} Chapters
+              </span>
+              <span className="text-[11px] text-slate-400 font-semibold">{filteredChapters.length} Chapters</span>
+            </div>
 
-          <div className="space-y-3 max-h-[580px] overflow-y-auto pr-1">
-            {filteredChapters.map(chap => {
-              const isActive = chap.id === activeChapterId
-              return (
-                <div
-                  key={chap.id}
-                  onClick={() => setActiveChapterId(chap.id)}
-                  className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 ${
-                    isActive
-                      ? 'bg-cyan-400/15 border-cyan-400 shadow-[0_0_15px_rgba(0,212,255,0.2)]'
-                      : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-extrabold text-cyan-400 bg-cyan-400/10 px-2 py-0.5 rounded-full border border-cyan-400/20">
-                      {chap.standard}
-                    </span>
-                    <span className="text-[10px] font-bold text-green-400 flex items-center gap-1">
-                      <TrendingUp className="w-3 h-3" /> {chap.weightageMarks}
-                    </span>
+            <div className="space-y-3 max-h-[580px] overflow-y-auto pr-1">
+              {filteredChapters.map(chap => {
+                const isActive = chap.id === activeChapterId
+                return (
+                  <div
+                    key={chap.id}
+                    onClick={() => setActiveChapterId(chap.id)}
+                    className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 ${
+                      isActive
+                        ? 'bg-cyan-400/15 border-cyan-400 shadow-[0_0_15px_rgba(0,212,255,0.2)]'
+                        : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-extrabold text-cyan-400 bg-cyan-400/10 px-2 py-0.5 rounded-full border border-cyan-400/20">
+                        {chap.standard}
+                      </span>
+                      <span className="text-[10px] font-bold text-emerald-400 flex items-center gap-1">
+                        <TrendingUp className="w-3 h-3" /> {chap.weightageMarks}
+                      </span>
+                    </div>
+
+                    <h3 className="font-extrabold text-white text-sm leading-snug">{chap.title}</h3>
+                    <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">{chap.description}</p>
                   </div>
-
-                  <h3 className="font-extrabold text-white text-sm leading-snug">{chap.title}</h3>
-                  <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">{chap.description}</p>
-                </div>
-              )
-            })}
+                )
+              })}
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Right Column: Interactive Subject Detail Hub */}
-        <div className="lg:col-span-8 space-y-6">
+        {/* Right Column: Interactive Subject Detail Hub (Expands to col-12 in Sight Focus Mode) */}
+        <div className={`${isSightFocusMode ? 'lg:col-span-12' : 'lg:col-span-8'} space-y-6`}>
           {/* Chapter Details Banner */}
           <div className="bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-7 backdrop-blur-xl relative overflow-hidden">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-cyan-400 bg-cyan-400/10 px-2.5 py-0.5 rounded-full">
+                  <span className="text-xs font-bold text-cyan-400 bg-cyan-400/10 px-2.5 py-0.5 rounded-full border border-cyan-400/20">
                     {activeChapter.subject} • {activeChapter.standard}
                   </span>
-                  <span className="text-xs text-purple-400 bg-purple-500/10 px-2.5 py-0.5 rounded-full font-semibold">
+                  <span className="text-xs text-purple-300 bg-purple-500/15 px-2.5 py-0.5 rounded-full font-semibold border border-purple-500/20">
                     {activeChapter.weightageMarks}
                   </span>
                 </div>
                 <h2 className="text-2xl font-black text-white mt-2">{activeChapter.title}</h2>
-                <p className="text-xs text-gray-300 mt-1">{activeChapter.description}</p>
+                <p className="text-xs text-slate-300 mt-1">{activeChapter.description}</p>
               </div>
 
-              {/* View Tabs Selector */}
-              <div className="flex items-center gap-1.5 bg-midnight-900/80 p-1.5 rounded-2xl border border-white/10 text-xs shrink-0">
+              {/* View Tabs Selector & Sight Focus Toggle */}
+              <div className="flex flex-wrap items-center gap-2">
                 <button
-                  onClick={() => setActiveViewTab('animation')}
-                  className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
-                    activeViewTab === 'animation'
-                      ? 'bg-cyan-400 text-midnight-900 shadow-sm'
-                      : 'text-gray-400 hover:text-white'
+                  onClick={() => setIsSightFocusMode(!isSightFocusMode)}
+                  title="Toggle Full-Width Sight Mode (Hides side panels and expands math equations)"
+                  className={`px-3 py-1.5 rounded-xl font-bold transition-all text-xs flex items-center gap-1.5 border cursor-pointer ${
+                    isSightFocusMode 
+                      ? 'bg-cyan-400 text-midnight-950 border-cyan-400 shadow-[0_0_12px_rgba(0,212,255,0.3)]' 
+                      : 'bg-white/5 border-white/10 text-slate-300 hover:text-white hover:bg-white/10'
                   }`}
                 >
-                  Calculation Steps
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>{isSightFocusMode ? 'Exit Sight View' : 'Sight Mode'}</span>
                 </button>
-                <button
-                  onClick={() => setActiveViewTab('sandbox')}
-                  className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
-                    activeViewTab === 'sandbox'
-                      ? 'bg-cyan-400 text-midnight-900 shadow-sm'
-                      : 'text-gray-400 hover:text-white'
-                  }`}
-                >
-                  Interactive Sandbox
-                </button>
-                <button
-                  onClick={() => setActiveViewTab('test')}
-                  className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
-                    activeViewTab === 'test'
-                      ? 'bg-cyan-400 text-midnight-900 shadow-sm'
-                      : 'text-gray-400 hover:text-white'
-                  }`}
-                >
-                  AI Test (3 Hints)
-                </button>
+
+                <div className="flex items-center gap-1.5 bg-midnight-900/80 p-1.5 rounded-2xl border border-white/10 text-xs shrink-0">
+                  <button
+                    onClick={() => setActiveViewTab('animation')}
+                    className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
+                      activeViewTab === 'animation'
+                        ? 'bg-cyan-400 text-midnight-900 shadow-sm'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    Calculation Steps
+                  </button>
+                  <button
+                    onClick={() => setActiveViewTab('sandbox')}
+                    className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
+                      activeViewTab === 'sandbox'
+                        ? 'bg-cyan-400 text-midnight-900 shadow-sm'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    Interactive Sandbox
+                  </button>
+                  <button
+                    onClick={() => setActiveViewTab('test')}
+                    className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
+                      activeViewTab === 'test'
+                        ? 'bg-cyan-400 text-midnight-900 shadow-sm'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    AI Test (3 Hints)
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -461,7 +479,7 @@ export default function LearnBySubjectsPage() {
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
                         isAutoPlaying
                           ? 'bg-purple-500 text-white animate-pulse'
-                          : 'bg-white/5 border border-white/10 text-gray-300 hover:text-white'
+                          : 'bg-white/5 border border-white/10 text-slate-300 hover:text-white'
                       }`}
                     >
                       <Play className="w-3 h-3 fill-current" />
@@ -470,7 +488,7 @@ export default function LearnBySubjectsPage() {
                     <button
                       onClick={() => setCurrentStepIdx(prev => Math.max(0, prev - 1))}
                       disabled={currentStepIdx === 0}
-                      className="p-1.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white disabled:opacity-30"
+                      className="p-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white disabled:opacity-30"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
@@ -480,31 +498,37 @@ export default function LearnBySubjectsPage() {
                     <button
                       onClick={() => setCurrentStepIdx(prev => Math.min(activeChapter.calculationSteps.length - 1, prev + 1))}
                       disabled={currentStepIdx === activeChapter.calculationSteps.length - 1}
-                      className="p-1.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white disabled:opacity-30"
+                      className="p-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white disabled:opacity-30"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
 
-                {/* Step Progress Tracker */}
-                <div className="grid grid-cols-4 gap-2">
+                {/* Rich Derivation Milestone Step Tracker */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                   {activeChapter.calculationSteps.map((step, idx) => (
-                    <div
+                    <button
                       key={idx}
                       onClick={() => setCurrentStepIdx(idx)}
-                      className={`h-2 rounded-full transition-all cursor-pointer ${
+                      className={`p-3 rounded-2xl border text-left transition-all ${
                         idx === currentStepIdx
-                          ? 'bg-cyan-400 shadow-[0_0_10px_rgba(0,212,255,0.6)]'
+                          ? 'bg-cyan-400/20 border-cyan-400 text-cyan-300 shadow-[0_0_15px_rgba(0,212,255,0.2)] ring-1 ring-cyan-400/40'
                           : idx < currentStepIdx
-                          ? 'bg-green-500'
-                          : 'bg-white/10'
+                          ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
+                          : 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:text-slate-200'
                       }`}
-                    />
+                    >
+                      <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-wider">
+                        <span>Step {idx + 1}</span>
+                        {idx < currentStepIdx && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />}
+                      </div>
+                      <div className="text-xs font-bold truncate mt-1 text-white">{step.title}</div>
+                    </button>
                   ))}
                 </div>
 
-                {/* Animated Calculation Display Card */}
+                {/* Animated Calculation Display Card with Sight Comfort Sizing */}
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentStepIdx}
@@ -512,45 +536,49 @@ export default function LearnBySubjectsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -15 }}
                     transition={{ duration: 0.3 }}
-                    className="bg-midnight-900/90 border border-cyan-400/30 rounded-2xl p-6 space-y-4 shadow-xl"
+                    className="bg-midnight-900/90 border border-cyan-400/30 rounded-2xl p-6 sm:p-8 space-y-5 shadow-2xl"
                   >
                     <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                      <span className="text-xs font-black text-cyan-300 bg-cyan-400/10 px-3 py-1 rounded-xl">
+                      <span className="text-xs sm:text-sm font-black text-cyan-300 bg-cyan-400/10 px-3.5 py-1.5 rounded-xl border border-cyan-400/20">
                         {activeChapter.calculationSteps[currentStepIdx].title}
                       </span>
-                      <span className="text-[11px] text-green-400 font-bold bg-green-500/10 px-2.5 py-0.5 rounded-full">
-                        Visual Step Verified
+                      <span className="text-[11px] text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+                        Step Verified
                       </span>
                     </div>
 
-                    {/* Rendered Math Formula */}
-                    <div className="p-4 rounded-xl bg-white/5 border border-white/10 text-center">
+                    {/* Rendered Math Formula with Sight Sizing */}
+                    <div className="p-5 rounded-2xl bg-midnight-950/80 border border-cyan-400/25 text-center shadow-inner">
                       <MathRenderer 
                         content={`$$ ${activeChapter.calculationSteps[currentStepIdx].formula} $$`}
+                        textSize={isSightFocusMode ? 'large' : 'comfortable'}
                       />
                     </div>
 
                     {/* Step Explanation Text */}
-                    <p className="text-sm text-gray-200 leading-relaxed font-sans">
+                    <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-sans">
                       {activeChapter.calculationSteps[currentStepIdx].explanation}
                     </p>
 
                     {/* Step Highlight Box */}
-                    <div className="flex items-center gap-2 text-xs font-semibold text-cyan-400 bg-cyan-400/5 p-3 rounded-xl border border-cyan-400/15">
+                    <div className="flex items-center gap-3 text-xs sm:text-sm font-semibold text-cyan-300 bg-cyan-400/10 p-3.5 rounded-xl border border-cyan-400/20">
                       <Lightbulb className="w-4 h-4 text-cyan-400 shrink-0" />
-                      <span>Key Mathematical Logic: <strong>{activeChapter.calculationSteps[currentStepIdx].activeHighlight}</strong></span>
+                      <span>Key Mathematical Logic: <strong className="text-white">{activeChapter.calculationSteps[currentStepIdx].activeHighlight}</strong></span>
                     </div>
                   </motion.div>
                 </AnimatePresence>
 
                 {/* Formula Cheat Sheet Overview */}
                 <div className="space-y-3 pt-2">
-                  <h4 className="text-xs font-bold text-white uppercase tracking-wider">Formula Reference Matrix</h4>
+                  <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Formula Reference Matrix</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {activeChapter.formulaOverview.map((f, i) => (
-                      <div key={i} className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                        <span className="text-[11px] font-semibold text-gray-400">{f.name}</span>
-                        <MathRenderer content={`$$ ${f.latex} $$`} />
+                      <div key={i} className="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1.5 hover:border-cyan-400/30 transition-all">
+                        <span className="text-[11px] font-semibold text-cyan-300">{f.name}</span>
+                        <MathRenderer 
+                          content={`$$ ${f.latex} $$`} 
+                          textSize={isSightFocusMode ? 'comfortable' : 'normal'}
+                        />
                       </div>
                     ))}
                   </div>
@@ -778,12 +806,12 @@ export default function LearnBySubjectsPage() {
                             const isSelected = studentAns === optIdx
                             const isActual = q.correctAnswer === optIdx
 
-                            let optStyle = 'bg-white/5 border-white/10 text-gray-300 hover:bg-white/10'
+                            let optStyle = 'bg-white/5 border-white/10 text-slate-200 hover:bg-white/10 hover:border-white/20'
                             if (testSubmitted) {
-                              if (isActual) optStyle = 'bg-green-500/20 border-green-500 text-green-300 font-bold'
+                              if (isActual) optStyle = 'bg-emerald-500/20 border-emerald-500 text-emerald-200 font-bold shadow-[0_0_12px_rgba(16,185,129,0.2)]'
                               else if (isSelected && !isActual) optStyle = 'bg-red-500/20 border-red-500 text-red-300 line-through'
                             } else if (isSelected) {
-                              optStyle = 'bg-cyan-400/20 border-cyan-400 text-white shadow-[0_0_12px_rgba(0,212,255,0.2)]'
+                              optStyle = 'bg-cyan-400/20 border-cyan-400 text-white shadow-[0_0_12px_rgba(0,212,255,0.25)] ring-1 ring-cyan-400/40'
                             }
 
                             return (
@@ -792,12 +820,16 @@ export default function LearnBySubjectsPage() {
                                 type="button"
                                 disabled={testSubmitted}
                                 onClick={() => setSelectedAnswers(prev => ({ ...prev, [q.id]: optIdx }))}
-                                className={`p-3.5 rounded-xl border text-xs text-left flex items-center gap-3 transition-all cursor-pointer ${optStyle}`}
+                                className={`p-4 rounded-2xl border text-xs sm:text-sm text-left flex items-center gap-3 transition-all cursor-pointer ${optStyle}`}
                               >
-                                <span className="w-6 h-6 rounded-lg bg-black/30 flex items-center justify-center font-bold shrink-0">
+                                <span className={`w-7 h-7 rounded-xl flex items-center justify-center font-black text-xs shrink-0 transition-colors ${
+                                  isSelected 
+                                    ? 'bg-cyan-400 text-midnight-950 shadow-sm' 
+                                    : 'bg-white/10 text-slate-300'
+                                }`}>
                                   {String.fromCharCode(65 + optIdx)}
                                 </span>
-                                <MathRenderer content={opt} className="flex-1" />
+                                <MathRenderer content={opt} className="flex-1" textSize="comfortable" />
                               </button>
                             )
                           })}

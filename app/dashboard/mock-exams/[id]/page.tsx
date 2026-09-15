@@ -60,11 +60,45 @@ export default function ExamRoomPage() {
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({})
   const [markedForReview, setMarkedForReview] = useState<Record<number, boolean>>({})
   const [visitedQuestions, setVisitedQuestions] = useState<Record<number, boolean>>({ 0: true })
+  const [sightScale, setSightScale] = useState<'normal' | 'comfortable' | 'large'>('normal')
   
   // Timer state (seconds)
   const [timeLeft, setTimeLeft] = useState(examData.durationMinutes * 60)
   const [isExamSubmitted, setIsExamSubmitted] = useState(false)
   const [showSubmitModal, setShowSubmitModal] = useState(false)
+
+  // Keyboard shortcut answering listener
+  useEffect(() => {
+    if (isExamSubmitted || showSubmitModal) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) return
+
+      const key = e.key.toUpperCase()
+      const currentOptions = examData.questions[currentIdx]?.options || []
+
+      if (['A', 'B', 'C', 'D'].includes(key)) {
+        const idx = key.charCodeAt(0) - 65
+        if (idx < currentOptions.length) {
+          handleSelectOption(idx)
+        }
+      } else if (['1', '2', '3', '4'].includes(key)) {
+        const idx = parseInt(key) - 1
+        if (idx < currentOptions.length) {
+          handleSelectOption(idx)
+        }
+      } else if (e.key === 'Enter') {
+        handleSaveAndNext()
+      } else if (e.key === 'ArrowRight') {
+        handleSaveAndNext()
+      } else if (e.key === 'ArrowLeft') {
+        handlePrevious()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isExamSubmitted, showSubmitModal, currentIdx, examData])
 
   // Countdown timer effect
   useEffect(() => {
@@ -220,9 +254,28 @@ export default function ExamRoomPage() {
           </div>
         </div>
 
-        {/* Live Timer and Submit */}
+        {/* Live Timer, Sight Zoom, and Submit */}
         {!isExamSubmitted ? (
-          <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+            {/* Sight Zoom Controls */}
+            <div className="flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/10 text-xs">
+              <span className="text-[10px] text-slate-400 font-bold px-1.5 uppercase">Sight:</span>
+              {(['normal', 'comfortable', 'large'] as const).map((scale) => (
+                <button
+                  key={scale}
+                  onClick={() => setSightScale(scale)}
+                  title={`Adjust text size (${scale})`}
+                  className={`px-2 py-0.5 rounded-lg font-bold transition-all text-xs ${
+                    sightScale === scale 
+                      ? 'bg-cyan-400 text-midnight-950 shadow-xs' 
+                      : 'text-slate-300 hover:text-white'
+                  }`}
+                >
+                  {scale === 'normal' ? 'A' : scale === 'comfortable' ? 'A+' : 'A++'}
+                </button>
+              ))}
+            </div>
+
             <div className={`flex items-center gap-2 px-4 py-2 rounded-xl font-mono font-bold text-sm border ${
               timeLeft < 300 
                 ? 'bg-red-500/10 border-red-500/30 text-red-400 animate-pulse' 
@@ -260,12 +313,15 @@ export default function ExamRoomPage() {
                   <span className="px-3 py-1 rounded-xl bg-cyan-400/20 text-cyan-300 font-extrabold text-sm border border-cyan-400/30">
                     Q {currentIdx + 1} of {examData.questions.length}
                   </span>
-                  <span className="text-xs font-semibold text-gray-400">
+                  <span className="text-xs font-semibold text-slate-300">
                     Chapter: <strong className="text-white">{currentQ.chapter}</strong>
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-xs font-semibold">
-                  <span className="text-green-400 bg-green-500/10 px-2.5 py-1 rounded-lg border border-green-500/20">
+                  <span className="text-xs text-slate-400 font-mono hidden md:inline bg-white/5 px-2 py-0.5 rounded-lg border border-white/10">
+                    Keys: A-D or 1-4 • Enter: Next
+                  </span>
+                  <span className="text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
                     +{currentQ.marks} Marks
                   </span>
                   {currentQ.negativeMarks > 0 && (
@@ -276,35 +332,40 @@ export default function ExamRoomPage() {
                 </div>
               </div>
 
-              {/* Question Text */}
+              {/* Question Text with Sight Sizing */}
               <div className="mt-6">
-                <MathRenderer content={currentQ.question} className="text-base sm:text-lg font-medium text-white leading-relaxed" />
+                <MathRenderer 
+                  content={currentQ.question} 
+                  textSize={sightScale}
+                  className="font-medium text-white leading-relaxed" 
+                />
               </div>
 
-              {/* Options List */}
+              {/* Options List with Keyboard Indicators */}
               <div className="mt-8 space-y-3">
                 {currentQ.options.map((option, optIdx) => {
                   const isSelected = selectedAnswers[currentIdx] === optIdx
                   return (
                     <motion.div
                       key={optIdx}
-                      whileHover={{ scale: 1.008 }}
+                      whileHover={{ scale: 1.006 }}
                       whileTap={{ scale: 0.995 }}
                       onClick={() => handleSelectOption(optIdx)}
                       className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-center gap-4 ${
                         isSelected
-                          ? 'bg-cyan-400/15 border-cyan-400 text-white shadow-[0_0_15px_rgba(0,212,255,0.2)]'
-                          : 'bg-white/5 border-white/10 text-gray-300 hover:bg-white/10 hover:border-white/20'
+                          ? 'bg-cyan-400/20 border-cyan-400 text-white shadow-[0_0_15px_rgba(0,212,255,0.25)] ring-1 ring-cyan-400/40'
+                          : 'bg-white/5 border-white/10 text-slate-200 hover:bg-white/10 hover:border-white/20'
                       }`}
                     >
-                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 transition-all ${
+                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-black text-xs shrink-0 transition-colors ${
                         isSelected
-                          ? 'bg-cyan-400 text-midnight-900 shadow-md'
-                          : 'bg-white/10 text-gray-400'
+                          ? 'bg-cyan-400 text-midnight-950 shadow-md'
+                          : 'bg-white/10 text-slate-300'
                       }`}>
                         {String.fromCharCode(65 + optIdx)}
                       </div>
-                      <MathRenderer content={option} className="text-sm sm:text-base font-medium leading-normal flex-1" />
+                      <MathRenderer content={option} textSize={sightScale} className="font-medium leading-normal flex-1" />
+                      <span className="text-[10px] text-slate-500 font-mono hidden sm:inline">[{String.fromCharCode(65 + optIdx)} / {optIdx + 1}]</span>
                     </motion.div>
                   )
                 })}
@@ -360,22 +421,30 @@ export default function ExamRoomPage() {
             <div className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-xl space-y-6">
               <h3 className="font-bold text-white text-sm tracking-wide">Question Navigation Palette</h3>
 
-              {/* Status Legend */}
+              {/* Status Legend with Accessible Visual Icons */}
               <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="w-3.5 h-3.5 rounded-md bg-green-500 shadow-[0_0_5px_rgba(34,197,94,0.4)]" />
+                <div className="flex items-center gap-2 text-slate-200">
+                  <span className="w-4 h-4 rounded-md bg-emerald-500/20 border border-emerald-400 text-emerald-400 flex items-center justify-center font-bold text-[10px]">
+                    ✓
+                  </span>
                   <span>Answered ({Object.keys(selectedAnswers).length})</span>
                 </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="w-3.5 h-3.5 rounded-md bg-purple-500 shadow-[0_0_5px_rgba(168,85,247,0.4)]" />
+                <div className="flex items-center gap-2 text-slate-200">
+                  <span className="w-4 h-4 rounded-md bg-purple-500/20 border border-purple-400 text-purple-300 flex items-center justify-center font-bold text-[10px]">
+                    ★
+                  </span>
                   <span>Review ({Object.keys(markedForReview).filter(k => markedForReview[Number(k)]).length})</span>
                 </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="w-3.5 h-3.5 rounded-md bg-orange-500 shadow-[0_0_5px_rgba(249,115,22,0.4)]" />
-                  <span>Not Answered ({examData.questions.length - Object.keys(selectedAnswers).length})</span>
+                <div className="flex items-center gap-2 text-slate-200">
+                  <span className="w-4 h-4 rounded-md bg-amber-500/20 border border-amber-400 text-amber-400 flex items-center justify-center font-bold text-[10px]">
+                    !
+                  </span>
+                  <span>Skipped ({examData.questions.length - Object.keys(selectedAnswers).length})</span>
                 </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="w-3.5 h-3.5 rounded-md bg-white/10 border border-white/20" />
+                <div className="flex items-center gap-2 text-slate-400">
+                  <span className="w-4 h-4 rounded-md bg-white/5 border border-white/20 text-slate-400 flex items-center justify-center font-bold text-[10px]">
+                    ○
+                  </span>
                   <span>Not Visited</span>
                 </div>
               </div>

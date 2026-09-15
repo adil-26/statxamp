@@ -72,6 +72,52 @@ html, body {
   touch-action: manipulation;
 }
 
+/* Sight Ergonomics & Reading Comfort ("According to the Sight") */
+.sight-normal {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.sight-comfortable {
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.sight-comfortable .katex {
+  font-size: 1.25em !important;
+}
+
+.sight-large {
+  font-size: 1.25rem;
+  line-height: 1.85;
+}
+
+.sight-large .katex {
+  font-size: 1.4em !important;
+}
+
+/* High-Legibility KaTeX Math Formula Containers */
+.katex-display {
+  margin: 0.75rem 0 !important;
+  padding: 0.5rem 0.75rem;
+  background: rgba(0, 212, 255, 0.04);
+  border-radius: 0.75rem;
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.katex {
+  color: #a5f3fc !important;
+  text-rendering: geometricPrecision;
+}
+
+/* Sight Focus Ring for high accessibility */
+.focus-sight:focus-visible {
+  outline: 2px solid #00d4ff;
+  outline-offset: 2px;
+}
+
 /* Hide scrollbar for clean horizontal mobile swipe tabs */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -85,4 +131,5 @@ html, body {
 .pb-safe {
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
+
 

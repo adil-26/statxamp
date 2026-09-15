@@ -71,9 +71,47 @@ export default function DashboardHome() {
         />
       </div>
 
+      {/* Resume Learning Hero Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="p-6 rounded-3xl bg-gradient-to-r from-cyan-500/15 via-midnight-800 to-blue-600/15 border border-cyan-400/30 shadow-[0_0_25px_rgba(0,212,255,0.08)] relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
+      >
+        <div className="space-y-2 relative z-10">
+          <div className="flex items-center gap-2">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider bg-cyan-400 text-midnight-950 uppercase">
+              Current Syllabus Focus
+            </span>
+            <span className="text-xs text-cyan-300 font-semibold">
+              CBSE Class 12 • Mathematics
+            </span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-black text-white">
+            Runge-Kutta 4th Order & Calculus Proofs
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-300 max-w-xl leading-relaxed">
+            Step 3 of 4 in progress: $y_{'{n+1}'} = y_n + \frac{'{1}'}{'{6}'}(k_1 + 2k_2 + 2k_3 + k_4)$. Interactive step animation and derivation sandbox ready.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3 relative z-10 shrink-0">
+          <Link href="/dashboard/learn">
+            <button className="px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-midnight-950 font-black text-xs rounded-xl shadow-[0_0_15px_rgba(0,212,255,0.3)] flex items-center gap-2 transition-all cursor-pointer">
+              <Play className="w-4 h-4 fill-midnight-950" />
+              Resume Proof Step-by-Step
+            </button>
+          </Link>
+          <Link href="/dashboard/mock-exams">
+            <button className="px-4 py-3 bg-white/5 hover:bg-white/10 text-white font-bold text-xs rounded-xl border border-white/10 transition-all">
+              Test Mastery
+            </button>
+          </Link>
+        </div>
+      </motion.div>
+
       {/* Quick Action Navigation Grid */}
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-white tracking-tight">Quick Actions</h2>
+        <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">Essential Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {quickActions.map((action, index) => (
             <Link key={action.name} href={action.href}>
@@ -81,14 +119,14 @@ export default function DashboardHome() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.05 }}
-                className={`border rounded-2xl p-4 flex gap-4 items-center cursor-pointer transition-all hover:scale-102 ${action.color}`}
+                className={`border rounded-2xl p-4 flex gap-4 items-center cursor-pointer transition-all hover:scale-[1.02] shadow-xs ${action.color}`}
               >
-                <div className="p-3 rounded-xl bg-white/5 border border-white/10">
+                <div className="p-3 rounded-xl bg-white/10 border border-white/15 shrink-0">
                   <action.icon className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-white">{action.name}</h4>
-                  <p className="text-xs text-gray-400 mt-0.5">{action.desc}</p>
+                  <h4 className="font-bold text-sm text-white tracking-tight">{action.name}</h4>
+                  <p className="text-xs text-slate-300 mt-0.5 leading-snug">{action.desc}</p>
                 </div>
               </motion.div>
             </Link>

@@ -24,24 +24,49 @@ import {
   User,
   Settings
 } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-const mobileDrawerNav = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Start Learning (Proofs)', href: '/dashboard/learn', icon: BookOpen, badge: 'New' },
-  { name: 'AI Study Assistant', href: '/dashboard/ai-assistant', icon: Brain },
-  { name: 'AI Mock Generator', href: '/ai-generator', icon: Sparkles, badge: 'AI' },
-  { name: 'Practice Topic Tests', href: '/dashboard/practice-tests', icon: FileCheck2 },
-  { name: 'Previous 10-Yr Papers', href: '/dashboard/previous-year', icon: History },
-  { name: 'Full Mock Exams', href: '/dashboard/mock-exams', icon: Award },
-  { name: 'Revision Notes', href: '/dashboard/notes', icon: ScrollText },
-  { name: 'Ask Doubts (AI Tutor)', href: '/dashboard/doubts', icon: HelpCircle },
-  { name: 'National Leaderboard', href: '/dashboard/leaderboard', icon: Trophy },
-  { name: 'Performance Analytics', href: '/dashboard/analytics', icon: BarChart3 },
-  { name: 'My Profile', href: '/dashboard/profile', icon: User },
-  { name: 'Settings & Board', href: '/dashboard/settings', icon: Settings },
+interface DrawerCategory {
+  title: string
+  items: {
+    name: string
+    href: string
+    icon: any
+    badge?: string
+  }[]
+}
+
+const mobileDrawerSections: DrawerCategory[] = [
+  {
+    title: 'Study Hub',
+    items: [
+      { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+      { name: 'Start Learning (Proofs)', href: '/dashboard/learn', icon: BookOpen, badge: 'Proofs' },
+      { name: 'Practice Topic Tests', href: '/dashboard/practice-tests', icon: FileCheck2 },
+      { name: 'Previous 10-Yr Papers', href: '/dashboard/previous-year', icon: History },
+      { name: 'Full Mock Exams', href: '/dashboard/mock-exams', icon: Award },
+      { name: 'Revision Notes', href: '/dashboard/notes', icon: ScrollText },
+    ]
+  },
+  {
+    title: 'AI Superpowers',
+    items: [
+      { name: 'AI Study Assistant', href: '/dashboard/ai-assistant', icon: Brain },
+      { name: 'Ask Doubts (AI Tutor)', href: '/dashboard/doubts', icon: HelpCircle, badge: 'Live' },
+      { name: 'AI Mock Generator', href: '/ai-generator', icon: Sparkles, badge: 'AI' },
+    ]
+  },
+  {
+    title: 'Performance & Growth',
+    items: [
+      { name: 'National Leaderboard', href: '/dashboard/leaderboard', icon: Trophy },
+      { name: 'Performance Analytics', href: '/dashboard/analytics', icon: BarChart3 },
+      { name: 'My Profile', href: '/dashboard/profile', icon: User },
+      { name: 'Settings & Board', href: '/dashboard/settings', icon: Settings },
+    ]
+  }
 ]
 
 export default function DashboardLayout({
@@ -50,10 +75,32 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [sightComfort, setSightComfort] = useState(false)
   const pathname = usePathname()
 
+  // Load and persist sight comfort preference
+  useEffect(() => {
+    const saved = localStorage.getItem('statxam_sight_comfort')
+    if (saved === 'true') {
+      setSightComfort(true)
+      document.documentElement.classList.add('sight-comfortable')
+    }
+  }, [])
+
+  const toggleSightComfort = () => {
+    const next = !sightComfort
+    setSightComfort(next)
+    if (next) {
+      document.documentElement.classList.add('sight-comfortable')
+      localStorage.setItem('statxam_sight_comfort', 'true')
+    } else {
+      document.documentElement.classList.remove('sight-comfortable')
+      localStorage.setItem('statxam_sight_comfort', 'false')
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-midnight-950 text-white flex flex-col lg:flex-row antialiased select-none-touch">
+    <div className={`min-h-screen bg-midnight-950 text-white flex flex-col lg:flex-row antialiased select-none-touch ${sightComfort ? 'sight-comfortable' : ''}`}>
       {/* Sidebar for desktop screens */}
       <div className="hidden lg:block shrink-0">
         <Sidebar />
@@ -70,7 +117,7 @@ export default function DashboardLayout({
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/70 backdrop-blur-md"
+              className="fixed inset-0 bg-black/75 backdrop-blur-md"
             />
 
             {/* Drawer Sheet */}
@@ -99,7 +146,7 @@ export default function DashboardLayout({
 
                   <button 
                     onClick={() => setMobileMenuOpen(false)}
-                    className="p-1.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white"
+                    className="p-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -116,54 +163,71 @@ export default function DashboardLayout({
                       <span className="text-[10px] font-bold text-cyan-300 bg-cyan-400/20 px-2 py-0.2 rounded-full">
                         Rank #124
                       </span>
-                      <span className="text-[10px] text-gray-400">Class 12</span>
+                      <span className="text-[10px] text-slate-400">Class 12 • CBSE</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Navigation Links Group */}
-                <nav className="space-y-1">
-                  {mobileDrawerNav.map(item => {
-                    const isActive = pathname === item.href
-                    const Icon = item.icon
+                {/* Navigation Links Grouped by Category */}
+                <nav className="space-y-4">
+                  {mobileDrawerSections.map(sec => (
+                    <div key={sec.title} className="space-y-1">
+                      <div className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-2">
+                        {sec.title}
+                      </div>
+                      <div className="space-y-0.5">
+                        {sec.items.map(item => {
+                          const isActive = pathname === item.href
+                          const Icon = item.icon
 
-                    return (
-                      <Link 
-                        key={item.name} 
-                        href={item.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        <div className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
-                          isActive 
-                            ? 'bg-cyan-400/15 text-cyan-300 border border-cyan-400/30' 
-                            : 'text-gray-300 hover:bg-white/5 hover:text-white'
-                        }`}>
-                          <div className="flex items-center gap-3">
-                            <Icon className={`w-4 h-4 ${isActive ? 'text-cyan-400' : 'text-gray-400'}`} />
-                            <span>{item.name}</span>
-                          </div>
-                          {item.badge && (
-                            <span className="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold bg-cyan-400 text-midnight-950">
-                              {item.badge}
-                            </span>
-                          )}
-                        </div>
-                      </Link>
-                    )
-                  })}
+                          return (
+                            <Link 
+                              key={item.name} 
+                              href={item.href}
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              <div className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                                isActive 
+                                  ? 'bg-cyan-400/15 text-cyan-300 border border-cyan-400/30' 
+                                  : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                              }`}>
+                                <div className="flex items-center gap-2.5">
+                                  <Icon className={`w-4 h-4 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`} />
+                                  <span>{item.name}</span>
+                                </div>
+                                {item.badge && (
+                                  <span className="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold bg-cyan-400 text-midnight-950">
+                                    {item.badge}
+                                  </span>
+                                )}
+                              </div>
+                            </Link>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  ))}
                 </nav>
               </div>
 
               {/* Bottom Quick Action */}
-              <div className="pt-4 border-t border-white/10 mt-6">
-                <Link href="/ai-generator" onClick={() => setMobileMenuOpen(false)}>
-                  <div className="p-3 rounded-2xl bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 flex items-center justify-between text-xs font-bold text-cyan-300">
-                    <span className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 animate-spin text-cyan-400" /> Open AI Engine
-                    </span>
-                    <ChevronRight className="w-4 h-4" />
-                  </div>
-                </Link>
+              <div className="pt-4 border-t border-white/10 mt-6 space-y-2">
+                <button
+                  onClick={toggleSightComfort}
+                  className={`w-full p-2.5 rounded-xl border flex items-center justify-between text-xs font-bold transition-all ${
+                    sightComfort 
+                      ? 'bg-cyan-400/20 border-cyan-400 text-cyan-300' 
+                      : 'bg-white/5 border-white/10 text-slate-300 hover:bg-white/10'
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-cyan-400" />
+                    Sight Comfort Mode
+                  </span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/10">
+                    {sightComfort ? 'ON' : 'OFF'}
+                  </span>
+                </button>
               </div>
             </motion.div>
           </div>
@@ -206,9 +270,26 @@ export default function DashboardLayout({
           </div>
 
           {/* Right Header Badges & Actions */}
-          <div className="flex items-center gap-2.5 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Sight Comfort Quick Toggle */}
+            <button
+              onClick={toggleSightComfort}
+              title="Toggle Sight Comfort (Enlarges formulas and optimizes reading contrast)"
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-bold transition-all ${
+                sightComfort
+                  ? 'bg-cyan-400/20 border-cyan-400 text-cyan-300 shadow-[0_0_10px_rgba(0,212,255,0.2)]'
+                  : 'bg-white/5 border-white/10 text-slate-300 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              <Sparkles className={`w-3.5 h-3.5 ${sightComfort ? 'text-cyan-400' : 'text-slate-400'}`} />
+              <span className="hidden sm:inline">Sight Comfort</span>
+              <span className="text-[10px] px-1 py-0.2 rounded bg-white/10 text-cyan-300">
+                {sightComfort ? 'Aa+' : 'Aa'}
+              </span>
+            </button>
+
             {/* Rank / Streak Badge */}
-            <div className="flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1 rounded-xl bg-gradient-to-r from-orange-500/10 to-yellow-500/10 border border-orange-500/20 text-[11px] font-bold text-orange-300">
+            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-orange-500/25 text-[11px] font-bold text-orange-300">
               <Flame className="w-3.5 h-3.5 text-orange-400 fill-orange-400" />
               <span>Rank #124</span>
             </div>
@@ -218,27 +299,27 @@ export default function DashboardLayout({
               <motion.div 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 px-3.5 py-1.5 bg-cyan-400/10 border border-cyan-400/30 rounded-xl cursor-pointer hover:bg-cyan-400/20 transition-all font-semibold text-xs text-cyan-400"
+                className="flex items-center gap-2 px-3.5 py-1.5 bg-cyan-400/10 border border-cyan-400/30 rounded-xl cursor-pointer hover:bg-cyan-400/20 transition-all font-semibold text-xs text-cyan-300"
               >
-                <Sparkles className="w-3.5 h-3.5" />
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
                 AI Generator
               </motion.div>
             </Link>
 
             {/* Notification Bell */}
-            <button className="relative w-9 h-9 sm:w-10 sm:h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gray-300 active:scale-95 transition-transform">
+            <button className="relative w-9 h-9 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-slate-300 hover:text-white active:scale-95 transition-transform">
               <Bell className="w-4 h-4" />
               <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-cyan-400 ring-4 ring-midnight-950" />
             </button>
 
             {/* Profile Avatar */}
             <Link href="/dashboard/profile" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-midnight-950 font-extrabold text-xs sm:text-sm border border-cyan-300/40 shadow-[0_0_10px_rgba(0,212,255,0.3)]">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-midnight-950 font-extrabold text-xs border border-cyan-300/40 shadow-[0_0_10px_rgba(0,212,255,0.3)]">
                 AI
               </div>
-              <div className="hidden md:block">
+              <div className="hidden md:block text-left">
                 <div className="text-xs font-bold text-white leading-tight">Atik Imteyaz</div>
-                <div className="text-[10px] text-gray-400 font-medium">CBSE • Class 12</div>
+                <div className="text-[10px] text-slate-400 font-medium">CBSE • Class 12</div>
               </div>
             </Link>
           </div>
