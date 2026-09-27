@@ -22,66 +22,66 @@ export default function LeaderboardPage() {
     <div className="space-y-8">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-extrabold text-white tracking-tight">
-          National <span className="gradient-text">Leaderboard</span>
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+          National <span className="text-blue-600">Leaderboard</span>
         </h1>
-        <p className="text-gray-400 text-sm mt-1">Compete with student peers nationwide and earn weekly rewards.</p>
+        <p className="text-slate-500 text-sm mt-1">Compete with student peers nationwide and earn weekly rewards.</p>
       </div>
 
       {/* Top 3 Podiums */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end pt-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end pt-4">
         {topStudents.map((stud) => {
           const isFirst = stud.rank === 1
           return (
             <motion.div
               key={stud.rank}
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: stud.rank * 0.1 }}
-              className={`bg-white/5 border rounded-3xl p-6 text-center relative flex flex-col justify-between overflow-hidden bento-card ${
+              transition={{ duration: 0.5, delay: stud.rank * 0.1 }}
+              className={`border rounded-2xl p-6 text-center relative flex flex-col justify-between overflow-hidden shadow-card ${
                 isFirst 
-                  ? 'border-cyan-400/50 h-[380px] order-first md:order-none bg-cyan-400/5 glow-border shadow-[0_0_30px_rgba(0,212,255,0.15)]' 
-                  : 'border-white/10 h-[320px]'
+                  ? 'border-amber-300 bg-amber-50/30 h-[380px] order-first md:order-none ring-1 ring-amber-300/50' 
+                  : 'bg-white border-slate-200/90 h-[320px]'
               }`}
             >
               {isFirst && (
-                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-cyan-400 to-blue-500 shadow-[0_0_20px_#00d4ff]" />
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-400 to-amber-500" />
               )}
 
               <div className="space-y-4">
                 <div className="relative w-20 h-20 mx-auto flex items-center justify-center">
                   <div className={`w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-lg border-2 ${
                     stud.rank === 1 
-                      ? 'bg-gradient-to-br from-yellow-400 to-yellow-600 border-yellow-400 text-midnight-900' 
+                      ? 'bg-amber-100 border-amber-300 text-amber-900' 
                       : stud.rank === 2 
-                      ? 'bg-gradient-to-br from-gray-300 to-gray-500 border-gray-300 text-midnight-900' 
-                      : 'bg-gradient-to-br from-amber-600 to-amber-800 border-amber-600 text-white'
+                      ? 'bg-slate-100 border-slate-300 text-slate-800' 
+                      : 'bg-orange-100 border-orange-300 text-orange-900'
                   }`}>
                     {stud.avatar}
                   </div>
                   {/* Medal badge */}
-                  <div className={`absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center border-2 ${
+                  <div className={`absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center border-2 shadow-sm ${
                     stud.rank === 1 
-                      ? 'bg-yellow-400 border-yellow-500 text-midnight-900' 
+                      ? 'bg-amber-400 border-amber-500 text-amber-950' 
                       : stud.rank === 2 
-                      ? 'bg-gray-300 border-gray-400 text-midnight-900' 
-                      : 'bg-amber-700 border-amber-800 text-white'
+                      ? 'bg-slate-200 border-slate-300 text-slate-800' 
+                      : 'bg-orange-400 border-orange-500 text-white'
                   }`}>
                     <Trophy className="w-3.5 h-3.5" />
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="font-extrabold text-lg text-white">{stud.name}</h3>
-                  <span className="text-xs text-gray-400 font-semibold">{stud.class}</span>
+                  <h3 className="font-bold text-lg text-slate-900">{stud.name}</h3>
+                  <span className="text-xs text-slate-500 font-medium">{stud.class}</span>
                 </div>
               </div>
 
               <div>
-                <div className="text-2xl font-extrabold text-cyan-400 mt-4">
-                  {stud.points.toLocaleString()} <span className="text-xs text-gray-400">pts</span>
+                <div className="text-2xl font-extrabold text-blue-600 mt-4">
+                  {stud.points.toLocaleString()} <span className="text-xs text-slate-400 font-semibold">pts</span>
                 </div>
-                <div className="text-xs text-gray-500 mt-1 font-semibold">Rank #{stud.rank}</div>
+                <div className="text-xs text-slate-500 mt-1 font-semibold">Rank #{stud.rank}</div>
               </div>
             </motion.div>
           )
@@ -90,67 +90,67 @@ export default function LeaderboardPage() {
 
       {/* Current User Rank highlight Card */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
+        initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="p-6 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-400/30 rounded-3xl flex flex-col sm:flex-row justify-between items-center gap-4 glow-border"
+        className="p-6 bg-blue-50/70 border border-blue-200/90 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4 shadow-card"
       >
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center">
-            <Star className="w-6 h-6 text-cyan-400 fill-cyan-400" />
+          <div className="w-12 h-12 rounded-xl bg-blue-100 border border-blue-200 flex items-center justify-center shrink-0">
+            <Star className="w-6 h-6 text-blue-600 fill-blue-600" />
           </div>
           <div>
-            <h4 className="font-extrabold text-white text-lg">Your Standings</h4>
-            <p className="text-xs text-gray-400">You are in the top 5% of students in your region.</p>
+            <h4 className="font-bold text-slate-900 text-lg">Your Standings</h4>
+            <p className="text-xs text-slate-600">You are in the top 5% of students in your region.</p>
           </div>
         </div>
 
         <div className="flex gap-8">
           <div className="text-center">
-            <span className="text-xs text-gray-400 block font-semibold">Current Rank</span>
-            <span className="text-2xl font-extrabold text-cyan-400 mt-1 block">#124</span>
+            <span className="text-xs text-slate-500 block font-medium">Current Rank</span>
+            <span className="text-2xl font-extrabold text-blue-700 mt-1 block">#124</span>
           </div>
           <div className="text-center">
-            <span className="text-xs text-gray-400 block font-semibold">Weekly Points</span>
-            <span className="text-2xl font-extrabold text-cyan-400 mt-1 block">4,820</span>
+            <span className="text-xs text-slate-500 block font-medium">Weekly Points</span>
+            <span className="text-2xl font-extrabold text-blue-700 mt-1 block">4,820</span>
           </div>
           <div className="text-center">
-            <span className="text-xs text-gray-400 block font-semibold">Monthly Rewards</span>
-            <span className="text-2xl font-extrabold text-cyan-400 mt-1 block">2 Free Mock Tests</span>
+            <span className="text-xs text-slate-500 block font-medium">Monthly Rewards</span>
+            <span className="text-2xl font-extrabold text-blue-700 mt-1 block">2 Free Mock Tests</span>
           </div>
         </div>
       </motion.div>
 
       {/* Weekly Points table list */}
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-6 overflow-hidden">
-        <h3 className="text-lg font-bold text-white mb-4">National Rankings</h3>
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-6 overflow-hidden shadow-card">
+        <h3 className="text-lg font-bold text-slate-900 mb-4">National Rankings</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="border-b border-white/10 text-gray-400 font-semibold">
+              <tr className="border-b border-slate-100 text-slate-500 font-semibold text-xs">
                 <th className="pb-3 w-16">Rank</th>
                 <th className="pb-3">Student</th>
                 <th className="pb-3 text-right">Points</th>
                 <th className="pb-3 text-right">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-slate-100">
               {rankings.map((rank) => (
-                <tr key={rank.rank} className="hover:bg-white/5 transition-colors">
-                  <td className="py-4 font-bold text-gray-400">#{rank.rank}</td>
+                <tr key={rank.rank} className="hover:bg-slate-50/70 transition-colors">
+                  <td className="py-4 font-bold text-slate-400">#{rank.rank}</td>
                   <td className="py-4 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-xs font-bold text-cyan-400">
+                    <div className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center text-xs font-bold text-blue-700 shrink-0">
                       {rank.avatar}
                     </div>
-                    <span className="font-bold text-white">{rank.name}</span>
+                    <span className="font-semibold text-slate-900">{rank.name}</span>
                   </td>
-                  <td className="py-4 text-right font-bold text-white">{rank.points.toLocaleString()} pts</td>
+                  <td className="py-4 text-right font-bold text-slate-800">{rank.points.toLocaleString()} pts</td>
                   <td className="py-4 text-right">
                     <span className={`inline-flex items-center gap-1 text-xs font-bold ${
                       rank.changeType === 'up' 
-                        ? 'text-green-400' 
+                        ? 'text-emerald-600' 
                         : rank.changeType === 'down' 
-                        ? 'text-red-400' 
-                        : 'text-gray-400'
+                        ? 'text-rose-600' 
+                        : 'text-slate-400'
                     }`}>
                       {rank.changeType === 'up' && <ChevronUp className="w-4 h-4" />}
                       {rank.change}

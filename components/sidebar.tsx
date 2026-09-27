@@ -63,22 +63,29 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="w-64 bg-midnight-900/90 backdrop-blur-xl border-r border-cyan-400/20 h-screen sticky top-0 flex flex-col justify-between p-4 overflow-y-auto z-30">
+    <aside className="w-64 bg-white border-r border-slate-200/90 h-screen sticky top-0 flex flex-col justify-between p-4 overflow-y-auto z-30 shadow-xs">
       <div className="space-y-6">
-        <Link href="/" className="flex items-center gap-3 px-2 py-1 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-400/20 to-cyan-600/20 
-                          flex items-center justify-center glow-border group-hover:scale-105 transition-transform">
-            <span className="text-lg font-bold gradient-text">S</span>
+        {/* Brand Header */}
+        <Link href="/" className="flex items-center gap-3 px-2 py-1.5 group">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 
+                          flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform text-white">
+            <span className="text-base font-black">S</span>
           </div>
-          <span className="text-lg font-bold text-white tracking-tight">
-            Stat<span className="text-cyan-400">Xam</span>
-          </span>
+          <div>
+            <span className="text-lg font-bold text-slate-900 tracking-tight block leading-tight">
+              Stat<span className="text-blue-600">Xam</span>
+            </span>
+            <span className="text-[10px] font-medium text-slate-400 tracking-wide uppercase">
+              Exam Platform
+            </span>
+          </div>
         </Link>
 
+        {/* Navigation Sections */}
         <div className="space-y-5">
           {navSections.map((section) => (
             <div key={section.title} className="space-y-1">
-              <h4 className="px-3 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+              <h4 className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                 {section.title}
               </h4>
               <div className="space-y-0.5 pt-1">
@@ -88,20 +95,22 @@ export function Sidebar() {
 
                   return (
                     <Link key={item.name} href={item.href}>
-                      <div className={`relative flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all group cursor-pointer ${
+                      <div className={`relative flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all group cursor-pointer ${
                         isActive 
-                          ? 'text-cyan-300 bg-cyan-400/15 border border-cyan-400/30 shadow-[0_0_12px_rgba(0,212,255,0.15)]' 
-                          : 'text-slate-300 hover:text-white hover:bg-white/5'
+                          ? 'text-blue-700 bg-blue-50/80 border border-blue-200/70 font-semibold shadow-xs' 
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 border border-transparent'
                       }`}>
                         <div className="flex items-center gap-2.5">
-                          <Icon className={`w-4 h-4 transition-transform group-hover:scale-110 ${isActive ? 'text-cyan-400 stroke-[2.5]' : 'text-slate-400 group-hover:text-cyan-300'}`} />
+                          <Icon className={`w-4 h-4 transition-transform group-hover:scale-105 ${
+                            isActive ? 'text-blue-600 stroke-[2.5]' : 'text-slate-400 group-hover:text-slate-600 stroke-2'
+                          }`} />
                           <span>{item.name}</span>
                         </div>
                         {item.badge && (
-                          <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-black ${
+                          <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold ${
                             isActive 
-                              ? 'bg-cyan-400 text-midnight-950' 
-                              : 'bg-white/10 text-cyan-300 border border-cyan-400/20'
+                              ? 'bg-blue-600 text-white' 
+                              : 'bg-slate-100 text-slate-600 border border-slate-200'
                           }`}>
                             {item.badge}
                           </span>
@@ -116,16 +125,22 @@ export function Sidebar() {
         </div>
       </div>
 
-      <div className="pt-4 border-t border-cyan-400/15">
+      {/* Bottom AI Generator Card */}
+      <div className="pt-4 border-t border-slate-200/80">
         <Link href="/ai-generator">
-          <div className="flex items-center justify-between p-3 bg-gradient-to-r from-cyan-500/15 to-blue-500/15 border border-cyan-400/30 rounded-2xl hover:glow-border transition-all group cursor-pointer text-xs font-bold text-cyan-300 shadow-sm">
-            <span className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-cyan-400 group-hover:rotate-12 transition-transform" />
-              AI Mock Generator
-            </span>
-            <span className="text-[10px] bg-cyan-400/20 px-1.5 py-0.5 rounded-md border border-cyan-400/30 font-extrabold text-cyan-300">
-              Pro
-            </span>
+          <div className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/60 rounded-xl hover:border-blue-300 hover:shadow-xs transition-all group cursor-pointer text-xs font-semibold text-blue-900">
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-blue-600 group-hover:rotate-12 transition-transform" />
+                AI Exam Generator
+              </span>
+              <span className="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded-full font-bold">
+                New
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-500 font-normal mt-1 leading-snug">
+              Generate custom chapter tests & marking schemes
+            </p>
           </div>
         </Link>
       </div>

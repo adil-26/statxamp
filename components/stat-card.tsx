@@ -28,39 +28,36 @@ export function StatCard({ title, value, prefix = '', suffix = '', trend, trendT
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -5 }}
-      className="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden group cursor-pointer bento-card"
+      whileHover={{ y: -3 }}
+      className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-card hover:border-slate-300 transition-all duration-200 group cursor-pointer"
     >
-      {/* Background glow orb */}
-      <div className="absolute -top-12 -right-12 w-24 h-24 rounded-full bg-cyan-400/5 blur-2xl group-hover:bg-cyan-400/10 transition-colors duration-500" />
-      
       <div className="flex justify-between items-start">
         <div>
-          <span className="text-sm font-medium text-gray-400">{title}</span>
-          <h4 className="text-3xl font-extrabold text-white mt-2 tracking-tight">
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{title}</span>
+          <h4 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1.5 tracking-tight">
             {prefix}
             {count.toLocaleString()}
             {suffix}
           </h4>
         </div>
-        <div className="w-12 h-12 rounded-xl bg-cyan-400/10 flex items-center justify-center border border-cyan-400/20 group-hover:border-cyan-400/50 transition-all duration-300">
-          <Icon className="w-6 h-6 text-cyan-400" />
+        <div className="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center border border-blue-100 text-blue-600 group-hover:bg-blue-100 group-hover:text-blue-700 transition-all">
+          <Icon className="w-5 h-5" />
         </div>
       </div>
       
       <div className="mt-4 flex items-center gap-2">
-        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
+        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${
           trendType === 'up' 
-            ? 'bg-green-500/10 text-green-400' 
+            ? 'bg-emerald-50 text-emerald-700 border-emerald-200/80' 
             : trendType === 'down' 
-            ? 'bg-red-500/10 text-red-400' 
-            : 'bg-white/10 text-gray-400'
+            ? 'bg-rose-50 text-rose-700 border-rose-200/80' 
+            : 'bg-slate-100 text-slate-600 border-slate-200'
         }`}>
           {trend}
         </span>
-        <span className="text-xs text-gray-500 font-medium">vs last week</span>
+        <span className="text-[11px] text-slate-400 font-medium">vs last week</span>
       </div>
     </motion.div>
   )

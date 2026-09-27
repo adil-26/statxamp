@@ -3,122 +3,170 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 10, 10, 26;
-  --background-end-rgb: 10, 10, 26;
+@layer base {
+  :root {
+    --bg-main: #FBF8F3;
+    --bg-surface: #FFFFFF;
+    --bg-surface-alt: #FFFDF9;
+    --border-color: #ECE4D6;
+    --text-primary: #1F1B18;
+    --text-secondary: #6B625B;
+    --text-muted: #9E948B;
+
+    --foreground-rgb: 31, 27, 24;
+    --background-start-rgb: 251, 248, 243;
+    --background-end-rgb: 251, 248, 243;
+  }
+
+  [data-theme="dark"] {
+    --bg-main: #12100E;
+    --bg-surface: #1E1A17;
+    --bg-surface-alt: #26211D;
+    --border-color: #38302A;
+    --text-primary: #F7F4EF;
+    --text-secondary: #BDB3A7;
+    --text-muted: #80756A;
+
+    --foreground-rgb: 247, 244, 239;
+    --background-start-rgb: 18, 16, 14;
+    --background-end-rgb: 18, 16, 14;
+  }
+
+  body {
+    background-color: var(--bg-main);
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(255, 94, 58, 0.08) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(124, 92, 252, 0.09) 0px, transparent 50%),
+      radial-gradient(at 50% 50%, rgba(236, 72, 153, 0.05) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(0, 196, 159, 0.06) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.07) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+  }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-start-rgb));
+@keyframes pulseGlow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.05); }
 }
 
-/* Custom utility classes */
-.gradient-text {
-  background: linear-gradient(135deg, #00d4ff 0%, #00f0ff 50%, #00a8ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+@keyframes floatAnim {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
 
+@keyframes scanLine {
+  0% { top: 0%; opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { top: 100%; opacity: 0.2; }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: floatAnim 3.5s ease-in-out infinite;
+}
+
+.radar-scan-active {
+  position: relative;
+}
+
+.radar-scan-active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #7C5CFC, #FF5E3A, transparent);
+  box-shadow: 0 0 15px #7C5CFC;
+  animation: scanLine 2s linear infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #ECE4D6;
+  border-radius: 9999px;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #38302A;
+}
+
+/* Clean, Soft Glass & Card Surfaces */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
 }
 
 .glass-strong {
-  background: rgba(10, 10, 26, 0.8);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(0, 212, 255, 0.2);
-}
-
-.glow-border {
-  box-shadow: 0 0 15px rgba(0, 212, 255, 0.3), inset 0 0 15px rgba(0, 212, 255, 0.1);
-}
-
-.neon-button {
-  transition: all 0.3s ease;
-}
-
-.neon-button:hover {
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.4), 0 0 40px rgba(0, 212, 255, 0.2);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
 }
 
 .bento-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 1rem;
-  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .bento-card:hover {
-  border-color: rgba(0, 212, 255, 0.3);
-  box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
 }
 
-.cyber-grid {
-  background-image: 
-    linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
-}
-
-/* Mobile App Native Feel & Touch UX */
-html, body {
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-
-/* Sight Ergonomics & Reading Comfort ("According to the Sight") */
-.sight-normal {
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-.sight-comfortable {
-  font-size: 1.125rem;
-  line-height: 1.75;
-}
-
-.sight-comfortable .katex {
-  font-size: 1.25em !important;
-}
-
-.sight-large {
-  font-size: 1.25rem;
-  line-height: 1.85;
-}
-
-.sight-large .katex {
-  font-size: 1.4em !important;
-}
-
-/* High-Legibility KaTeX Math Formula Containers */
+/* High-Legibility Academic Textbook KaTeX Math Styling */
 .katex-display {
-  margin: 0.75rem 0 !important;
-  padding: 0.5rem 0.75rem;
-  background: rgba(0, 212, 255, 0.04);
+  margin: 1rem 0 !important;
+  padding: 0.85rem 1.25rem;
+  background: #f8fafc;
   border-radius: 0.75rem;
-  border: 1px solid rgba(0, 212, 255, 0.15);
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
   overflow-x: auto;
   scrollbar-width: thin;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="dark"] .katex-display {
+  background: #1e1a17;
+  border-color: #38302a;
+  color: #f7f4ef;
 }
 
 .katex {
-  color: #a5f3fc !important;
+  color: inherit !important;
+  font-weight: 500;
   text-rendering: geometricPrecision;
 }
 
-/* Sight Focus Ring for high accessibility */
-.focus-sight:focus-visible {
-  outline: 2px solid #00d4ff;
-  outline-offset: 2px;
-}
-
-/* Hide scrollbar for clean horizontal mobile swipe tabs */
+/* Clean scrollbar suppression */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -127,9 +175,7 @@ html, body {
   scrollbar-width: none;
 }
 
-/* Safe area bottom padding for notchless and dynamic island devices */
+/* Safe area padding */
 .pb-safe {
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
-
-

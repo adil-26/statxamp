@@ -52,15 +52,15 @@ export default function DoubtsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-extrabold text-white tracking-tight">
-          Syllabus <span className="gradient-text">Doubts</span>
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+          Syllabus <span className="text-blue-600">Doubts</span>
         </h1>
-        <p className="text-gray-400 text-sm mt-1">Submit specific study doubts and receive step-by-step AI solutions instantly.</p>
+        <p className="text-slate-500 text-sm mt-1">Submit specific study doubts and receive step-by-step AI solutions instantly.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-5 bg-white/5 border border-white/10 p-6 rounded-3xl glow-hover h-fit space-y-6">
-          <h3 className="font-bold text-white text-lg">Submit Doubt</h3>
+        <div className="lg:col-span-5 bg-white border border-slate-200/90 p-6 rounded-2xl shadow-card h-fit space-y-6">
+          <h3 className="font-bold text-slate-900 text-lg">Submit Doubt</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <VirtualScientificKeyboard
               isOpen={isKeyboardOpen}
@@ -72,12 +72,12 @@ export default function DoubtsPage() {
               value={doubtText}
               onChange={(e) => setDoubtText(e.target.value)}
               placeholder="e.g. Solve dy/dx = x+y using RK4, Dirac delta integrals, or explain Schottky defect"
-              className="w-full h-36 p-4 bg-midnight-900 border border-white/10 rounded-xl text-sm focus:outline-none focus:border-cyan-400/50 text-white font-medium resize-none placeholder-gray-500"
+              className="w-full h-36 p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 text-slate-900 font-medium resize-none placeholder-slate-400"
             />
             <button 
               type="submit" 
               disabled={isSubmitting || !doubtText.trim()}
-              className="w-full h-12 bg-cyan-400 hover:bg-cyan-300 disabled:opacity-50 text-midnight-900 font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all text-xs cursor-pointer shadow-[0_0_12px_rgba(0,212,255,0.2)]"
+              className="w-full h-12 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all text-xs cursor-pointer shadow-sm"
             >
               <Send className="w-4 h-4" />
               {isSubmitting ? 'AI is solving with step-by-step math...' : 'Ask AI Assistant'}
@@ -85,23 +85,23 @@ export default function DoubtsPage() {
           </form>
         </div>
 
-        <div className="lg:col-span-7 bg-white/5 border border-white/10 p-6 rounded-3xl glow-hover min-h-[300px] flex flex-col justify-between">
+        <div className="lg:col-span-7 bg-white border border-slate-200/90 p-6 rounded-2xl shadow-card min-h-[300px] flex flex-col justify-between">
           <div className="space-y-4">
-            <h3 className="font-bold text-white text-lg">Resolution Logs</h3>
+            <h3 className="font-bold text-slate-900 text-lg">Resolution Logs</h3>
             <div className="space-y-4 max-h-[500px] overflow-y-auto pr-1">
               {resolvedList.length > 0 ? (
                 resolvedList.map((item, i) => (
-                  <div key={i} className="bg-white/5 border border-white/10 p-5 rounded-2xl space-y-3">
-                    <span className="text-xs text-white font-bold block bg-white/5 p-2.5 rounded-xl border border-white/10">
+                  <div key={i} className="bg-white border border-slate-200 p-5 rounded-xl space-y-3 shadow-xs">
+                    <span className="text-xs text-slate-900 font-bold block bg-slate-50 p-2.5 rounded-xl border border-slate-200">
                       Q: {item.doubt}
                     </span>
-                    <div className="flex gap-3 text-xs text-gray-200 font-medium bg-cyan-400/5 p-4 rounded-xl border border-cyan-400/20">
-                      <Brain className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                    <div className="flex gap-3 text-xs text-slate-700 font-medium bg-blue-50/60 p-4 rounded-xl border border-blue-200/80">
+                      <Brain className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
                       <div className="space-y-1 w-full">
-                        <span className="font-bold text-cyan-400 block text-[11px]">Gemini AI Solution:</span>
+                        <span className="font-bold text-blue-700 block text-[11px]">Gemini AI Solution:</span>
                         {item.loading ? (
-                          <div className="flex items-center gap-2 text-cyan-300 py-1">
-                            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+                          <div className="flex items-center gap-2 text-blue-700 py-1">
+                            <span className="w-2 h-2 rounded-full bg-blue-600 animate-ping" />
                             <span>Synthesizing step-by-step mathematical solution...</span>
                           </div>
                         ) : (
@@ -112,7 +112,7 @@ export default function DoubtsPage() {
                   </div>
                 ))
               ) : (
-                <div className="text-center py-12 text-gray-500 text-xs">
+                <div className="text-center py-12 text-slate-400 text-xs">
                   No active doubts submitted. Type a question or use the scientific keypad above to get instant AI answers.
                 </div>
               )}

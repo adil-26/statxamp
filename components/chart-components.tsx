@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 
-// 1. WeeklyStudyGraph: Bar chart using pure CSS & Tailwind
+// 1. WeeklyStudyGraph: Bar chart using clean light styling
 export function WeeklyStudyGraph() {
   const data = [
     { day: 'Mon', hours: 4.5 },
@@ -16,32 +16,29 @@ export function WeeklyStudyGraph() {
   const maxHours = 10
 
   return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 glow-hover flex flex-col justify-between h-80">
+    <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs flex flex-col justify-between h-80">
       <div>
-        <h3 className="text-lg font-bold text-white mb-1">Weekly Study Time</h3>
-        <p className="text-xs text-gray-400">Hours spent studying per day</p>
+        <h3 className="text-base font-bold text-slate-900 mb-0.5">Weekly Study Time</h3>
+        <p className="text-xs text-slate-500">Hours spent studying per day this week</p>
       </div>
       <div className="flex items-end justify-between h-48 pt-4">
         {data.map((d, index) => {
           const heightPercent = (d.hours / maxHours) * 100
           return (
             <div key={d.day} className="flex flex-col items-center group w-full">
-              <div className="relative w-8 bg-cyan-400/10 border border-cyan-400/20 rounded-t-lg flex flex-col justify-end h-36 overflow-hidden">
+              <div className="relative w-8 bg-slate-100 rounded-t-lg flex flex-col justify-end h-36 overflow-hidden">
                 <motion.div
                   initial={{ height: 0 }}
                   animate={{ height: `${heightPercent}%` }}
                   transition={{ duration: 1, ease: 'easeOut', delay: index * 0.1 }}
-                  className="w-full bg-gradient-to-t from-cyan-600 to-cyan-400 rounded-t-md relative"
-                >
-                  {/* Glowing tip */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-white shadow-[0_0_10px_#fff]" />
-                </motion.div>
+                  className="w-full bg-gradient-to-t from-blue-600 to-indigo-500 rounded-t-md relative"
+                />
                 {/* Tooltip */}
-                <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-midnight-900 border border-cyan-400/50 text-cyan-400 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 whitespace-nowrap">
+                <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[11px] font-semibold px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 whitespace-nowrap shadow-sm">
                   {d.hours} hrs
                 </div>
               </div>
-              <span className="text-xs text-gray-400 mt-2 font-medium">{d.day}</span>
+              <span className="text-xs text-slate-500 mt-2 font-medium">{d.day}</span>
             </div>
           )
         })}
@@ -53,17 +50,17 @@ export function WeeklyStudyGraph() {
 // 2. SubjectProgress: SVG Donut chart
 export function SubjectProgress() {
   const subjects = [
-    { name: 'Physics', progress: 75, color: '#00d4ff' },
-    { name: 'Chemistry', progress: 60, color: '#a855f7' },
-    { name: 'Maths', progress: 90, color: '#f97316' },
-    { name: 'Biology', progress: 45, color: '#22c55e' },
+    { name: 'Physics', progress: 75, color: '#2563eb' },
+    { name: 'Chemistry', progress: 60, color: '#8b5cf6' },
+    { name: 'Maths', progress: 90, color: '#f59e0b' },
+    { name: 'Biology', progress: 45, color: '#10b981' },
   ]
 
   return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 glow-hover flex flex-col justify-between h-80">
+    <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs flex flex-col justify-between h-80">
       <div>
-        <h3 className="text-lg font-bold text-white mb-1">Subject Progress</h3>
-        <p className="text-xs text-gray-400">Percentage completion per subject</p>
+        <h3 className="text-base font-bold text-slate-900 mb-0.5">Subject Progress</h3>
+        <p className="text-xs text-slate-500">Percentage syllabus completed per subject</p>
       </div>
       <div className="grid grid-cols-2 gap-4 py-2">
         {subjects.map((sub, index) => {
@@ -80,8 +77,8 @@ export function SubjectProgress() {
                     cx="32"
                     cy="32"
                     r={radius}
-                    stroke="rgba(255, 255, 255, 0.05)"
-                    strokeWidth="4"
+                    stroke="#f1f5f9"
+                    strokeWidth="5"
                     fill="transparent"
                   />
                   {/* Animated Progress ring */}
@@ -90,7 +87,8 @@ export function SubjectProgress() {
                     cy="32"
                     r={radius}
                     stroke={sub.color}
-                    strokeWidth="4"
+                    strokeWidth="5"
+                    strokeLinecap="round"
                     fill="transparent"
                     strokeDasharray={circumference}
                     initial={{ strokeDashoffset: circumference }}
@@ -98,11 +96,11 @@ export function SubjectProgress() {
                     transition={{ duration: 1.2, ease: 'easeOut', delay: index * 0.1 }}
                   />
                 </svg>
-                <span className="absolute text-xs font-bold text-white">{sub.progress}%</span>
+                <span className="absolute text-xs font-bold text-slate-800">{sub.progress}%</span>
               </div>
               <div>
-                <div className="text-sm font-bold text-white">{sub.name}</div>
-                <div className="text-xs text-gray-400">Chapters</div>
+                <div className="text-sm font-bold text-slate-800">{sub.name}</div>
+                <div className="text-[11px] text-slate-400">Chapters</div>
               </div>
             </div>
           )
@@ -123,8 +121,6 @@ export function PerformanceAnalytics() {
     { x: 85, y: 85 },
     { x: 100, y: 95 },
   ]
-  const width = 300
-  const height = 150
 
   // Build path string
   const pathData = points.reduce((acc, p, i) => {
@@ -135,23 +131,23 @@ export function PerformanceAnalytics() {
   const areaData = `${pathData} L 100% 100% L 10% 100% Z`
 
   return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 glow-hover flex flex-col justify-between h-80">
+    <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs flex flex-col justify-between h-80">
       <div>
-        <h3 className="text-lg font-bold text-white mb-1">Performance Analytics</h3>
-        <p className="text-xs text-gray-400">Score metrics history over mock tests</p>
+        <h3 className="text-base font-bold text-slate-900 mb-0.5">Performance Analytics</h3>
+        <p className="text-xs text-slate-500">Score metrics history across mock tests</p>
       </div>
-      <div className="relative w-full h-40 mt-4 border-l border-b border-white/10 pt-2 pl-2">
+      <div className="relative w-full h-40 mt-4 border-l border-b border-slate-200 pt-2 pl-2">
         <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
           {/* Grid lines */}
-          <line x1="0" y1="25" x2="100" y2="25" stroke="rgba(255, 255, 255, 0.03)" strokeWidth="0.5" />
-          <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(255, 255, 255, 0.03)" strokeWidth="0.5" />
-          <line x1="0" y1="75" x2="100" y2="75" stroke="rgba(255, 255, 255, 0.03)" strokeWidth="0.5" />
+          <line x1="0" y1="25" x2="100" y2="25" stroke="#f1f5f9" strokeWidth="1" />
+          <line x1="0" y1="50" x2="100" y2="50" stroke="#f1f5f9" strokeWidth="1" />
+          <line x1="0" y1="75" x2="100" y2="75" stroke="#f1f5f9" strokeWidth="1" />
 
           {/* Area fill */}
           <defs>
             <linearGradient id="gradient-area" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#00d4ff" stopOpacity="0.2" />
-              <stop offset="100%" stopColor="#00d4ff" stopOpacity="0" />
+              <stop offset="0%" stopColor="#2563eb" stopOpacity="0.15" />
+              <stop offset="100%" stopColor="#2563eb" stopOpacity="0.01" />
             </linearGradient>
           </defs>
           <motion.path
@@ -166,8 +162,10 @@ export function PerformanceAnalytics() {
           <motion.path
             d={pathData}
             fill="transparent"
-            stroke="#00d4ff"
-            strokeWidth="2"
+            stroke="#2563eb"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
             transition={{ duration: 1.5, ease: 'easeInOut' }}
@@ -179,10 +177,10 @@ export function PerformanceAnalytics() {
               key={index}
               cx={`${p.x}%`}
               cy={`${100 - p.y}%`}
-              r="2"
-              fill="#0a0a1a"
-              stroke="#00d4ff"
-              strokeWidth="1.5"
+              r="2.5"
+              fill="#ffffff"
+              stroke="#2563eb"
+              strokeWidth="2"
             />
           ))}
         </svg>

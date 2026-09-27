@@ -173,30 +173,29 @@ export function LogoAnimation({ size = 280 }: LogoAnimationProps) {
 
   return (
     <div className="relative" style={{ width: size, height: size }}>
-      {/* Main cyber grid container */}
+      {/* Main container */}
       <div 
-        className="absolute inset-0 rounded-3xl overflow-hidden"
+        className="absolute inset-0 rounded-3xl overflow-hidden shadow-card"
         style={{
           background: `
-            linear-gradient(rgba(0, 212, 255, 0.08) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 212, 255, 0.08) 1px, transparent 1px),
-            rgba(0, 10, 20, 0.9)
+            linear-gradient(rgba(37, 99, 235, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(37, 99, 235, 0.05) 1px, transparent 1px),
+            #ffffff
           `,
           backgroundSize: '20px 20px',
-          border: '2px solid rgba(0, 212, 255, 0.5)',
+          border: '1px solid rgba(226, 232, 240, 0.9)',
         }}
       >
         {/* Pulsing Aura */}
         <motion.div
-          className="absolute inset-0 rounded-3xl"
+          className="absolute inset-0 rounded-3xl pointer-events-none"
           animate={{
-            boxShadow: [
-              'inset 0 0 60px rgba(0, 212, 255, 0.1), 0 0 60px rgba(0, 212, 255, 0.3)',
-              'inset 0 0 100px rgba(0, 212, 255, 0.3), 0 0 100px rgba(0, 212, 255, 0.6)',
-              'inset 0 0 60px rgba(0, 212, 255, 0.1), 0 0 60px rgba(0, 212, 255, 0.3)',
-            ],
+            opacity: [0.3, 0.6, 0.3],
           }}
           transition={{ duration: 4, repeat: Infinity }}
+          style={{
+            background: 'radial-gradient(circle at center, rgba(37, 99, 235, 0.08) 0%, transparent 70%)',
+          }}
         />
 
         {/* Scan Line */}
@@ -233,9 +232,9 @@ export function LogoAnimation({ size = 280 }: LogoAnimationProps) {
         >
           {/* Outer glow */}
           <motion.div
-            className="absolute inset-0 rounded-full bg-cyan-400/20 blur-3xl"
+            className="absolute inset-0 rounded-full bg-blue-500/10 blur-2xl"
             animate={{ 
-              scale: [1, 1.2, 1],
+              scale: [1, 1.15, 1],
               opacity: [0.3, 0.6, 0.3],
             }}
             transition={{ duration: 3, repeat: Infinity }}
@@ -243,21 +242,18 @@ export function LogoAnimation({ size = 280 }: LogoAnimationProps) {
 
           {/* AI Atom Symbol with orbiting particles */}
           <motion.div
-            className="absolute inset-8 rounded-full border-2 border-cyan-400/60"
+            className="absolute inset-8 rounded-full border-2 border-blue-400/40"
             animate={{ rotate: 360 }}
             transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
             style={{
-              boxShadow: '0 0 40px rgba(0, 212, 255, 0.4), inset 0 0 40px rgba(0, 212, 255, 0.2)',
+              boxShadow: '0 0 30px rgba(37, 99, 235, 0.15), inset 0 0 30px rgba(37, 99, 235, 0.08)',
             }}
           >
             {/* 4 Orbiting electrons */}
             {[0, 90, 180, 270].map((angle, i) => (
               <motion.div
                 key={i}
-                className="absolute w-3 h-3 rounded-full bg-cyan-400"
-                style={{
-                  boxShadow: '0 0 20px #00d4ff',
-                }}
+                className="absolute w-3 h-3 rounded-full bg-blue-600 shadow-sm"
                 animate={{
                   x: [
                     Math.cos((angle * Math.PI) / 180) * (size * 0.35),
@@ -280,10 +276,10 @@ export function LogoAnimation({ size = 280 }: LogoAnimationProps) {
 
           {/* AI Badge with orbiting electron */}
           <motion.div 
-            className="absolute -top-2 -right-2 w-14 h-14 rounded-full flex items-center justify-center z-20"
+            className="absolute -top-2 -right-2 w-14 h-14 rounded-full flex items-center justify-center z-20 shadow-sm"
             style={{
-              background: 'rgba(0, 20, 30, 0.95)',
-              border: '2px solid rgba(0, 212, 255, 0.8)',
+              background: '#ffffff',
+              border: '2px solid rgba(37, 99, 235, 0.7)',
             }}
           >
             {/* Orbiting electron around AI badge */}
@@ -293,49 +289,15 @@ export function LogoAnimation({ size = 280 }: LogoAnimationProps) {
               transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
             >
               <motion.div
-                className="absolute w-1.5 h-1.5 rounded-full bg-cyan-400 -top-0.5 left-1/2 -translate-x-1/2"
-                style={{ boxShadow: '0 0 8px #00d4ff' }}
+                className="absolute w-1.5 h-1.5 rounded-full bg-blue-600 -top-0.5 left-1/2 -translate-x-1/2"
               />
             </motion.div>
             <motion.span 
-              className="text-xs font-bold text-cyan-400"
-              animate={{ 
-                textShadow: [
-                  '0 0 10px rgba(0, 212, 255, 0.8)',
-                  '0 0 20px rgba(0, 212, 255, 1)',
-                  '0 0 10px rgba(0, 212, 255, 0.8)',
-                ],
-              }}
-              transition={{ duration: 1.5, repeat: Infinity }}
+              className="text-xs font-bold text-blue-600"
             >
               AI
             </motion.span>
           </motion.div>
-
-          {/* Blockchain Cubes */}
-          <div className="absolute top-0 left-1/4 flex gap-1">
-            {[0, 1, 2].map((i) => (
-              <motion.div
-                key={i}
-                className="w-5 h-5 rounded-sm"
-                style={{
-                  background: 'rgba(0, 212, 255, 0.3)',
-                  border: '1px solid rgba(0, 212, 255, 0.7)',
-                  boxShadow: '0 0 10px rgba(0, 212, 255, 0.5)',
-                }}
-                animate={{ 
-                  opacity: [0.3, 1, 0.3],
-                  scale: [1, 1.2, 1],
-                  y: [0, -5, 0],
-                }}
-                transition={{ 
-                  duration: 1.5, 
-                  repeat: Infinity, 
-                  delay: i * 0.3,
-                }}
-              />
-            ))}
-          </div>
 
           {/* Central S with trend arrow */}
           <motion.div
@@ -346,11 +308,7 @@ export function LogoAnimation({ size = 280 }: LogoAnimationProps) {
             transition={{ duration: 4, repeat: Infinity }}
           >
             <span 
-              className="text-7xl font-bold"
-              style={{
-                color: '#00d4ff',
-                textShadow: '0 0 30px rgba(0, 212, 255, 1), 0 0 60px rgba(0, 212, 255, 0.8), 0 0 90px rgba(0, 212, 255, 0.6)',
-              }}
+              className="text-7xl font-extrabold text-blue-600 select-none"
             >
               S
             </span>
@@ -358,10 +316,10 @@ export function LogoAnimation({ size = 280 }: LogoAnimationProps) {
             {/* Trend arrow */}
             <motion.div
               className="absolute -bottom-2 -right-2"
-              animate={{ y: [0, -5, 0], x: [0, 5, 0] }}
+              animate={{ y: [0, -4, 0], x: [0, 4, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" strokeWidth="3">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="3">
                 <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
                 <polyline points="17 6 23 6 23 12" />
               </svg>

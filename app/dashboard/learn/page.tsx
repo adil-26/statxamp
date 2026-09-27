@@ -193,29 +193,29 @@ export default function LearnBySubjectsPage() {
       {/* Top Header Banner */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-400/10 border border-cyan-400/20 text-cyan-400 text-xs font-semibold rounded-full mb-2">
-            <Sparkles className="w-3.5 h-3.5" /> Interactive Concept & Calculation Studio
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 border border-blue-200/80 text-blue-700 text-xs font-semibold rounded-full mb-2">
+            <Sparkles className="w-3.5 h-3.5 text-blue-600" /> Interactive Concept & Calculation Studio
           </div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">
-            Learn by <span className="gradient-text">Subjects & Chapters</span>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            Learn by <span className="text-blue-600">Subjects & Chapters</span>
           </h1>
-          <p className="text-gray-400 text-sm mt-1">
-            Explore step-by-step animated calculation proofs, interactive formula sandboxes, and AI tests with 3-hint limits.
+          <p className="text-slate-500 text-sm mt-1">
+            Explore step-by-step calculation proofs, interactive formula sandboxes, and chapter mastery assessments.
           </p>
         </div>
 
         {/* Board & Standard Selector Filters */}
         <div className="flex flex-wrap items-center gap-3">
           {/* Board Selector */}
-          <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-2xl border border-white/10 text-xs">
-            <span className="text-gray-400 font-semibold">Board:</span>
+          <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-xs shadow-2xs">
+            <span className="text-slate-500 font-semibold">Board:</span>
             <select
               value={selectedBoard}
               onChange={(e) => setSelectedBoard(e.target.value)}
-              className="bg-transparent text-xs text-cyan-300 font-bold focus:outline-none cursor-pointer"
+              className="bg-transparent text-xs text-blue-700 font-bold focus:outline-none cursor-pointer"
             >
               {INDIAN_BOARDS_LIST.map(b => (
-                <option key={b} value={b} className="bg-midnight-900 text-white font-medium">
+                <option key={b} value={b} className="bg-white text-slate-800 font-medium">
                   {b}
                 </option>
               ))}
@@ -223,15 +223,15 @@ export default function LearnBySubjectsPage() {
           </div>
 
           {/* Standard Selector Filter */}
-          <div className="flex items-center gap-1.5 bg-white/5 p-1 rounded-2xl border border-white/10 text-xs">
+          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
             {(['All', 'Class 10', 'Class 12', 'Competitive'] as const).map(std => (
               <button
                 key={std}
                 onClick={() => setSelectedStandard(std)}
-                className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
+                className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
                   selectedStandard === std 
-                    ? 'bg-cyan-400 text-midnight-900 shadow-md' 
-                    : 'text-gray-400 hover:text-white'
+                    ? 'bg-blue-600 text-white shadow-2xs' 
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 {std}
@@ -242,20 +242,19 @@ export default function LearnBySubjectsPage() {
       </div>
 
       {/* Subject Pills Row */}
-      <div className="flex items-center gap-3 overflow-x-auto pb-2 border-b border-white/10">
+      <div className="flex items-center gap-2.5 overflow-x-auto pb-2 border-b border-slate-200">
         {['Mathematics', 'Physics', 'Chemistry', 'Biology'].map(subj => (
           <button
             key={subj}
             onClick={() => {
               setSelectedSubject(subj)
-              // Select first chapter of that subject if available
               const firstMatch = CHAPTERS_DATABASE.find(c => c.subject.toLowerCase() === subj.toLowerCase())
               if (firstMatch) setActiveChapterId(firstMatch.id)
             }}
-            className={`px-5 py-2.5 rounded-2xl font-bold text-xs transition-all flex items-center gap-2 shrink-0 ${
+            className={`px-4 py-2 rounded-xl font-semibold text-xs transition-all flex items-center gap-2 shrink-0 cursor-pointer ${
               selectedSubject === subj
-                ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-midnight-900 shadow-[0_0_15px_rgba(0,212,255,0.3)]'
-                : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10'
+                ? 'bg-blue-600 text-white shadow-xs'
+                : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
             <Compass className="w-3.5 h-3.5" />
@@ -265,21 +264,21 @@ export default function LearnBySubjectsPage() {
       </div>
 
       {/* Mobile Chapter Quick Selector Bar (Shown only on mobile) */}
-      <div className="lg:hidden p-4 rounded-2xl bg-gradient-to-r from-white/5 to-cyan-400/10 border border-cyan-400/30 flex items-center justify-between shadow-lg">
+      <div className="lg:hidden p-4 rounded-xl bg-white border border-slate-200 flex items-center justify-between shadow-xs">
         <div className="min-w-0 flex-1 mr-3">
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-extrabold text-cyan-400 bg-cyan-400/10 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200/70">
               {activeChapter.standard}
             </span>
-            <span className="text-[10px] font-bold text-green-400 flex items-center gap-1">
+            <span className="text-[10px] font-semibold text-emerald-700 flex items-center gap-1">
               <TrendingUp className="w-3 h-3" /> {activeChapter.weightageMarks}
             </span>
           </div>
-          <h3 className="text-sm font-black text-white truncate">{activeChapter.title}</h3>
+          <h3 className="text-sm font-bold text-slate-900 truncate">{activeChapter.title}</h3>
         </div>
         <button
           onClick={() => setMobileChapterSheetOpen(true)}
-          className="px-3 py-2 rounded-xl bg-cyan-400 text-midnight-950 font-extrabold text-xs shrink-0 flex items-center gap-1.5 shadow-[0_0_12px_rgba(0,212,255,0.4)] active:scale-95 transition-transform cursor-pointer"
+          className="px-3 py-2 rounded-xl bg-blue-600 text-white font-semibold text-xs shrink-0 flex items-center gap-1.5 shadow-xs active:scale-95 transition-transform cursor-pointer"
         >
           <Layers className="w-3.5 h-3.5" />
           Chapters ({filteredChapters.length})
@@ -295,30 +294,30 @@ export default function LearnBySubjectsPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileChapterSheetOpen(false)}
-              className="fixed inset-0 bg-black/75 backdrop-blur-sm"
+              className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs"
             />
             <motion.div
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 26, stiffness: 280 }}
-              className="relative w-full max-h-[80vh] bg-midnight-900 border-t border-cyan-400/30 rounded-t-3xl p-5 z-10 flex flex-col shadow-2xl pb-10"
+              className="relative w-full max-h-[80vh] bg-white border-t border-slate-200 rounded-t-3xl p-5 z-10 flex flex-col shadow-2xl pb-10"
             >
-              <div className="w-12 h-1 bg-white/20 rounded-full mx-auto mb-4 shrink-0" />
-              <div className="flex items-center justify-between pb-3 border-b border-white/10 shrink-0">
-                <span className="font-extrabold text-white text-sm flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-cyan-400" />
+              <div className="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-4 shrink-0" />
+              <div className="flex items-center justify-between pb-3 border-b border-slate-200 shrink-0">
+                <span className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-blue-600" />
                   Select {selectedSubject} Chapter ({filteredChapters.length})
                 </span>
                 <button
                   onClick={() => setMobileChapterSheetOpen(false)}
-                  className="p-1 rounded-lg bg-white/5 text-gray-400 hover:text-white"
+                  className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
                 >
                   <XCircle className="w-5 h-5" />
                 </button>
               </div>
 
-              <div className="space-y-2.5 overflow-y-auto mt-3 pr-1 flex-1">
+              <div className="space-y-2 overflow-y-auto mt-3 pr-1 flex-1">
                 {filteredChapters.map(chap => {
                   const isActive = chap.id === activeChapterId
                   return (
@@ -328,22 +327,22 @@ export default function LearnBySubjectsPage() {
                         setActiveChapterId(chap.id)
                         setMobileChapterSheetOpen(false)
                       }}
-                      className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
+                      className={`p-3.5 rounded-xl border transition-all cursor-pointer ${
                         isActive
-                          ? 'bg-cyan-400/20 border-cyan-400 shadow-[0_0_12px_rgba(0,212,255,0.25)]'
-                          : 'bg-white/5 border-white/10 hover:bg-white/10'
+                          ? 'bg-blue-50 border-blue-400 shadow-2xs'
+                          : 'bg-white border-slate-200 hover:bg-slate-50'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-[10px] font-extrabold text-cyan-400 bg-cyan-400/10 px-2 py-0.5 rounded-full">
+                        <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200/70">
                           {chap.standard}
                         </span>
-                        <span className="text-[10px] font-bold text-green-400">
+                        <span className="text-[10px] font-semibold text-emerald-700">
                           {chap.weightageMarks}
                         </span>
                       </div>
-                      <h4 className="font-bold text-white text-xs">{chap.title}</h4>
-                      <p className="text-[11px] text-gray-400 line-clamp-1 mt-0.5">{chap.description}</p>
+                      <h4 className="font-bold text-slate-900 text-xs">{chap.title}</h4>
+                      <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">{chap.description}</p>
                     </div>
                   )
                 })}
@@ -357,38 +356,38 @@ export default function LearnBySubjectsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Chapters Navigation List (Hidden in Sight Focus Mode) */}
         {!isSightFocusMode && (
-          <div className="hidden lg:block lg:col-span-4 bg-white/5 border border-white/10 rounded-3xl p-5 space-y-4 backdrop-blur-xl">
-            <div className="flex items-center justify-between pb-3 border-b border-white/10">
-              <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
-                <Layers className="w-3.5 h-3.5" /> {selectedSubject} Chapters
+          <div className="hidden lg:block lg:col-span-4 bg-white border border-slate-200/90 rounded-2xl p-5 space-y-4 shadow-xs">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5 text-blue-600" /> {selectedSubject} Chapters
               </span>
               <span className="text-[11px] text-slate-400 font-semibold">{filteredChapters.length} Chapters</span>
             </div>
 
-            <div className="space-y-3 max-h-[580px] overflow-y-auto pr-1">
+            <div className="space-y-2.5 max-h-[580px] overflow-y-auto pr-1">
               {filteredChapters.map(chap => {
                 const isActive = chap.id === activeChapterId
                 return (
                   <div
                     key={chap.id}
                     onClick={() => setActiveChapterId(chap.id)}
-                    className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 ${
+                    className={`p-3.5 rounded-xl border transition-all cursor-pointer space-y-1.5 ${
                       isActive
-                        ? 'bg-cyan-400/15 border-cyan-400 shadow-[0_0_15px_rgba(0,212,255,0.2)]'
-                        : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
+                        ? 'bg-blue-50/80 border-blue-400 shadow-2xs'
+                        : 'bg-slate-50/60 border-slate-200/80 hover:bg-slate-100 hover:border-slate-300'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-extrabold text-cyan-400 bg-cyan-400/10 px-2 py-0.5 rounded-full border border-cyan-400/20">
+                      <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200/70">
                         {chap.standard}
                       </span>
-                      <span className="text-[10px] font-bold text-emerald-400 flex items-center gap-1">
+                      <span className="text-[10px] font-semibold text-emerald-700 flex items-center gap-1">
                         <TrendingUp className="w-3 h-3" /> {chap.weightageMarks}
                       </span>
                     </div>
 
-                    <h3 className="font-extrabold text-white text-sm leading-snug">{chap.title}</h3>
-                    <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">{chap.description}</p>
+                    <h3 className="font-bold text-slate-900 text-xs leading-snug">{chap.title}</h3>
+                    <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">{chap.description}</p>
                   </div>
                 )
               })}
@@ -396,22 +395,22 @@ export default function LearnBySubjectsPage() {
           </div>
         )}
 
-        {/* Right Column: Interactive Subject Detail Hub (Expands to col-12 in Sight Focus Mode) */}
+        {/* Right Column: Interactive Subject Detail Hub */}
         <div className={`${isSightFocusMode ? 'lg:col-span-12' : 'lg:col-span-8'} space-y-6`}>
           {/* Chapter Details Banner */}
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-7 backdrop-blur-xl relative overflow-hidden">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 shadow-xs relative overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-cyan-400 bg-cyan-400/10 px-2.5 py-0.5 rounded-full border border-cyan-400/20">
+                  <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200/70">
                     {activeChapter.subject} • {activeChapter.standard}
                   </span>
-                  <span className="text-xs text-purple-300 bg-purple-500/15 px-2.5 py-0.5 rounded-full font-semibold border border-purple-500/20">
+                  <span className="text-xs text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full font-semibold border border-purple-200/70">
                     {activeChapter.weightageMarks}
                   </span>
                 </div>
-                <h2 className="text-2xl font-black text-white mt-2">{activeChapter.title}</h2>
-                <p className="text-xs text-slate-300 mt-1">{activeChapter.description}</p>
+                <h2 className="text-2xl font-bold text-slate-900 mt-2">{activeChapter.title}</h2>
+                <p className="text-xs text-slate-600 mt-1">{activeChapter.description}</p>
               </div>
 
               {/* View Tabs Selector & Sight Focus Toggle */}
@@ -419,43 +418,43 @@ export default function LearnBySubjectsPage() {
                 <button
                   onClick={() => setIsSightFocusMode(!isSightFocusMode)}
                   title="Toggle Full-Width Sight Mode (Hides side panels and expands math equations)"
-                  className={`px-3 py-1.5 rounded-xl font-bold transition-all text-xs flex items-center gap-1.5 border cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-xl font-semibold transition-all text-xs flex items-center gap-1.5 border cursor-pointer ${
                     isSightFocusMode 
-                      ? 'bg-cyan-400 text-midnight-950 border-cyan-400 shadow-[0_0_12px_rgba(0,212,255,0.3)]' 
-                      : 'bg-white/5 border-white/10 text-slate-300 hover:text-white hover:bg-white/10'
+                      ? 'bg-blue-600 text-white border-blue-600 shadow-2xs' 
+                      : 'bg-slate-100 border-slate-200 text-slate-700 hover:text-slate-900 hover:bg-slate-200/70'
                   }`}
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>{isSightFocusMode ? 'Exit Sight View' : 'Sight Mode'}</span>
+                  <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                  <span>{isSightFocusMode ? 'Exit Focus View' : 'Focus Mode'}</span>
                 </button>
 
-                <div className="flex items-center gap-1.5 bg-midnight-900/80 p-1.5 rounded-2xl border border-white/10 text-xs shrink-0">
+                <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs shrink-0">
                   <button
                     onClick={() => setActiveViewTab('animation')}
-                    className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
+                    className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
                       activeViewTab === 'animation'
-                        ? 'bg-cyan-400 text-midnight-900 shadow-sm'
-                        : 'text-slate-400 hover:text-white'
+                        ? 'bg-blue-600 text-white shadow-2xs'
+                        : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     Calculation Steps
                   </button>
                   <button
                     onClick={() => setActiveViewTab('sandbox')}
-                    className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
+                    className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
                       activeViewTab === 'sandbox'
-                        ? 'bg-cyan-400 text-midnight-900 shadow-sm'
-                        : 'text-slate-400 hover:text-white'
+                        ? 'bg-blue-600 text-white shadow-2xs'
+                        : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     Interactive Sandbox
                   </button>
                   <button
                     onClick={() => setActiveViewTab('test')}
-                    className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
+                    className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
                       activeViewTab === 'test'
-                        ? 'bg-cyan-400 text-midnight-900 shadow-sm'
-                        : 'text-slate-400 hover:text-white'
+                        ? 'bg-blue-600 text-white shadow-2xs'
+                        : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     AI Test (3 Hints)
@@ -468,7 +467,7 @@ export default function LearnBySubjectsPage() {
             {activeViewTab === 'animation' && (
               <div className="mt-6 space-y-6">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-blue-700 uppercase tracking-wider flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5" /> {activeChapter.animationTopic}
                   </span>
                   
@@ -476,10 +475,10 @@ export default function LearnBySubjectsPage() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm ${
                         isAutoPlaying
-                          ? 'bg-purple-500 text-white animate-pulse'
-                          : 'bg-white/5 border border-white/10 text-slate-300 hover:text-white'
+                          ? 'bg-blue-600 text-white animate-pulse'
+                          : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
                       }`}
                     >
                       <Play className="w-3 h-3 fill-current" />
@@ -488,17 +487,17 @@ export default function LearnBySubjectsPage() {
                     <button
                       onClick={() => setCurrentStepIdx(prev => Math.max(0, prev - 1))}
                       disabled={currentStepIdx === 0}
-                      className="p-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white disabled:opacity-30"
+                      className="p-1.5 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 disabled:opacity-30 transition-colors"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
-                    <span className="text-xs font-mono font-bold text-cyan-400 px-2">
+                    <span className="text-xs font-mono font-bold text-blue-700 px-2">
                       {currentStepIdx + 1} / {activeChapter.calculationSteps.length}
                     </span>
                     <button
                       onClick={() => setCurrentStepIdx(prev => Math.min(activeChapter.calculationSteps.length - 1, prev + 1))}
                       disabled={currentStepIdx === activeChapter.calculationSteps.length - 1}
-                      className="p-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white disabled:opacity-30"
+                      className="p-1.5 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 disabled:opacity-30 transition-colors"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </button>
@@ -513,17 +512,17 @@ export default function LearnBySubjectsPage() {
                       onClick={() => setCurrentStepIdx(idx)}
                       className={`p-3 rounded-2xl border text-left transition-all ${
                         idx === currentStepIdx
-                          ? 'bg-cyan-400/20 border-cyan-400 text-cyan-300 shadow-[0_0_15px_rgba(0,212,255,0.2)] ring-1 ring-cyan-400/40'
+                          ? 'bg-blue-50 border-blue-400 text-blue-800 shadow-sm ring-1 ring-blue-300'
                           : idx < currentStepIdx
-                          ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-                          : 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:text-slate-200'
+                          ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800'
+                          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                       }`}
                     >
-                      <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-wider">
+                      <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider">
                         <span>Step {idx + 1}</span>
-                        {idx < currentStepIdx && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />}
+                        {idx < currentStepIdx && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />}
                       </div>
-                      <div className="text-xs font-bold truncate mt-1 text-white">{step.title}</div>
+                      <div className="text-xs font-semibold truncate mt-1 text-slate-900">{step.title}</div>
                     </button>
                   ))}
                 </div>
@@ -536,19 +535,19 @@ export default function LearnBySubjectsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -15 }}
                     transition={{ duration: 0.3 }}
-                    className="bg-midnight-900/90 border border-cyan-400/30 rounded-2xl p-6 sm:p-8 space-y-5 shadow-2xl"
+                    className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 space-y-5 shadow-card"
                   >
-                    <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                      <span className="text-xs sm:text-sm font-black text-cyan-300 bg-cyan-400/10 px-3.5 py-1.5 rounded-xl border border-cyan-400/20">
+                    <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                      <span className="text-xs sm:text-sm font-bold text-blue-700 bg-blue-50 px-3.5 py-1.5 rounded-xl border border-blue-200/70">
                         {activeChapter.calculationSteps[currentStepIdx].title}
                       </span>
-                      <span className="text-[11px] text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+                      <span className="text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
                         Step Verified
                       </span>
                     </div>
 
                     {/* Rendered Math Formula with Sight Sizing */}
-                    <div className="p-5 rounded-2xl bg-midnight-950/80 border border-cyan-400/25 text-center shadow-inner">
+                    <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 text-center">
                       <MathRenderer 
                         content={`$$ ${activeChapter.calculationSteps[currentStepIdx].formula} $$`}
                         textSize={isSightFocusMode ? 'large' : 'comfortable'}
@@ -556,25 +555,25 @@ export default function LearnBySubjectsPage() {
                     </div>
 
                     {/* Step Explanation Text */}
-                    <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-sans">
+                    <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-sans">
                       {activeChapter.calculationSteps[currentStepIdx].explanation}
                     </p>
 
                     {/* Step Highlight Box */}
-                    <div className="flex items-center gap-3 text-xs sm:text-sm font-semibold text-cyan-300 bg-cyan-400/10 p-3.5 rounded-xl border border-cyan-400/20">
-                      <Lightbulb className="w-4 h-4 text-cyan-400 shrink-0" />
-                      <span>Key Mathematical Logic: <strong className="text-white">{activeChapter.calculationSteps[currentStepIdx].activeHighlight}</strong></span>
+                    <div className="flex items-center gap-3 text-xs sm:text-sm font-medium text-amber-900 bg-amber-50/80 p-3.5 rounded-xl border border-amber-200/70">
+                      <Lightbulb className="w-4 h-4 text-amber-600 shrink-0" />
+                      <span>Key Mathematical Logic: <strong className="text-slate-900 font-bold">{activeChapter.calculationSteps[currentStepIdx].activeHighlight}</strong></span>
                     </div>
                   </motion.div>
                 </AnimatePresence>
 
                 {/* Formula Cheat Sheet Overview */}
                 <div className="space-y-3 pt-2">
-                  <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Formula Reference Matrix</h4>
+                  <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Formula Reference Matrix</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {activeChapter.formulaOverview.map((f, i) => (
-                      <div key={i} className="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1.5 hover:border-cyan-400/30 transition-all">
-                        <span className="text-[11px] font-semibold text-cyan-300">{f.name}</span>
+                      <div key={i} className="p-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-1.5 hover:border-blue-300 transition-all">
+                        <span className="text-[11px] font-bold text-blue-700">{f.name}</span>
                         <MathRenderer 
                           content={`$$ ${f.latex} $$`} 
                           textSize={isSightFocusMode ? 'comfortable' : 'normal'}
@@ -589,25 +588,25 @@ export default function LearnBySubjectsPage() {
             {/* TAB 2: Interactive Calculation Sandbox */}
             {activeViewTab === 'sandbox' && (
               <div className="mt-6 space-y-6">
-                <div className="p-5 rounded-2xl bg-midnight-900/80 border border-cyan-400/20 space-y-4">
+                <div className="p-5 rounded-2xl bg-white border border-slate-200/90 space-y-4 shadow-card">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                      <h3 className="font-extrabold text-white text-base">Interactive Formula Simulator</h3>
-                      <p className="text-xs text-gray-400">Change parameters below to watch mathematical steps compute dynamically.</p>
+                      <h3 className="font-bold text-slate-900 text-base">Interactive Formula Simulator</h3>
+                      <p className="text-xs text-slate-500">Change parameters below to watch mathematical steps compute dynamically.</p>
                     </div>
                     
                     {/* Parameter Options */}
                     <div className="flex items-center gap-2">
-                      <span className="text-xs text-cyan-400 font-bold">{activeChapter.interactiveSandbox.label}:</span>
-                      <div className="flex gap-1 bg-white/5 p-1 rounded-xl border border-white/10">
+                      <span className="text-xs text-slate-700 font-semibold">{activeChapter.interactiveSandbox.label}:</span>
+                      <div className="flex gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
                         {activeChapter.interactiveSandbox.options.map(val => (
                           <button
                             key={val}
                             onClick={() => setSandboxValue(val)}
                             className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
                               sandboxValue === val
-                                ? 'bg-cyan-400 text-midnight-900 shadow-md'
-                                : 'text-gray-400 hover:text-white'
+                                ? 'bg-white text-blue-700 shadow-sm border border-slate-200/80'
+                                : 'text-slate-600 hover:text-slate-900'
                             }`}
                           >
                             {val}{activeChapter.interactiveSandbox.unit}
@@ -618,24 +617,24 @@ export default function LearnBySubjectsPage() {
                   </div>
 
                   {/* Computed Step-by-Step Breakdown */}
-                  <div className="space-y-3 pt-3 border-t border-white/10">
-                    <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
-                      <span className="text-xs text-gray-400 font-semibold">1. Evaluate Trigonometric Values:</span>
+                  <div className="space-y-3 pt-3 border-t border-slate-100">
+                    <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                      <span className="text-xs text-slate-600 font-medium">1. Evaluate Trigonometric Values:</span>
                       <MathRenderer content={`$ ${sandboxResult.step1} $`} />
                     </div>
 
-                    <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
-                      <span className="text-xs text-gray-400 font-semibold">2. Calculate Square of Sine:</span>
+                    <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                      <span className="text-xs text-slate-600 font-medium">2. Calculate Square of Sine:</span>
                       <MathRenderer content={`$ ${sandboxResult.step2} $`} />
                     </div>
 
-                    <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
-                      <span className="text-xs text-gray-400 font-semibold">3. Calculate Square of Cosine:</span>
+                    <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                      <span className="text-xs text-slate-600 font-medium">3. Calculate Square of Cosine:</span>
                       <MathRenderer content={`$ ${sandboxResult.step3} $`} />
                     </div>
 
-                    <div className="p-4 rounded-xl bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-between">
-                      <span className="text-xs text-cyan-300 font-extrabold">Final Verified Sum:</span>
+                    <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-between">
+                      <span className="text-xs text-blue-900 font-bold">Final Verified Sum:</span>
                       <MathRenderer content={`$ ${sandboxResult.result} $`} />
                     </div>
                   </div>
@@ -647,47 +646,47 @@ export default function LearnBySubjectsPage() {
             {activeViewTab === 'test' && (
               <div className="mt-6 space-y-6">
                 {/* 3 Hints Counter & AI Generator Status Bar */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl bg-cyan-400/10 border border-cyan-400/30">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl bg-blue-50/70 border border-blue-200/80">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <Award className="w-5 h-5 text-cyan-400" />
-                      <h3 className="font-extrabold text-white text-base">
+                      <Award className="w-5 h-5 text-blue-600" />
+                      <h3 className="font-bold text-slate-900 text-base">
                         Chapter Mastery Assessment
                       </h3>
                       {aiNotice && (
-                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-cyan-400/20 text-cyan-300 border border-cyan-400/30 animate-pulse">
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 border border-blue-200">
                           AI Live Exam
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-gray-300">
-                      Solve the 10-year recurring board exam questions below. You have **strictly 3 hints** for this test.
+                    <p className="text-xs text-slate-600">
+                      Solve the 10-year recurring board exam questions below. You have <strong>strictly 3 hints</strong> for this test.
                     </p>
                   </div>
 
                   {/* Actions & Hints Remaining Badge */}
                   <div className="flex flex-wrap items-center gap-3">
                     {/* Model Selector Dropdown */}
-                    <div className="flex items-center gap-1.5 bg-midnight-900/90 border border-cyan-400/30 rounded-xl px-2.5 py-1.5 shadow-inner">
-                      <Brain className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                    <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 shadow-sm">
+                      <Brain className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                       <select
                         value={selectedAiModel}
                         onChange={(e) => setSelectedAiModel(e.target.value)}
                         disabled={isAiGenerating || testSubmitted}
-                        className="bg-transparent text-xs text-cyan-300 font-bold focus:outline-none cursor-pointer"
+                        className="bg-transparent text-xs text-slate-800 font-semibold focus:outline-none cursor-pointer"
                         title="Select AI Model Engine"
                       >
-                        <option value="gemini-3.6-flash" className="bg-midnight-900 text-white">Gemini 3.6 Flash (Fast & Accurate)</option>
-                        <option value="gemini-1.5-pro" className="bg-midnight-900 text-white">Gemini 1.5 Pro (Deep Scientific Reasoning)</option>
-                        <option value="gemini-1.5-flash" className="bg-midnight-900 text-white">Gemini 1.5 Flash (Lightweight)</option>
-                        <option value="gemini-2.0-flash" className="bg-midnight-900 text-white">Gemini 2.0 Flash (Next-Gen)</option>
+                        <option value="gemini-3.6-flash">Gemini 3.6 Flash (Fast & Accurate)</option>
+                        <option value="gemini-1.5-pro">Gemini 1.5 Pro (Deep Scientific Reasoning)</option>
+                        <option value="gemini-1.5-flash">Gemini 1.5 Flash (Lightweight)</option>
+                        <option value="gemini-2.0-flash">Gemini 2.0 Flash (Next-Gen)</option>
                       </select>
                     </div>
 
                     <button
                       onClick={handleGenerateAiQuestions}
                       disabled={isAiGenerating || testSubmitted}
-                      className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-50 text-midnight-900 font-extrabold text-xs flex items-center gap-2 shadow-[0_0_15px_rgba(0,212,255,0.3)] transition-all cursor-pointer"
+                      className="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-semibold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer"
                     >
                       <Sparkles className={`w-3.5 h-3.5 ${isAiGenerating ? 'animate-spin' : ''}`} />
                       {isAiGenerating ? 'Synthesizing with AI...' : 'Generate Questions with AI'}
@@ -695,12 +694,12 @@ export default function LearnBySubjectsPage() {
 
                     <div className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 border ${
                       hintsRemaining > 1
-                        ? 'bg-cyan-400/20 text-cyan-300 border-cyan-400/40 shadow-[0_0_10px_rgba(0,212,255,0.2)]'
+                        ? 'bg-amber-50 text-amber-800 border-amber-200'
                         : hintsRemaining === 1
-                        ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/40 animate-pulse'
-                        : 'bg-red-500/20 text-red-300 border-red-500/40'
+                        ? 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
+                        : 'bg-slate-100 text-slate-500 border-slate-200'
                     }`}>
-                      <Lightbulb className="w-4 h-4" />
+                      <Lightbulb className="w-4 h-4 text-amber-600" />
                       <span>{hintsRemaining} of 3 Hints Remaining</span>
                     </div>
                   </div>
@@ -708,9 +707,9 @@ export default function LearnBySubjectsPage() {
 
                 {/* AI Notice Banner */}
                 {aiNotice && (
-                  <div className="p-3 rounded-xl bg-cyan-400/10 border border-cyan-400/20 text-cyan-300 text-xs flex items-center justify-between">
+                  <div className="p-3 rounded-xl bg-blue-50 border border-blue-200 text-blue-800 text-xs flex items-center justify-between">
                     <span className="flex items-center gap-2 font-medium">
-                      <Sparkles className="w-3.5 h-3.5" />
+                      <Sparkles className="w-3.5 h-3.5 text-blue-600" />
                       {aiNotice}
                     </span>
                     <button
@@ -722,7 +721,7 @@ export default function LearnBySubjectsPage() {
                         setTestSubmitted(false)
                         setAiNotice(null)
                       }}
-                      className="text-[11px] underline text-gray-400 hover:text-white"
+                      className="text-[11px] underline text-slate-500 hover:text-slate-900"
                     >
                       Reset to Standard 10-Yr Blueprint
                     </button>
@@ -734,7 +733,7 @@ export default function LearnBySubjectsPage() {
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-3 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 text-xs font-semibold text-center"
+                    className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold text-center"
                   >
                     {hintAlertMsg}
                   </motion.div>
@@ -751,16 +750,16 @@ export default function LearnBySubjectsPage() {
                     return (
                       <div
                         key={q.id}
-                        className={`p-6 rounded-3xl border transition-all space-y-4 ${
+                        className={`p-6 rounded-2xl border transition-all space-y-4 shadow-card ${
                           isCorrect
-                            ? 'bg-green-500/10 border-green-500/40'
+                            ? 'bg-emerald-50/40 border-emerald-300'
                             : isIncorrect
-                            ? 'bg-red-500/10 border-red-500/40'
-                            : 'bg-white/5 border-white/10'
+                            ? 'bg-rose-50/40 border-rose-300'
+                            : 'bg-white border-slate-200/90'
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-extrabold text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-xl">
+                          <span className="text-xs font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-xl border border-blue-200/60">
                             Question {idx + 1}
                           </span>
 
@@ -769,32 +768,34 @@ export default function LearnBySubjectsPage() {
                             <button
                               onClick={() => handleRequestHint(q.id)}
                               disabled={isHintRevealed || hintsRemaining <= 0}
-                              className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+                              className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all ${
                                 isHintRevealed
-                                  ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30'
+                                  ? 'bg-amber-100 text-amber-900 border border-amber-300'
                                   : hintsRemaining > 0
-                                  ? 'bg-white/5 border border-white/10 text-gray-300 hover:text-cyan-300 hover:bg-cyan-400/10'
-                                  : 'opacity-40 cursor-not-allowed bg-white/5 border border-white/10 text-gray-500'
+                                  ? 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                                  : 'opacity-40 cursor-not-allowed bg-slate-100 border border-slate-200 text-slate-400'
                               }`}
                             >
-                              <Lightbulb className="w-3.5 h-3.5" />
+                              <Lightbulb className="w-3.5 h-3.5 text-amber-600" />
                               {isHintRevealed ? 'Hint Active' : `Use Hint (${hintsRemaining} left)`}
                             </button>
                           )}
                         </div>
 
                         {/* Question Text */}
-                        <MathRenderer content={q.question} className="text-base font-semibold text-white" />
+                        <div className="text-base font-semibold text-slate-900">
+                          <MathRenderer content={q.question} />
+                        </div>
 
                         {/* Revealed Hint Box */}
                         {isHintRevealed && (
                           <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
-                            className="p-3.5 rounded-xl bg-yellow-500/10 border border-yellow-500/30 text-yellow-200 text-xs space-y-1"
+                            className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-1"
                           >
-                            <span className="font-bold flex items-center gap-1.5 text-yellow-300">
-                              <Lightbulb className="w-3.5 h-3.5" /> AI Guidance Hint:
+                            <span className="font-bold flex items-center gap-1.5 text-amber-900">
+                              <Lightbulb className="w-3.5 h-3.5 text-amber-600" /> AI Guidance Hint:
                             </span>
                             <MathRenderer content={q.hint} />
                           </motion.div>
@@ -806,12 +807,12 @@ export default function LearnBySubjectsPage() {
                             const isSelected = studentAns === optIdx
                             const isActual = q.correctAnswer === optIdx
 
-                            let optStyle = 'bg-white/5 border-white/10 text-slate-200 hover:bg-white/10 hover:border-white/20'
+                            let optStyle = 'bg-slate-50/80 border-slate-200 text-slate-700 hover:bg-white hover:border-slate-300'
                             if (testSubmitted) {
-                              if (isActual) optStyle = 'bg-emerald-500/20 border-emerald-500 text-emerald-200 font-bold shadow-[0_0_12px_rgba(16,185,129,0.2)]'
-                              else if (isSelected && !isActual) optStyle = 'bg-red-500/20 border-red-500 text-red-300 line-through'
+                              if (isActual) optStyle = 'bg-emerald-50 border-emerald-400 text-emerald-900 font-semibold'
+                              else if (isSelected && !isActual) optStyle = 'bg-rose-50 border-rose-300 text-rose-800 line-through'
                             } else if (isSelected) {
-                              optStyle = 'bg-cyan-400/20 border-cyan-400 text-white shadow-[0_0_12px_rgba(0,212,255,0.25)] ring-1 ring-cyan-400/40'
+                              optStyle = 'bg-blue-50 border-blue-400 text-blue-900 font-medium ring-1 ring-blue-300'
                             }
 
                             return (
@@ -820,12 +821,12 @@ export default function LearnBySubjectsPage() {
                                 type="button"
                                 disabled={testSubmitted}
                                 onClick={() => setSelectedAnswers(prev => ({ ...prev, [q.id]: optIdx }))}
-                                className={`p-4 rounded-2xl border text-xs sm:text-sm text-left flex items-center gap-3 transition-all cursor-pointer ${optStyle}`}
+                                className={`p-4 rounded-xl border text-xs sm:text-sm text-left flex items-center gap-3 transition-all cursor-pointer ${optStyle}`}
                               >
-                                <span className={`w-7 h-7 rounded-xl flex items-center justify-center font-black text-xs shrink-0 transition-colors ${
+                                <span className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 transition-colors ${
                                   isSelected 
-                                    ? 'bg-cyan-400 text-midnight-950 shadow-sm' 
-                                    : 'bg-white/10 text-slate-300'
+                                    ? 'bg-blue-600 text-white shadow-sm' 
+                                    : 'bg-slate-200/80 text-slate-700'
                                 }`}>
                                   {String.fromCharCode(65 + optIdx)}
                                 </span>
@@ -837,8 +838,8 @@ export default function LearnBySubjectsPage() {
 
                         {/* Explanation after submission */}
                         {testSubmitted && (
-                          <div className="mt-3 p-3.5 rounded-xl bg-cyan-400/5 border border-cyan-400/15 space-y-1 text-xs">
-                            <span className="font-bold text-cyan-400 block">Explanation:</span>
+                          <div className="mt-3 p-3.5 rounded-xl bg-blue-50 border border-blue-200 space-y-1 text-xs text-slate-800">
+                            <span className="font-bold text-blue-800 block">Explanation:</span>
                             <MathRenderer content={q.explanation} />
                           </div>
                         )}
@@ -849,22 +850,22 @@ export default function LearnBySubjectsPage() {
 
                 {/* Bottom Test Controls */}
                 {!testSubmitted ? (
-                  <div className="flex justify-end pt-4 border-t border-white/10">
+                  <div className="flex justify-end pt-4 border-t border-slate-200">
                     <button
                       onClick={() => setTestSubmitted(true)}
                       disabled={Object.keys(selectedAnswers).length === 0}
-                      className="px-6 py-3 rounded-xl bg-cyan-400 hover:bg-cyan-300 disabled:opacity-50 text-midnight-900 font-extrabold text-xs flex items-center gap-2 shadow-[0_0_15px_rgba(0,212,255,0.3)] transition-all cursor-pointer"
+                      className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-semibold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer"
                     >
                       <CheckCircle2 className="w-4 h-4" />
                       Submit & Grade Assessment
                     </button>
                   </div>
                 ) : (
-                  <div className="p-6 rounded-2xl bg-midnight-900/90 border border-cyan-400/40 space-y-4 text-center">
-                    <h3 className="text-xl font-extrabold text-white">
-                      Your Score: <span className="gradient-text">{scoreReport.score}</span> / {scoreReport.total} ({scoreReport.percentage}%)
+                  <div className="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-card space-y-4 text-center">
+                    <h3 className="text-xl font-bold text-slate-900">
+                      Your Score: <span className="text-blue-600 font-extrabold">{scoreReport.score}</span> / {scoreReport.total} ({scoreReport.percentage}%)
                     </h3>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-slate-600">
                       Hints Used: {scoreReport.hintsUsed} / 3 • {scoreReport.percentage >= 75 ? '🎉 Great job on this chapter!' : 'Review the steps in the Animation tab to boost your concepts.'}
                     </p>
                     <button
@@ -874,7 +875,7 @@ export default function LearnBySubjectsPage() {
                         setHintsRemaining(3)
                         setTestSubmitted(false)
                       }}
-                      className="px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold text-xs inline-flex items-center gap-2 transition-all cursor-pointer"
+                      className="px-5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-800 font-semibold text-xs inline-flex items-center gap-2 transition-all cursor-pointer"
                     >
                       <RotateCcw className="w-3.5 h-3.5" /> Retake Chapter Test
                     </button>

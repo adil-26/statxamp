@@ -107,18 +107,18 @@ export function VirtualScientificKeyboard({ onInsert, isOpen, onToggle }: Virtua
         <button
           type="button"
           onClick={onToggle}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all shadow-sm ${
             isOpen 
-              ? 'bg-cyan-400 text-midnight-900 border-cyan-400 shadow-[0_0_12px_rgba(0,212,255,0.3)]' 
-              : 'bg-white/5 border-white/10 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400/30'
+              ? 'bg-blue-600 text-white border-blue-600' 
+              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
           }`}
         >
-          <Calculator className="w-3.5 h-3.5" />
+          <Calculator className="w-3.5 h-3.5 text-blue-600 group-hover:text-blue-700" />
           <span>{isOpen ? 'Close Math / Scientific Keypad' : 'Open Math / Scientific Keypad'}</span>
         </button>
 
         {isOpen && (
-          <span className="text-[11px] text-gray-400">
+          <span className="text-[11px] text-slate-500">
             Click any symbol to insert into your question
           </span>
         )}
@@ -126,16 +126,16 @@ export function VirtualScientificKeyboard({ onInsert, isOpen, onToggle }: Virtua
 
       {/* Expanded Scientific Keyboard Console */}
       {isOpen && (
-        <div className="bg-midnight-900/95 border border-cyan-400/30 rounded-2xl p-3 sm:p-4 space-y-3 shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-bottom-2 duration-200">
+        <div className="bg-white border border-slate-200 rounded-2xl p-3 sm:p-4 space-y-3 shadow-card animate-in fade-in slide-in-from-bottom-2 duration-200">
           {/* Subject Tabs */}
-          <div className="flex items-center gap-1.5 border-b border-white/10 pb-2.5 overflow-x-auto">
+          <div className="flex items-center gap-1.5 border-b border-slate-100 pb-2.5 overflow-x-auto">
             <button
               type="button"
               onClick={() => setActiveTab('math')}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 activeTab === 'math'
-                  ? 'bg-cyan-400 text-midnight-900'
-                  : 'text-gray-400 hover:text-white bg-white/5'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 bg-slate-100'
               }`}
             >
               <BookOpen className="w-3 h-3" />
@@ -144,10 +144,10 @@ export function VirtualScientificKeyboard({ onInsert, isOpen, onToggle }: Virtua
             <button
               type="button"
               onClick={() => setActiveTab('physics')}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 activeTab === 'physics'
-                  ? 'bg-cyan-400 text-midnight-900'
-                  : 'text-gray-400 hover:text-white bg-white/5'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 bg-slate-100'
               }`}
             >
               <Atom className="w-3 h-3" />
@@ -156,10 +156,10 @@ export function VirtualScientificKeyboard({ onInsert, isOpen, onToggle }: Virtua
             <button
               type="button"
               onClick={() => setActiveTab('chemistry')}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 activeTab === 'chemistry'
-                  ? 'bg-cyan-400 text-midnight-900'
-                  : 'text-gray-400 hover:text-white bg-white/5'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 bg-slate-100'
               }`}
             >
               <FlaskConical className="w-3 h-3" />
@@ -168,10 +168,10 @@ export function VirtualScientificKeyboard({ onInsert, isOpen, onToggle }: Virtua
             <button
               type="button"
               onClick={() => setActiveTab('operators')}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 activeTab === 'operators'
-                  ? 'bg-cyan-400 text-midnight-900'
-                  : 'text-gray-400 hover:text-white bg-white/5'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 bg-slate-100'
               }`}
             >
               <Hash className="w-3 h-3" />
@@ -187,7 +187,7 @@ export function VirtualScientificKeyboard({ onInsert, isOpen, onToggle }: Virtua
                 type="button"
                 onClick={() => onInsert(keyItem.value)}
                 title={keyItem.desc}
-                className="h-9 px-2 rounded-xl bg-white/5 hover:bg-cyan-400/20 hover:border-cyan-400/50 border border-white/10 text-cyan-200 font-mono text-xs font-bold flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                className="h-9 px-2 rounded-xl bg-slate-50 hover:bg-blue-50 hover:border-blue-300 border border-slate-200 text-slate-800 font-mono text-xs font-semibold flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-xs"
               >
                 {keyItem.label}
               </button>

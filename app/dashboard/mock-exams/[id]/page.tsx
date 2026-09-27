@@ -234,23 +234,23 @@ export default function ExamRoomPage() {
   return (
     <div className="space-y-6">
       {/* Top Header Bar for Exam Room */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 backdrop-blur-xl">
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
         <div className="flex items-center gap-3">
           <Link href="/dashboard/mock-exams">
-            <button className="p-2 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 transition-all">
+            <button className="p-2 rounded-xl bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-200/80 transition-all cursor-pointer">
               <ArrowLeft className="w-5 h-5" />
             </button>
           </Link>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-bold text-cyan-400 bg-cyan-400/10 px-2 py-0.5 rounded-full border border-cyan-400/20">
+              <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200/70">
                 {examData.board} • {examData.classLevel}
               </span>
-              <span className="text-[11px] font-bold text-purple-400 bg-purple-400/10 px-2 py-0.5 rounded-full">
+              <span className="text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200/70">
                 {examData.subject}
               </span>
             </div>
-            <h1 className="text-lg sm:text-xl font-extrabold text-white mt-1">{examData.title}</h1>
+            <h1 className="text-lg sm:text-xl font-bold text-slate-900 mt-1">{examData.title}</h1>
           </div>
         </div>
 
@@ -258,17 +258,17 @@ export default function ExamRoomPage() {
         {!isExamSubmitted ? (
           <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
             {/* Sight Zoom Controls */}
-            <div className="flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/10 text-xs">
-              <span className="text-[10px] text-slate-400 font-bold px-1.5 uppercase">Sight:</span>
+            <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
+              <span className="text-[10px] text-slate-500 font-bold px-1.5 uppercase">Sight:</span>
               {(['normal', 'comfortable', 'large'] as const).map((scale) => (
                 <button
                   key={scale}
                   onClick={() => setSightScale(scale)}
                   title={`Adjust text size (${scale})`}
-                  className={`px-2 py-0.5 rounded-lg font-bold transition-all text-xs ${
+                  className={`px-2 py-0.5 rounded-lg font-bold transition-all text-xs cursor-pointer ${
                     sightScale === scale 
-                      ? 'bg-cyan-400 text-midnight-950 shadow-xs' 
-                      : 'text-slate-300 hover:text-white'
+                      ? 'bg-blue-600 text-white shadow-2xs' 
+                      : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
                   {scale === 'normal' ? 'A' : scale === 'comfortable' ? 'A+' : 'A++'}
@@ -276,25 +276,25 @@ export default function ExamRoomPage() {
               ))}
             </div>
 
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-xl font-mono font-bold text-sm border ${
+            <div className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-mono font-bold text-sm border ${
               timeLeft < 300 
-                ? 'bg-red-500/10 border-red-500/30 text-red-400 animate-pulse' 
-                : 'bg-cyan-400/10 border-cyan-400/30 text-cyan-400'
+                ? 'bg-red-50 border-red-200 text-red-700 animate-pulse' 
+                : 'bg-blue-50 border-blue-200 text-blue-700'
             }`}>
               <Clock className="w-4 h-4" />
-              <span>Time Left: {formatTime(timeLeft)}</span>
+              <span>Time: {formatTime(timeLeft)}</span>
             </div>
 
             <button
               onClick={() => setShowSubmitModal(true)}
-              className="px-5 py-2 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-midnight-900 font-bold text-xs rounded-xl shadow-[0_0_15px_rgba(0,212,255,0.2)] transition-all cursor-pointer"
+              className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl shadow-xs transition-all cursor-pointer"
             >
               Submit Exam
             </button>
           </div>
         ) : (
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1.5 rounded-xl bg-green-500/10 text-green-400 text-xs font-bold border border-green-500/20 flex items-center gap-1.5">
+            <span className="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200 flex items-center gap-1.5">
               <CheckCircle2 className="w-4 h-4" /> Exam Completed & Graded
             </span>
           </div>
@@ -306,26 +306,26 @@ export default function ExamRoomPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Active Question Workspace */}
           <div className="lg:col-span-8 space-y-6">
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl relative">
+            <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs relative">
               {/* Question Header */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-white/10">
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-slate-200">
                 <div className="flex items-center gap-3">
-                  <span className="px-3 py-1 rounded-xl bg-cyan-400/20 text-cyan-300 font-extrabold text-sm border border-cyan-400/30">
-                    Q {currentIdx + 1} of {examData.questions.length}
+                  <span className="px-3 py-1 rounded-xl bg-blue-50 text-blue-700 font-bold text-sm border border-blue-200/80">
+                    Question {currentIdx + 1} of {examData.questions.length}
                   </span>
-                  <span className="text-xs font-semibold text-slate-300">
-                    Chapter: <strong className="text-white">{currentQ.chapter}</strong>
+                  <span className="text-xs font-medium text-slate-500">
+                    Chapter: <strong className="text-slate-800">{currentQ.chapter}</strong>
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-xs font-semibold">
-                  <span className="text-xs text-slate-400 font-mono hidden md:inline bg-white/5 px-2 py-0.5 rounded-lg border border-white/10">
-                    Keys: A-D or 1-4 • Enter: Next
+                  <span className="text-xs text-slate-400 font-mono hidden md:inline bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">
+                    Keys: A-D or 1-4
                   </span>
-                  <span className="text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
+                  <span className="text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
                     +{currentQ.marks} Marks
                   </span>
                   {currentQ.negativeMarks > 0 && (
-                    <span className="text-red-400 bg-red-500/10 px-2.5 py-1 rounded-lg border border-red-500/20">
+                    <span className="text-rose-700 bg-rose-50 px-2.5 py-1 rounded-lg border border-rose-200">
                       -{currentQ.negativeMarks} Neg
                     </span>
                   )}
@@ -337,7 +337,7 @@ export default function ExamRoomPage() {
                 <MathRenderer 
                   content={currentQ.question} 
                   textSize={sightScale}
-                  className="font-medium text-white leading-relaxed" 
+                  className="font-medium text-slate-900 leading-relaxed" 
                 />
               </div>
 
@@ -348,38 +348,38 @@ export default function ExamRoomPage() {
                   return (
                     <motion.div
                       key={optIdx}
-                      whileHover={{ scale: 1.006 }}
+                      whileHover={{ scale: 1.004 }}
                       whileTap={{ scale: 0.995 }}
                       onClick={() => handleSelectOption(optIdx)}
-                      className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-center gap-4 ${
+                      className={`p-4 rounded-xl border transition-all cursor-pointer flex items-center gap-4 ${
                         isSelected
-                          ? 'bg-cyan-400/20 border-cyan-400 text-white shadow-[0_0_15px_rgba(0,212,255,0.25)] ring-1 ring-cyan-400/40'
-                          : 'bg-white/5 border-white/10 text-slate-200 hover:bg-white/10 hover:border-white/20'
+                          ? 'bg-blue-50/90 border-blue-500 text-slate-900 shadow-xs ring-1 ring-blue-500/30'
+                          : 'bg-slate-50/70 border-slate-200/90 text-slate-800 hover:bg-slate-100 hover:border-slate-300'
                       }`}
                     >
-                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-black text-xs shrink-0 transition-colors ${
+                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 transition-colors ${
                         isSelected
-                          ? 'bg-cyan-400 text-midnight-950 shadow-md'
-                          : 'bg-white/10 text-slate-300'
+                          ? 'bg-blue-600 text-white shadow-2xs'
+                          : 'bg-slate-200 text-slate-700'
                       }`}>
                         {String.fromCharCode(65 + optIdx)}
                       </div>
-                      <MathRenderer content={option} textSize={sightScale} className="font-medium leading-normal flex-1" />
-                      <span className="text-[10px] text-slate-500 font-mono hidden sm:inline">[{String.fromCharCode(65 + optIdx)} / {optIdx + 1}]</span>
+                      <MathRenderer content={option} textSize={sightScale} className="font-medium leading-normal flex-1 text-slate-800" />
+                      <span className="text-[10px] text-slate-400 font-mono hidden sm:inline">[{String.fromCharCode(65 + optIdx)}]</span>
                     </motion.div>
                   )
                 })}
               </div>
 
               {/* Question Navigation Controls */}
-              <div className="mt-10 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
+              <div className="mt-10 pt-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleToggleMarkReview}
-                    className={`px-4 py-2.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                    className={`px-4 py-2.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
                       markedForReview[currentIdx]
-                        ? 'bg-purple-500/20 border-purple-400 text-purple-300'
-                        : 'bg-white/5 border-white/10 text-gray-400 hover:text-white hover:bg-white/10'
+                        ? 'bg-purple-50 border-purple-300 text-purple-700'
+                        : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-200/70'
                     }`}
                   >
                     <Bookmark className="w-3.5 h-3.5" />
@@ -388,7 +388,7 @@ export default function ExamRoomPage() {
                   {selectedAnswers[currentIdx] !== undefined && (
                     <button
                       onClick={handleClearResponse}
-                      className="px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs text-gray-400 hover:text-red-400 hover:bg-white/10 transition-all font-semibold"
+                      className="px-4 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-600 hover:text-rose-600 hover:bg-slate-200/70 transition-all font-semibold cursor-pointer"
                     >
                       Clear Answer
                     </button>
@@ -399,14 +399,14 @@ export default function ExamRoomPage() {
                   <button
                     onClick={handlePrevious}
                     disabled={currentIdx === 0}
-                    className="px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-gray-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center gap-1"
+                    className="px-4 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-200/70 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-1 cursor-pointer"
                   >
                     <ArrowLeft className="w-3.5 h-3.5" /> Previous
                   </button>
 
                   <button
                     onClick={handleSaveAndNext}
-                    className="px-5 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-midnight-900 text-xs font-bold transition-all flex items-center gap-1 shadow-[0_0_10px_rgba(0,212,255,0.2)]"
+                    className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-all flex items-center gap-1 shadow-xs cursor-pointer"
                   >
                     {currentIdx === examData.questions.length - 1 ? 'Save & Review' : 'Save & Next'}
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -418,31 +418,31 @@ export default function ExamRoomPage() {
 
           {/* Right Column: Question Palette Console */}
           <div className="lg:col-span-4 space-y-6">
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-xl space-y-6">
-              <h3 className="font-bold text-white text-sm tracking-wide">Question Navigation Palette</h3>
+            <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs space-y-5">
+              <h3 className="font-bold text-slate-900 text-sm tracking-wide">Question Navigation Palette</h3>
 
-              {/* Status Legend with Accessible Visual Icons */}
-              <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="flex items-center gap-2 text-slate-200">
-                  <span className="w-4 h-4 rounded-md bg-emerald-500/20 border border-emerald-400 text-emerald-400 flex items-center justify-center font-bold text-[10px]">
+              {/* Status Legend */}
+              <div className="grid grid-cols-2 gap-2.5 text-xs">
+                <div className="flex items-center gap-2 text-slate-700">
+                  <span className="w-4 h-4 rounded-md bg-emerald-50 border border-emerald-300 text-emerald-700 flex items-center justify-center font-bold text-[10px]">
                     ✓
                   </span>
                   <span>Answered ({Object.keys(selectedAnswers).length})</span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-200">
-                  <span className="w-4 h-4 rounded-md bg-purple-500/20 border border-purple-400 text-purple-300 flex items-center justify-center font-bold text-[10px]">
+                <div className="flex items-center gap-2 text-slate-700">
+                  <span className="w-4 h-4 rounded-md bg-purple-50 border border-purple-300 text-purple-700 flex items-center justify-center font-bold text-[10px]">
                     ★
                   </span>
                   <span>Review ({Object.keys(markedForReview).filter(k => markedForReview[Number(k)]).length})</span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-200">
-                  <span className="w-4 h-4 rounded-md bg-amber-500/20 border border-amber-400 text-amber-400 flex items-center justify-center font-bold text-[10px]">
+                <div className="flex items-center gap-2 text-slate-700">
+                  <span className="w-4 h-4 rounded-md bg-amber-50 border border-amber-300 text-amber-700 flex items-center justify-center font-bold text-[10px]">
                     !
                   </span>
                   <span>Skipped ({examData.questions.length - Object.keys(selectedAnswers).length})</span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-400">
-                  <span className="w-4 h-4 rounded-md bg-white/5 border border-white/20 text-slate-400 flex items-center justify-center font-bold text-[10px]">
+                <div className="flex items-center gap-2 text-slate-500">
+                  <span className="w-4 h-4 rounded-md bg-slate-100 border border-slate-200 text-slate-500 flex items-center justify-center font-bold text-[10px]">
                     ○
                   </span>
                   <span>Not Visited</span>
@@ -450,29 +450,29 @@ export default function ExamRoomPage() {
               </div>
 
               {/* Question Number Badges Grid */}
-              <div className="pt-4 border-t border-white/10">
-                <div className="grid grid-cols-5 gap-2.5">
+              <div className="pt-4 border-t border-slate-200">
+                <div className="grid grid-cols-5 gap-2">
                   {examData.questions.map((_, idx) => {
                     const status = getQuestionStatus(idx)
                     const isCurrent = currentIdx === idx
 
-                    let badgeStyle = 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10'
-                    if (status === 'answered') badgeStyle = 'bg-green-500/20 text-green-400 border border-green-500/40 shadow-[0_0_10px_rgba(34,197,94,0.2)]'
-                    else if (status === 'marked_review') badgeStyle = 'bg-purple-500/20 text-purple-300 border border-purple-500/40'
-                    else if (status === 'answered_marked_review') badgeStyle = 'bg-purple-500/30 text-purple-200 border border-purple-400 relative'
-                    else if (status === 'not_answered') badgeStyle = 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
+                    let badgeStyle = 'bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200/70'
+                    if (status === 'answered') badgeStyle = 'bg-emerald-50 text-emerald-700 border border-emerald-300 font-bold'
+                    else if (status === 'marked_review') badgeStyle = 'bg-purple-50 text-purple-700 border border-purple-300 font-bold'
+                    else if (status === 'answered_marked_review') badgeStyle = 'bg-purple-100 text-purple-800 border border-purple-400 font-bold relative'
+                    else if (status === 'not_answered') badgeStyle = 'bg-amber-50 text-amber-700 border border-amber-300 font-bold'
 
                     return (
                       <button
                         key={idx}
                         onClick={() => setCurrentIdx(idx)}
-                        className={`h-10 rounded-xl font-bold text-xs transition-all flex items-center justify-center relative cursor-pointer ${badgeStyle} ${
-                          isCurrent ? 'ring-2 ring-cyan-400 scale-105' : ''
+                        className={`h-9 rounded-xl font-bold text-xs transition-all flex items-center justify-center relative cursor-pointer ${badgeStyle} ${
+                          isCurrent ? 'ring-2 ring-blue-600 scale-105' : ''
                         }`}
                       >
                         {idx + 1}
                         {status === 'answered_marked_review' && (
-                          <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-green-400" />
+                          <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-500" />
                         )}
                       </button>
                     )
@@ -481,13 +481,13 @@ export default function ExamRoomPage() {
               </div>
 
               {/* High Weightage Syllabus Tips */}
-              <div className="pt-4 border-t border-white/10 space-y-2">
-                <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-wider block">
+              <div className="pt-4 border-t border-slate-200 space-y-2">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
                   10-Year Weightage Insights
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {examData.highWeightageTopics.map((topic, i) => (
-                    <span key={i} className="text-[10px] font-medium bg-white/5 border border-white/10 text-gray-300 px-2 py-0.5 rounded-md">
+                    <span key={i} className="text-[10px] font-medium bg-slate-100 border border-slate-200 text-slate-700 px-2 py-0.5 rounded-md">
                       {topic}
                     </span>
                   ))}
@@ -500,18 +500,16 @@ export default function ExamRoomPage() {
         /* Post-Exam Scorecard & Comprehensive Solution Review */
         <div className="space-y-8">
           {/* Result Highlights Banner */}
-          <div className="bg-gradient-to-br from-midnight-900 to-cyan-950/40 border border-cyan-400/30 rounded-3xl p-6 sm:p-8 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-cyan-400/5 blur-3xl" />
-
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs relative overflow-hidden">
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-              <div className="space-y-3 text-center md:text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-cyan-400 text-xs font-semibold">
+              <div className="space-y-2 text-center md:text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold">
                   <Award className="w-3.5 h-3.5" /> Performance Report
                 </div>
-                <h2 className="text-3xl font-extrabold text-white">
-                  Score: <span className="gradient-text">{results.score}</span> / {results.totalPossibleMarks}
+                <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                  Score: <span className="text-blue-600">{results.score}</span> / {results.totalPossibleMarks}
                 </h2>
-                <p className="text-sm text-gray-400 max-w-lg">
+                <p className="text-sm text-slate-600 max-w-lg">
                   {results.percentage >= 75 
                     ? '🎉 Outstanding work! You have strong mastery over the recurring 10-year question patterns for this paper.' 
                     : results.percentage >= 50 
@@ -521,40 +519,40 @@ export default function ExamRoomPage() {
               </div>
 
               {/* Quick Metrics Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full md:w-auto">
-                <div className="bg-white/5 border border-white/10 p-4 rounded-2xl text-center">
-                  <div className="text-2xl font-black text-cyan-400">{results.accuracy}%</div>
-                  <div className="text-[11px] font-bold text-gray-400 mt-1">Accuracy</div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full md:w-auto">
+                <div className="bg-slate-50 border border-slate-200/80 p-4 rounded-xl text-center">
+                  <div className="text-2xl font-black text-blue-600">{results.accuracy}%</div>
+                  <div className="text-[11px] font-semibold text-slate-500 mt-1">Accuracy</div>
                 </div>
-                <div className="bg-white/5 border border-white/10 p-4 rounded-2xl text-center">
-                  <div className="text-2xl font-black text-green-400">{results.correctCount}</div>
-                  <div className="text-[11px] font-bold text-gray-400 mt-1">Correct</div>
+                <div className="bg-emerald-50/60 border border-emerald-200/80 p-4 rounded-xl text-center">
+                  <div className="text-2xl font-black text-emerald-700">{results.correctCount}</div>
+                  <div className="text-[11px] font-semibold text-emerald-600 mt-1">Correct</div>
                 </div>
-                <div className="bg-white/5 border border-white/10 p-4 rounded-2xl text-center">
-                  <div className="text-2xl font-black text-red-400">{results.incorrectCount}</div>
-                  <div className="text-[11px] font-bold text-gray-400 mt-1">Incorrect</div>
+                <div className="bg-rose-50/60 border border-rose-200/80 p-4 rounded-xl text-center">
+                  <div className="text-2xl font-black text-rose-700">{results.incorrectCount}</div>
+                  <div className="text-[11px] font-semibold text-rose-600 mt-1">Incorrect</div>
                 </div>
-                <div className="bg-white/5 border border-white/10 p-4 rounded-2xl text-center">
-                  <div className="text-2xl font-black text-gray-400">{results.unattemptedCount}</div>
-                  <div className="text-[11px] font-bold text-gray-400 mt-1">Skipped</div>
+                <div className="bg-slate-50 border border-slate-200/80 p-4 rounded-xl text-center">
+                  <div className="text-2xl font-black text-slate-600">{results.unattemptedCount}</div>
+                  <div className="text-[11px] font-semibold text-slate-500 mt-1">Skipped</div>
                 </div>
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-4 items-center justify-between">
-              <span className="text-xs text-gray-400 font-medium">
-                Time taken: <strong className="text-white">{Math.floor(results.timeTaken / 60)}m {results.timeTaken % 60}s</strong>
+            <div className="mt-8 pt-6 border-t border-slate-200 flex flex-wrap gap-4 items-center justify-between">
+              <span className="text-xs text-slate-500 font-medium">
+                Time taken: <strong className="text-slate-900">{Math.floor(results.timeTaken / 60)}m {results.timeTaken % 60}s</strong>
               </span>
               <div className="flex gap-3">
                 <button
                   onClick={handleRetake}
-                  className="px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-semibold text-xs hover:bg-white/10 transition-all flex items-center gap-1.5"
+                  className="px-5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-200/70 transition-all flex items-center gap-1.5 cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" /> Retake Exam
                 </button>
                 <Link href="/dashboard/mock-exams">
-                  <button className="px-5 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-midnight-900 font-bold text-xs transition-all">
+                  <button className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-all shadow-xs cursor-pointer">
                     More Mock Exams
                   </button>
                 </Link>
@@ -564,8 +562,8 @@ export default function ExamRoomPage() {
 
           {/* Question-by-Question Solution Breakdown */}
           <div className="space-y-6">
-            <h3 className="text-xl font-extrabold text-white flex items-center gap-2">
-              <FileText className="w-5 h-5 text-cyan-400" />
+            <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+              <FileText className="w-5 h-5 text-blue-600" />
               Detailed Solutions & Explanations
             </h3>
 
@@ -578,40 +576,40 @@ export default function ExamRoomPage() {
                 return (
                   <div
                     key={q.id}
-                    className={`bg-white/5 border rounded-3xl p-6 sm:p-7 space-y-4 transition-all ${
+                    className={`bg-white border rounded-2xl p-6 sm:p-7 space-y-4 shadow-xs transition-all ${
                       isCorrect 
-                        ? 'border-green-500/30' 
+                        ? 'border-emerald-200 bg-emerald-50/10' 
                         : isSkipped 
-                        ? 'border-white/10' 
-                        : 'border-red-500/30'
+                        ? 'border-slate-200' 
+                        : 'border-rose-200 bg-rose-50/10'
                     }`}
                   >
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-3">
-                        <span className="font-extrabold text-sm text-white bg-white/10 px-3 py-1 rounded-xl">
+                        <span className="font-bold text-sm text-slate-900 bg-slate-100 px-3 py-1 rounded-xl">
                           Question {idx + 1}
                         </span>
-                        <span className="text-xs font-semibold text-gray-400">
+                        <span className="text-xs font-medium text-slate-500">
                           {q.chapter}
                         </span>
                       </div>
 
                       {isCorrect ? (
-                        <span className="inline-flex items-center gap-1 text-xs font-bold text-green-400 bg-green-500/10 px-3 py-1 rounded-full border border-green-500/20">
+                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Correct (+{q.marks})
                         </span>
                       ) : isSkipped ? (
-                        <span className="inline-flex items-center gap-1 text-xs font-bold text-gray-400 bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
                           Skipped (0)
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-xs font-bold text-red-400 bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
+                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-rose-700 bg-rose-50 px-3 py-1 rounded-full border border-rose-200">
                           <XCircle className="w-3.5 h-3.5" /> Incorrect (-{q.negativeMarks || 0})
                         </span>
                       )}
                     </div>
 
-                    <p className="text-base font-medium text-white leading-relaxed whitespace-pre-line">
+                    <p className="text-base font-medium text-slate-900 leading-relaxed whitespace-pre-line">
                       {q.question}
                     </p>
 
@@ -621,32 +619,32 @@ export default function ExamRoomPage() {
                         const isChosenByStudent = studentAns === optIdx
                         const isActualCorrect = q.correctAnswer === optIdx
 
-                        let optClass = 'bg-white/5 border-white/10 text-gray-400'
+                        let optClass = 'bg-slate-50 border-slate-200 text-slate-600'
                         if (isActualCorrect) {
-                          optClass = 'bg-green-500/15 border-green-500/50 text-green-300 font-semibold'
+                          optClass = 'bg-emerald-50 border-emerald-300 text-emerald-800 font-semibold'
                         } else if (isChosenByStudent && !isActualCorrect) {
-                          optClass = 'bg-red-500/15 border-red-500/50 text-red-300 line-through'
+                          optClass = 'bg-rose-50 border-rose-300 text-rose-800 line-through'
                         }
 
                         return (
                           <div key={optIdx} className={`p-3.5 rounded-xl border text-xs flex items-center gap-3 ${optClass}`}>
-                            <span className="w-6 h-6 rounded-lg bg-black/20 flex items-center justify-center font-bold shrink-0">
+                            <span className="w-6 h-6 rounded-lg bg-black/5 flex items-center justify-center font-bold shrink-0">
                               {String.fromCharCode(65 + optIdx)}
                             </span>
                             <span className="flex-1">{opt}</span>
-                            {isActualCorrect && <Check className="w-4 h-4 text-green-400 shrink-0" />}
+                            {isActualCorrect && <Check className="w-4 h-4 text-emerald-600 shrink-0" />}
                           </div>
                         )
                       })}
                     </div>
 
                     {/* AI Step-by-Step Explanation Box */}
-                    <div className="mt-4 p-4 rounded-2xl bg-cyan-400/5 border border-cyan-400/20 space-y-1.5">
-                      <div className="flex items-center gap-2 text-xs font-bold text-cyan-400">
+                    <div className="mt-4 p-4 rounded-xl bg-blue-50/60 border border-blue-200/70 space-y-1.5">
+                      <div className="flex items-center gap-2 text-xs font-bold text-blue-700">
                         <Sparkles className="w-3.5 h-3.5" />
-                        AI Step-by-Step Explanation:
+                        Step-by-Step Explanation:
                       </div>
-                      <MathRenderer content={q.explanation} className="text-xs text-gray-300 leading-relaxed font-sans" />
+                      <MathRenderer content={q.explanation} className="text-xs text-slate-700 leading-relaxed font-sans" />
                     </div>
                   </div>
                 )
@@ -659,43 +657,43 @@ export default function ExamRoomPage() {
       {/* Submit Confirmation Modal */}
       <AnimatePresence>
         {showSubmitModal && (
-          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-midnight-900 border border-white/10 rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-6 shadow-2xl relative"
+              className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 max-w-md w-full space-y-6 shadow-2xl relative"
             >
-              <div className="w-12 h-12 rounded-2xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center text-cyan-400 mx-auto">
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 mx-auto">
                 <AlertTriangle className="w-6 h-6" />
               </div>
 
               <div className="text-center space-y-2">
-                <h3 className="text-xl font-extrabold text-white">Ready to Submit?</h3>
-                <p className="text-xs text-gray-400">
+                <h3 className="text-xl font-bold text-slate-900">Ready to Submit?</h3>
+                <p className="text-xs text-slate-500">
                   You cannot modify answers after submitting. Here is your current progress summary:
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 py-3 border-y border-white/10 text-xs">
-                <div className="text-gray-400">Answered Questions:</div>
-                <div className="text-right font-bold text-green-400">{Object.keys(selectedAnswers).length}</div>
-                <div className="text-gray-400">Unanswered Questions:</div>
-                <div className="text-right font-bold text-orange-400">{examData.questions.length - Object.keys(selectedAnswers).length}</div>
-                <div className="text-gray-400">Marked for Review:</div>
-                <div className="text-right font-bold text-purple-400">{Object.keys(markedForReview).filter(k => markedForReview[Number(k)]).length}</div>
+              <div className="grid grid-cols-2 gap-3 py-3 border-y border-slate-200 text-xs">
+                <div className="text-slate-500">Answered Questions:</div>
+                <div className="text-right font-bold text-emerald-600">{Object.keys(selectedAnswers).length}</div>
+                <div className="text-slate-500">Unanswered Questions:</div>
+                <div className="text-right font-bold text-amber-600">{examData.questions.length - Object.keys(selectedAnswers).length}</div>
+                <div className="text-slate-500">Marked for Review:</div>
+                <div className="text-right font-bold text-purple-600">{Object.keys(markedForReview).filter(k => markedForReview[Number(k)]).length}</div>
               </div>
 
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowSubmitModal(false)}
-                  className="flex-1 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-300 font-semibold text-xs hover:bg-white/10 transition-all cursor-pointer"
+                  className="flex-1 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-200/70 transition-all cursor-pointer"
                 >
                   Continue Test
                 </button>
                 <button
                   onClick={handleSubmitExam}
-                  className="flex-1 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-midnight-900 font-bold text-xs transition-all shadow-[0_0_10px_rgba(0,212,255,0.2)] cursor-pointer"
+                  className="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-all shadow-xs cursor-pointer"
                 >
                   Confirm & Submit
                 </button>

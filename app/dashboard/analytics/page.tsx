@@ -36,37 +36,37 @@ export default function AnalyticsPage() {
     <div className="space-y-8">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-extrabold text-white tracking-tight">
-          Performance <span className="gradient-text">Analytics</span>
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+          Performance <span className="text-blue-600">Analytics</span>
         </h1>
-        <p className="text-gray-400 text-sm mt-1">AI-driven analysis of your study habits, scores, and performance.</p>
+        <p className="text-slate-500 text-sm mt-1">AI-driven analysis of your study habits, scores, and performance.</p>
       </div>
 
       {/* Row 1: Daily Study Hours & Accuracy */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Daily Study Hours */}
-        <div className="lg:col-span-8 bg-white/5 border border-white/10 rounded-3xl p-6 glow-hover flex flex-col justify-between h-96">
+        <div className="lg:col-span-8 bg-white border border-slate-200/90 rounded-2xl p-6 shadow-card flex flex-col justify-between h-96">
           <div>
-            <h3 className="text-lg font-bold text-white mb-1">Daily Study Hours</h3>
-            <p className="text-xs text-gray-400">Total time allocated to exam preparation this week</p>
+            <h3 className="text-lg font-bold text-slate-900 mb-1">Daily Study Hours</h3>
+            <p className="text-xs text-slate-500">Total time allocated to exam preparation this week</p>
           </div>
           <div className="flex items-end justify-between h-56 pt-4">
             {weeklyStudyHours.map((d, i) => {
               const heightPercent = (d.hours / 10) * 100
               return (
                 <div key={d.day} className="flex flex-col items-center group w-full">
-                  <div className="relative w-8 bg-cyan-400/10 border border-cyan-400/20 rounded-t-lg flex flex-col justify-end h-40 overflow-hidden">
+                  <div className="relative w-8 bg-slate-100 border border-slate-200 rounded-t-lg flex flex-col justify-end h-40 overflow-hidden">
                     <motion.div
                       initial={{ height: 0 }}
                       animate={{ height: `${heightPercent}%` }}
                       transition={{ duration: 1, ease: 'easeOut', delay: i * 0.1 }}
-                      className="w-full bg-gradient-to-t from-cyan-600 to-cyan-400 rounded-t-md relative"
+                      className="w-full bg-gradient-to-t from-blue-600 to-indigo-500 rounded-t-md relative shadow-sm"
                     >
-                      <div className="absolute top-0 left-0 right-0 h-1 bg-white shadow-[0_0_10px_#fff]" />
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-white/70" />
                     </motion.div>
                   </div>
-                  <span className="text-xs text-gray-400 mt-2 font-medium">{d.day}</span>
-                  <span className="text-[10px] text-cyan-400 font-bold mt-0.5">{d.hours}h</span>
+                  <span className="text-xs text-slate-500 mt-2 font-medium">{d.day}</span>
+                  <span className="text-[10px] text-blue-700 font-bold mt-0.5">{d.hours}h</span>
                 </div>
               )
             })}
@@ -74,10 +74,10 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Accuracy Ring */}
-        <div className="lg:col-span-4 bg-white/5 border border-white/10 rounded-3xl p-6 glow-hover flex flex-col justify-between h-96">
+        <div className="lg:col-span-4 bg-white border border-slate-200/90 rounded-2xl p-6 shadow-card flex flex-col justify-between h-96">
           <div>
-            <h3 className="text-lg font-bold text-white mb-1">Practice Accuracy</h3>
-            <p className="text-xs text-gray-400">Correct answers ratio on mock tests</p>
+            <h3 className="text-lg font-bold text-slate-900 mb-1">Practice Accuracy</h3>
+            <p className="text-xs text-slate-500">Correct answers ratio on mock tests</p>
           </div>
 
           <div className="relative flex items-center justify-center py-6">
@@ -86,7 +86,7 @@ export default function AnalyticsPage() {
                 cx="80"
                 cy="80"
                 r={accuracyRadius}
-                stroke="rgba(255, 255, 255, 0.05)"
+                stroke="#e2e8f0"
                 strokeWidth="10"
                 fill="transparent"
               />
@@ -94,7 +94,7 @@ export default function AnalyticsPage() {
                 cx="80"
                 cy="80"
                 r={accuracyRadius}
-                stroke="#00d4ff"
+                stroke="#2563eb"
                 strokeWidth="10"
                 fill="transparent"
                 strokeDasharray={accuracyCircumference}
@@ -104,14 +104,14 @@ export default function AnalyticsPage() {
               />
             </svg>
             <div className="absolute text-center">
-              <span className="text-3xl font-extrabold text-white">78%</span>
-              <span className="text-[10px] text-gray-400 block font-semibold mt-1">Accuracy</span>
+              <span className="text-3xl font-extrabold text-slate-900">78%</span>
+              <span className="text-[10px] text-slate-500 block font-medium mt-1">Accuracy</span>
             </div>
           </div>
 
-          <div className="flex justify-between items-center bg-white/5 border border-white/10 p-3 rounded-2xl text-xs">
-            <span className="text-gray-400 font-semibold">Total MCQs Solved</span>
-            <span className="font-extrabold text-white">1,480</span>
+          <div className="flex justify-between items-center bg-slate-50 border border-slate-200 p-3 rounded-xl text-xs">
+            <span className="text-slate-600 font-medium">Total MCQs Solved</span>
+            <span className="font-bold text-slate-900">1,480</span>
           </div>
         </div>
       </div>
@@ -119,20 +119,20 @@ export default function AnalyticsPage() {
       {/* Row 2: Subject Progress & Weak Topics */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Subject wise progress list */}
-        <div className="lg:col-span-6 bg-white/5 border border-white/10 rounded-3xl p-6 glow-hover space-y-6">
+        <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-2xl p-6 shadow-card space-y-6">
           <div>
-            <h3 className="text-lg font-bold text-white">Subject Completion</h3>
-            <p className="text-xs text-gray-400">Detailed completion status of curriculum</p>
+            <h3 className="text-lg font-bold text-slate-900">Subject Completion</h3>
+            <p className="text-xs text-slate-500">Detailed completion status of curriculum</p>
           </div>
 
           <div className="space-y-4">
             {subjectProgress.map((sub) => (
               <div key={sub.name} className="space-y-2">
-                <div className="flex justify-between text-xs font-bold">
-                  <span className="text-white">{sub.name}</span>
-                  <span className="text-cyan-400">{sub.completed}%</span>
+                <div className="flex justify-between text-xs font-semibold">
+                  <span className="text-slate-800">{sub.name}</span>
+                  <span className="text-blue-600 font-bold">{sub.completed}%</span>
                 </div>
-                <div className="h-2 w-full bg-white/5 border border-white/10 rounded-full overflow-hidden">
+                <div className="h-2 w-full bg-slate-100 border border-slate-200 rounded-full overflow-hidden">
                   <div className={`h-full ${sub.color}`} style={{ width: `${sub.completed}%` }} />
                 </div>
               </div>
@@ -141,26 +141,26 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Weak Topics & AI Recommendations */}
-        <div className="lg:col-span-6 bg-white/5 border border-white/10 rounded-3xl p-6 glow-hover space-y-6">
+        <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-2xl p-6 shadow-card space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-bold text-white">Weak Area analysis</h3>
-              <p className="text-xs text-gray-400">Identified concepts below threshold performance</p>
+              <h3 className="text-lg font-bold text-slate-900">Weak Area analysis</h3>
+              <p className="text-xs text-slate-500">Identified concepts below threshold performance</p>
             </div>
-            <div className="p-2 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 rounded-xl">
+            <div className="p-2 bg-amber-50 border border-amber-200 text-amber-600 rounded-xl">
               <AlertTriangle className="w-5 h-5" />
             </div>
           </div>
 
           <div className="space-y-4">
             {weakTopics.map((topic, i) => (
-              <div key={i} className="p-4 bg-white/5 border border-white/10 rounded-2xl space-y-2 relative overflow-hidden group">
+              <div key={i} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2 relative overflow-hidden group">
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-bold text-white">{topic.subject} - {topic.topic}</span>
-                  <span className="text-xs font-bold text-red-400 bg-red-500/10 px-2 py-0.5 rounded-full">{topic.score}</span>
+                  <span className="text-xs font-bold text-slate-900">{topic.subject} - {topic.topic}</span>
+                  <span className="text-xs font-bold text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full">{topic.score}</span>
                 </div>
-                <div className="flex gap-2 text-xs text-cyan-400 leading-relaxed font-semibold bg-cyan-400/5 p-3 rounded-xl border border-cyan-400/10 mt-1">
-                  <Brain className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                <div className="flex gap-2 text-xs text-blue-900 leading-relaxed font-medium bg-blue-50/80 p-3 rounded-xl border border-blue-200/70 mt-1">
+                  <Brain className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
                   <p>{topic.recommend}</p>
                 </div>
               </div>

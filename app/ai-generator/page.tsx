@@ -104,28 +104,26 @@ export default function AIGeneratorPage() {
   }
 
   return (
-    <main className="min-h-screen bg-midnight-900 text-white relative overflow-hidden">
-      {/* Background grid */}
-      <div className="absolute inset-0 cyber-grid opacity-30 pointer-events-none" />
-      <div className="absolute top-20 left-10 w-96 h-96 rounded-full bg-cyan-400/5 blur-3xl pointer-events-none" />
+    <main className="min-h-screen bg-slate-50 text-slate-900 relative overflow-hidden">
+      {/* Background soft tint */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-blue-50/50 blur-3xl pointer-events-none" />
       
       {/* Header navbar */}
-      <header className="fixed top-0 left-0 right-0 z-50 glass-strong py-4 px-6 border-b border-cyan-400/10">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md py-4 px-6 border-b border-slate-200/90 shadow-xs">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400/20 to-cyan-600/20 
-                            flex items-center justify-center glow-border">
-              <span className="text-xl font-bold gradient-text">S</span>
+            <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-lg shadow-sm">
+              S
             </div>
-            <span className="text-xl font-bold">
-              Stat<span className="text-cyan-400">Xam</span>
+            <span className="text-xl font-bold tracking-tight text-slate-900">
+              Stat<span className="text-blue-600">Xam</span>
             </span>
           </Link>
           <div className="flex items-center gap-3">
-            <Link href="/dashboard/mock-exams" className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-gray-300 font-semibold flex items-center gap-2 hover:bg-white/10 text-xs">
-              <Play className="w-3.5 h-3.5 text-cyan-400" /> Mock Exams
+            <Link href="/dashboard/mock-exams" className="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 font-semibold flex items-center gap-2 hover:bg-slate-50 text-xs shadow-xs transition-colors">
+              <Play className="w-3.5 h-3.5 text-blue-600 fill-current" /> Mock Exams
             </Link>
-            <Link href="/dashboard" className="px-5 py-2 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-midnight-900 font-bold flex items-center gap-2 text-xs shadow-[0_0_12px_rgba(0,212,255,0.25)]">
+            <Link href="/dashboard" className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold flex items-center gap-2 text-xs shadow-sm transition-colors">
               Dashboard
             </Link>
           </div>
@@ -135,37 +133,37 @@ export default function AIGeneratorPage() {
       {/* Main Form container */}
       <section className="pt-28 pb-20 px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
         {/* Left Side: Generator Controls */}
-        <div className="lg:col-span-5 bg-white/5 border border-white/10 p-6 sm:p-7 rounded-3xl glow-hover flex flex-col justify-between space-y-6 h-fit backdrop-blur-xl">
+        <div className="lg:col-span-5 bg-white border border-slate-200/90 p-6 sm:p-7 rounded-2xl shadow-card flex flex-col justify-between space-y-6 h-fit">
           <div>
-            <div className="flex items-center gap-2 px-3 py-1 bg-cyan-400/10 border border-cyan-400/20 text-xs font-semibold text-cyan-400 rounded-full w-fit">
-              <Sparkles className="w-3.5 h-3.5" />
+            <div className="flex items-center gap-2 px-3 py-1 bg-blue-50 border border-blue-200 text-xs font-semibold text-blue-700 rounded-full w-fit">
+              <Sparkles className="w-3.5 h-3.5 text-blue-600" />
               Gemini AI Syllabus Engine
             </div>
-            <h1 className="text-2xl font-extrabold text-white mt-3">AI Study Material Generator</h1>
-            <p className="text-xs text-gray-400 mt-1">Generate 10-year weightage quizzes, revision formula sheets, and study notes.</p>
+            <h1 className="text-2xl font-bold text-slate-900 mt-3">AI Study Material Generator</h1>
+            <p className="text-xs text-slate-500 mt-1">Generate 10-year weightage quizzes, revision formula sheets, and study notes.</p>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="text-xs text-gray-400 font-bold block mb-1.5">Topic or Chapter Name</label>
+              <label className="text-xs text-slate-600 font-bold block mb-1.5">Topic or Chapter Name</label>
               <input
                 type="text"
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
                 placeholder="e.g. Electrostatics, Optics, Calculus, Aldehydes..."
-                className="w-full h-11 px-3.5 bg-midnight-900/80 border border-white/10 rounded-xl text-sm focus:outline-none focus:border-cyan-400/50 text-white font-medium placeholder-gray-500"
+                className="w-full h-11 px-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 text-slate-900 font-medium placeholder-slate-400"
               />
 
               {/* Quick Topic Chips */}
               <div className="mt-2.5">
-                <span className="text-[10px] text-gray-400 block mb-1 font-semibold">Quick High-Yield Topics:</span>
+                <span className="text-[10px] text-slate-500 block mb-1 font-semibold">Quick High-Yield Topics:</span>
                 <div className="flex flex-wrap gap-1.5">
                   {quickTopics.map((t, idx) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => setTopic(t)}
-                      className="text-[10px] bg-white/5 hover:bg-white/10 text-cyan-300 px-2 py-1 rounded-lg border border-white/10 transition-all cursor-pointer"
+                      className="text-[10px] bg-slate-100 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 text-slate-700 px-2 py-1 rounded-lg border border-slate-200 transition-all cursor-pointer font-medium"
                     >
                       {t}
                     </button>
@@ -176,11 +174,11 @@ export default function AIGeneratorPage() {
 
             <div className="grid grid-cols-2 gap-3 pt-1">
               <div>
-                <label className="text-xs text-gray-400 font-bold block mb-1.5">Target Class / Level</label>
+                <label className="text-xs text-slate-600 font-bold block mb-1.5">Target Class / Level</label>
                 <select 
                   value={classVal} 
                   onChange={(e) => setClassVal(e.target.value)}
-                  className="w-full h-10 px-3 bg-midnight-900/80 border border-white/10 rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-cyan-400/50"
+                  className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-400"
                 >
                   <option>Class 12</option>
                   <option>Class 10</option>
@@ -190,11 +188,11 @@ export default function AIGeneratorPage() {
                 </select>
               </div>
               <div>
-                <label className="text-xs text-gray-400 font-bold block mb-1.5">Board / Authority</label>
+                <label className="text-xs text-slate-600 font-bold block mb-1.5">Board / Authority</label>
                 <select 
                   value={board} 
                   onChange={(e) => setBoard(e.target.value)}
-                  className="w-full h-10 px-3 bg-midnight-900/80 border border-white/10 rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-cyan-400/50"
+                  className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-400"
                 >
                   <option>CBSE</option>
                   <option>ICSE / ISC</option>
@@ -210,13 +208,13 @@ export default function AIGeneratorPage() {
             </div>
 
             <div>
-              <label className="text-xs text-gray-400 font-bold block mb-1.5 flex items-center gap-1.5">
-                <Brain className="w-3.5 h-3.5 text-cyan-400" /> AI Engine Model
+              <label className="text-xs text-slate-600 font-bold block mb-1.5 flex items-center gap-1.5">
+                <Brain className="w-3.5 h-3.5 text-blue-600" /> AI Engine Model
               </label>
               <select 
                 value={aiModel} 
                 onChange={(e) => setAiModel(e.target.value)}
-                className="w-full h-10 px-3 bg-midnight-900/80 border border-cyan-400/30 rounded-xl text-xs font-semibold text-cyan-300 focus:outline-none focus:border-cyan-400"
+                className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-400"
               >
                 <option value="gemini-3.6-flash">Google Gemini 3.6 Flash (Fast & Accurate)</option>
                 <option value="gemini-1.5-pro">Google Gemini 1.5 Pro (Deep Scientific Reasoning)</option>
@@ -227,11 +225,11 @@ export default function AIGeneratorPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs text-gray-400 font-bold block mb-1.5">Output Format</label>
+                <label className="text-xs text-slate-600 font-bold block mb-1.5">Output Format</label>
                 <select 
                   value={format} 
                   onChange={(e) => setFormat(e.target.value)}
-                  className="w-full h-10 px-3 bg-midnight-900/80 border border-white/10 rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-cyan-400/50"
+                  className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-400"
                 >
                   <option>MCQ Quiz</option>
                   <option>Formula Sheet</option>
@@ -239,11 +237,11 @@ export default function AIGeneratorPage() {
                 </select>
               </div>
               <div>
-                <label className="text-xs text-gray-400 font-bold block mb-1.5">Difficulty</label>
+                <label className="text-xs text-slate-600 font-bold block mb-1.5">Difficulty</label>
                 <select 
                   value={difficulty} 
                   onChange={(e) => setDifficulty(e.target.value)}
-                  className="w-full h-10 px-3 bg-midnight-900/80 border border-white/10 rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-cyan-400/50"
+                  className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-400"
                 >
                   <option>Standard Board</option>
                   <option>Medium</option>
@@ -256,7 +254,7 @@ export default function AIGeneratorPage() {
           <button
             onClick={handleGenerate}
             disabled={loading || !topic.trim()}
-            className="w-full h-12 bg-cyan-400 hover:bg-cyan-300 text-midnight-900 font-extrabold rounded-2xl flex items-center justify-center gap-2 transition-all disabled:opacity-50 text-sm shadow-[0_0_20px_rgba(0,212,255,0.25)] cursor-pointer"
+            className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-40 text-sm shadow-sm cursor-pointer"
           >
             {loading ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Brain className="w-5 h-5" />}
             Generate Study Material
@@ -264,7 +262,7 @@ export default function AIGeneratorPage() {
         </div>
 
         {/* Right Side: Output Display Window */}
-        <div className="lg:col-span-7 bg-white/5 border border-white/10 p-6 sm:p-7 rounded-3xl glow-hover min-h-[500px] flex flex-col justify-between relative overflow-hidden backdrop-blur-xl">
+        <div className="lg:col-span-7 bg-white border border-slate-200/90 p-6 sm:p-7 rounded-2xl shadow-card min-h-[500px] flex flex-col justify-between relative overflow-hidden">
           <AnimatePresence mode="wait">
             {loading ? (
               <motion.div 
@@ -274,9 +272,9 @@ export default function AIGeneratorPage() {
                 exit={{ opacity: 0 }}
                 className="flex-1 flex flex-col items-center justify-center space-y-4 py-20"
               >
-                <div className="w-16 h-16 rounded-full border-4 border-cyan-400/30 border-t-cyan-400 animate-spin" />
-                <h3 className="text-lg font-bold text-white">AI Syllabus Synthesizer running...</h3>
-                <p className="text-xs text-gray-400 text-center max-w-sm">
+                <div className="w-16 h-16 rounded-full border-4 border-slate-200 border-t-blue-600 animate-spin" />
+                <h3 className="text-lg font-bold text-slate-900">AI Syllabus Synthesizer running...</h3>
+                <p className="text-xs text-slate-500 text-center max-w-sm">
                   Analyzing 10-year past paper blueprints and formulating structured questions for {topic}.
                 </p>
               </motion.div>
@@ -288,21 +286,21 @@ export default function AIGeneratorPage() {
                 className="flex-1 flex flex-col justify-between h-full space-y-6"
               >
                 <div>
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
                     <div>
-                      <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-wider block">
+                      <span className="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">
                         {generatedOutput.board} • {generatedOutput.classVal}
                       </span>
-                      <h3 className="font-extrabold text-lg text-white mt-0.5">{generatedOutput.title}</h3>
+                      <h3 className="font-bold text-lg text-slate-900 mt-0.5">{generatedOutput.title}</h3>
                     </div>
 
                     <div className="flex gap-2">
                       <button 
                         onClick={handleCopy} 
-                        className="p-2.5 bg-white/5 border border-white/10 rounded-xl text-gray-400 hover:text-white transition-all cursor-pointer"
+                        className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all cursor-pointer shadow-xs"
                         title="Copy to clipboard"
                       >
-                        {copied ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4 text-gray-300" />}
+                        {copied ? <CheckCircle2 className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                       </button>
                     </div>
                   </div>
@@ -316,12 +314,12 @@ export default function AIGeneratorPage() {
                           const correctIdx = item.correctAnswer !== undefined ? item.correctAnswer : (item.a !== undefined ? item.a : 0)
 
                           return (
-                            <div key={i} className="space-y-3 bg-midnight-900/40 border border-white/5 p-4 rounded-2xl">
+                            <div key={i} className="space-y-3 bg-slate-50/80 border border-slate-200 p-4 rounded-xl">
                               <div className="flex items-start gap-2.5">
-                                <span className="w-6 h-6 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-cyan-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                                <span className="w-6 h-6 rounded-lg bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                                   {i + 1}
                                 </span>
-                                <div className="text-sm font-semibold text-white flex-1">
+                                <div className="text-sm font-semibold text-slate-900 flex-1">
                                   <MathRenderer content={questionText} />
                                 </div>
                               </div>
@@ -332,19 +330,19 @@ export default function AIGeneratorPage() {
                                     key={optI} 
                                     className={`p-3 rounded-xl border text-xs text-left flex items-center gap-2 ${
                                       optI === correctIdx 
-                                        ? 'border-green-500/50 bg-green-500/10 text-green-300 font-semibold' 
-                                        : 'border-white/10 bg-white/5 text-gray-300'
+                                        ? 'border-emerald-300 bg-emerald-50 text-emerald-900 font-semibold' 
+                                        : 'border-slate-200 bg-white text-slate-700'
                                     }`}
                                   >
-                                    <span className="font-bold text-gray-400 shrink-0">{String.fromCharCode(65 + optI)}.</span>
+                                    <span className="font-bold text-slate-500 shrink-0">{String.fromCharCode(65 + optI)}.</span>
                                     <MathRenderer content={opt} className="flex-1" />
                                   </div>
                                 ))}
                               </div>
 
                               {item.explanation && (
-                                <div className="text-[11px] text-gray-400 bg-white/5 p-2.5 rounded-xl border border-white/5 mt-2 space-y-1">
-                                  <strong className="text-cyan-400 block">Answer Explanation:</strong>
+                                <div className="text-[11px] text-slate-600 bg-white p-2.5 rounded-xl border border-slate-200 mt-2 space-y-1">
+                                  <strong className="text-blue-700 block">Answer Explanation:</strong>
                                   <MathRenderer content={item.explanation} />
                                 </div>
                               )}
@@ -357,11 +355,11 @@ export default function AIGeneratorPage() {
                     {generatedOutput.type === 'formulas' && (
                       <div className="grid grid-cols-1 gap-3">
                         {(generatedOutput.items || []).map((form: any, i: number) => (
-                          <div key={i} className="bg-white/5 border border-white/10 p-4 rounded-2xl space-y-2">
-                            <span className="text-xs text-gray-400 font-semibold flex items-center gap-1.5">
-                              <Lightbulb className="w-3.5 h-3.5 text-cyan-400" /> {form.name}
+                          <div key={i} className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2">
+                            <span className="text-xs text-slate-600 font-semibold flex items-center gap-1.5">
+                              <Lightbulb className="w-3.5 h-3.5 text-blue-600" /> {form.name}
                             </span>
-                            <div className="text-cyan-300 font-bold text-sm bg-midnight-900/60 p-3 rounded-xl border border-cyan-400/20">
+                            <div className="text-slate-900 font-bold text-sm bg-white p-3 rounded-xl border border-slate-200">
                               <MathRenderer content={`$ ${form.eq} $`} />
                             </div>
                           </div>
@@ -370,7 +368,7 @@ export default function AIGeneratorPage() {
                     )}
 
                     {generatedOutput.type === 'summary' && (
-                      <div className="text-xs sm:text-sm text-gray-300 leading-relaxed whitespace-pre-line bg-white/5 border border-white/10 p-5 rounded-2xl font-sans">
+                      <div className="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line bg-slate-50 border border-slate-200 p-5 rounded-xl font-sans">
                         {generatedOutput.text}
                       </div>
                     )}
@@ -379,31 +377,31 @@ export default function AIGeneratorPage() {
 
                 {/* Notice banner if present */}
                 {generatedOutput.notice && (
-                  <div className="flex items-center gap-2 text-[11px] text-cyan-300 bg-cyan-400/10 border border-cyan-400/20 p-2.5 rounded-xl">
-                    <Info className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <div className="flex items-center gap-2 text-[11px] text-blue-800 bg-blue-50 border border-blue-200 p-2.5 rounded-xl">
+                    <Info className="w-4 h-4 text-blue-600 shrink-0" />
                     <span>{generatedOutput.notice}</span>
                   </div>
                 )}
 
                 {/* Bottom Action Footer */}
-                <div className="border-t border-white/10 pt-4 flex flex-wrap items-center justify-between gap-3">
-                  <span className="text-xs text-gray-400">
-                    Topic: <strong className="text-white">{topic}</strong> ({classVal})
+                <div className="border-t border-slate-100 pt-4 flex flex-wrap items-center justify-between gap-3">
+                  <span className="text-xs text-slate-500">
+                    Topic: <strong className="text-slate-900">{topic}</strong> ({classVal})
                   </span>
 
                   {generatedOutput.type === 'quiz' ? (
                     <button 
                       onClick={handleLaunchExam}
-                      className="px-5 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-midnight-900 font-bold text-xs flex items-center gap-2 transition-all shadow-[0_0_12px_rgba(0,212,255,0.25)] cursor-pointer"
+                      className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs flex items-center gap-2 transition-all shadow-sm cursor-pointer"
                     >
-                      <Play className="w-3.5 h-3.5 fill-midnight-900" />
+                      <Play className="w-3.5 h-3.5 fill-current" />
                       Launch in CBT Exam Room
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   ) : (
                     <Link href="/dashboard/mock-exams">
-                      <button className="px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer">
-                        <Play className="w-3.5 h-3.5 text-cyan-400" />
+                      <button className="px-5 py-2.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-xs">
+                        <Play className="w-3.5 h-3.5 text-blue-600 fill-current" />
                         Explore Mock Exams
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
@@ -416,12 +414,12 @@ export default function AIGeneratorPage() {
                 key="empty"
                 className="flex-1 flex flex-col items-center justify-center space-y-4 py-20 text-center"
               >
-                <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-cyan-400 shadow-[0_0_20px_rgba(0,212,255,0.1)]">
-                  <Sparkles className="w-8 h-8 animate-pulse" />
+                <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 shadow-sm">
+                  <Sparkles className="w-8 h-8" />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="font-bold text-white text-base">No Study Material Generated Yet</h3>
-                  <p className="text-xs text-gray-400 max-w-sm mx-auto">
+                  <h3 className="font-bold text-slate-900 text-base">No Study Material Generated Yet</h3>
+                  <p className="text-xs text-slate-500 max-w-sm mx-auto">
                     Select a topic on the left (or pick one of our quick high-yield chips) and click Generate to see the AI output.
                   </p>
                 </div>
