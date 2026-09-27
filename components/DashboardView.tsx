@@ -23,7 +23,12 @@ import {
   CheckCircle2, 
   Calculator, 
   FlaskConical, 
-  Layers 
+  Layers,
+  Compass,
+  Atom,
+  Timer,
+  BarChart3,
+  Wand2
 } from 'lucide-react';
 
 interface DashboardViewProps {
@@ -289,6 +294,212 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="flex items-center justify-center gap-1.5 py-0.5 text-[11px] font-black tracking-widest text-pink-600 dark:text-pink-400 uppercase">
           <MessageSquareQuote className="w-3.5 h-3.5 text-pink-500" />
           <span>AI Tutor Ask and Talk</span>
+        </div>
+      </div>
+
+      {/* 2.5 Quick Feature Navigator / Core Study Features */}
+      <div className="space-y-3 bg-white/70 dark:bg-surface-dark/70 backdrop-blur-md border border-cream-200 dark:border-surface-darkCard rounded-2xl p-4 sm:p-5 shadow-sm">
+        <div className="flex items-center justify-between border-b border-cream-200 dark:border-surface-darkCard pb-3">
+          <div className="flex items-center gap-2">
+            <Compass className="w-5 h-5 text-coral-500" />
+            <div>
+              <h3 className="text-base sm:text-lg font-black text-neutral-900 dark:text-cream-50 leading-tight">
+                Explore All Platform Features
+              </h3>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+                1-Tap access to all AI study tools, past papers, mock drills & analytics.
+              </p>
+            </div>
+          </div>
+          <span className="hidden sm:inline-flex text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-coral-500/10 text-coral-600 dark:text-coral-400 uppercase tracking-wide">
+            8 Core Features
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 pt-1">
+          {/* Card 1: PYQ Papers */}
+          <button
+            onClick={() => onNavigate('screen-papers')}
+            className="p-3 rounded-xl bg-blue-500/10 hover:bg-blue-500/15 border border-blue-500/25 text-left transition-all hover:scale-102 flex flex-col justify-between group shadow-2xs"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="w-8 h-8 rounded-lg bg-blue-500 text-white flex items-center justify-center shadow-xs">
+                <BookOpen className="w-4 h-4" />
+              </div>
+              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-blue-500/20 text-blue-700 dark:text-blue-300">
+                20+ Yrs
+              </span>
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-neutral-900 dark:text-cream-50 group-hover:text-blue-600 transition-colors">
+                PYQ Papers
+              </h4>
+              <p className="text-[10px] text-neutral-500 dark:text-neutral-400 mt-0.5 line-clamp-1">
+                Solved Board Papers
+              </p>
+            </div>
+          </button>
+
+          {/* Card 2: Speed Mock Drill */}
+          <button
+            onClick={() => onNavigate('screen-mocktest')}
+            className="p-3 rounded-xl bg-amber-500/10 hover:bg-amber-500/15 border border-amber-500/25 text-left transition-all hover:scale-102 flex flex-col justify-between group shadow-2xs"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center shadow-xs">
+                <Timer className="w-4 h-4" />
+              </div>
+              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-800 dark:text-gold-300">
+                10 Mins
+              </span>
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-neutral-900 dark:text-cream-50 group-hover:text-amber-600 transition-colors">
+                Speed Mock
+              </h4>
+              <p className="text-[10px] text-neutral-500 dark:text-neutral-400 mt-0.5 line-clamp-1">
+                Timed CBT Simulator
+              </p>
+            </div>
+          </button>
+
+          {/* Card 3: Arya AI Tutor */}
+          <button
+            onClick={() => onNavigate('screen-aitutor')}
+            className="p-3 rounded-xl bg-purple-500/10 hover:bg-purple-500/15 border border-purple-500/25 text-left transition-all hover:scale-102 flex flex-col justify-between group shadow-2xs"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="w-8 h-8 rounded-lg bg-purple-500 text-white flex items-center justify-center shadow-xs">
+                <Wand2 className="w-4 h-4" />
+              </div>
+              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-purple-500/20 text-purple-700 dark:text-purple-300">
+                24/7 AI
+              </span>
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-neutral-900 dark:text-cream-50 group-hover:text-purple-600 transition-colors">
+                Arya AI Tutor
+              </h4>
+              <p className="text-[10px] text-neutral-500 dark:text-neutral-400 mt-0.5 line-clamp-1">
+                OCR & Voice Solutions
+              </p>
+            </div>
+          </button>
+
+          {/* Card 4: 5-Year Trends */}
+          <button
+            onClick={() => onNavigate('screen-analysis')}
+            className="p-3 rounded-xl bg-pink-500/10 hover:bg-pink-500/15 border border-pink-500/25 text-left transition-all hover:scale-102 flex flex-col justify-between group shadow-2xs"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="w-8 h-8 rounded-lg bg-pink-500 text-white flex items-center justify-center shadow-xs">
+                <BarChart3 className="w-4 h-4" />
+              </div>
+              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-pink-500/20 text-pink-700 dark:text-pink-300">
+                98% Match
+              </span>
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-neutral-900 dark:text-cream-50 group-hover:text-pink-600 transition-colors">
+                Exam Trends
+              </h4>
+              <p className="text-[10px] text-neutral-500 dark:text-neutral-400 mt-0.5 line-clamp-1">
+                Guaranteed Questions
+              </p>
+            </div>
+          </button>
+
+          {/* Card 5: Competitive Entrance */}
+          <button
+            onClick={() => onNavigate('screen-competitive')}
+            className="p-3 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/15 border border-cyan-500/25 text-left transition-all hover:scale-102 flex flex-col justify-between group shadow-2xs"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="w-8 h-8 rounded-lg bg-cyan-500 text-white flex items-center justify-center shadow-xs">
+                <Atom className="w-4 h-4" />
+              </div>
+              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-700 dark:text-cyan-300">
+                CET & JEE
+              </span>
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-neutral-900 dark:text-cream-50 group-hover:text-cyan-600 transition-colors">
+                Competitive Hub
+              </h4>
+              <p className="text-[10px] text-neutral-500 dark:text-neutral-400 mt-0.5 line-clamp-1">
+                Formulas & Shortcuts
+              </p>
+            </div>
+          </button>
+
+          {/* Card 6: Step-by-Step Solver */}
+          <button
+            onClick={() => onSolvePaper('mh-math1-2024')}
+            className="p-3 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/15 border border-emerald-500/25 text-left transition-all hover:scale-102 flex flex-col justify-between group shadow-2xs"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center shadow-xs">
+                <CheckCircle2 className="w-4 h-4" />
+              </div>
+              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+                Proofs
+              </span>
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-neutral-900 dark:text-cream-50 group-hover:text-emerald-600 transition-colors">
+                Step Solver
+              </h4>
+              <p className="text-[10px] text-neutral-500 dark:text-neutral-400 mt-0.5 line-clamp-1">
+                Verified Derivations
+              </p>
+            </div>
+          </button>
+
+          {/* Card 7: District Leaderboard */}
+          <button
+            onClick={() => onNavigate('screen-leaderboard')}
+            className="p-3 rounded-xl bg-gold-500/10 hover:bg-gold-500/15 border border-gold-500/25 text-left transition-all hover:scale-102 flex flex-col justify-between group shadow-2xs"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="w-8 h-8 rounded-lg bg-gold-500 text-white flex items-center justify-center shadow-xs">
+                <Trophy className="w-4 h-4" />
+              </div>
+              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-gold-500/20 text-amber-800 dark:text-gold-300">
+                #14 Rank
+              </span>
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-neutral-900 dark:text-cream-50 group-hover:text-gold-600 transition-colors">
+                Leaderboard
+              </h4>
+              <p className="text-[10px] text-neutral-500 dark:text-neutral-400 mt-0.5 line-clamp-1">
+                Pune & State Peers
+              </p>
+            </div>
+          </button>
+
+          {/* Card 8: SM Coins Store */}
+          <button
+            onClick={() => onNavigate('screen-leaderboard')}
+            className="p-3 rounded-xl bg-coral-500/10 hover:bg-coral-500/15 border border-coral-500/25 text-left transition-all hover:scale-102 flex flex-col justify-between group shadow-2xs"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="w-8 h-8 rounded-lg bg-coral-500 text-white flex items-center justify-center shadow-xs">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-coral-500/20 text-coral-600 dark:text-coral-400">
+                Redeem
+              </span>
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-neutral-900 dark:text-cream-50 group-hover:text-coral-600 transition-colors">
+                Rewards Store
+              </h4>
+              <p className="text-[10px] text-neutral-500 dark:text-neutral-400 mt-0.5 line-clamp-1">
+                Cheat Sheets & Pro
+              </p>
+            </div>
+          </button>
         </div>
       </div>
 

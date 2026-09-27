@@ -15,7 +15,8 @@ import {
   Moon, 
   Sun, 
   Flame,
-  Zap
+  Zap,
+  Menu
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -28,6 +29,7 @@ interface NavbarProps {
   onToggleTheme: () => void;
   onOpenBoardModal: () => void;
   userAvatar: string;
+  onOpenDrawer?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -39,7 +41,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   theme,
   onToggleTheme,
   onOpenBoardModal,
-  userAvatar
+  userAvatar,
+  onOpenDrawer
 }) => {
   const navItems = [
     { id: 'screen-home' as ScreenId, label: 'Dashboard', icon: Compass },
@@ -55,11 +58,23 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-50 h-14 sm:h-16 bg-cream-50/95 dark:bg-surface-darkBg/95 backdrop-blur-md border-b border-cream-200 dark:border-surface-darkCard transition-colors">
       <div className="max-w-[1240px] mx-auto px-3 sm:px-4 h-full flex items-center justify-between gap-2 sm:gap-4">
         
-        {/* Brand Logo Emblem */}
-        <button
-          onClick={() => onNavigate('screen-home')}
-          className="flex items-center gap-2 sm:gap-2.5 group text-left"
-        >
+        {/* Left: Hamburger Menu + Brand Logo Emblem */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {onOpenDrawer && (
+            <button
+              onClick={onOpenDrawer}
+              aria-label="Open App Menu"
+              className="p-1.5 sm:p-2 rounded-xl bg-surface-light dark:bg-surface-dark border border-cream-200 dark:border-surface-darkCard text-neutral-700 dark:text-cream-100 hover:text-coral-500 hover:border-coral-500/50 shadow-2xs transition-colors"
+              title="Open Navigation Menu"
+            >
+              <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+          )}
+
+          <button
+            onClick={() => onNavigate('screen-home')}
+            className="flex items-center gap-2 sm:gap-2.5 group text-left"
+          >
           <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-gradient-to-br from-[#261C19] to-[#14100E] border-2 border-coral-500 shadow-sm flex items-center justify-center relative overflow-hidden transition-transform duration-200 group-hover:scale-105">
             <span className="font-heading font-black text-sm sm:text-base bg-gradient-to-br from-[#FFFDF9] to-gold-400 bg-clip-text text-transparent">
               SX
@@ -75,6 +90,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </span>
           </div>
         </button>
+        </div>
 
         {/* Desktop Nav Links */}
         <nav className="hidden lg:flex items-center gap-1">

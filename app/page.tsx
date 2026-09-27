@@ -30,6 +30,8 @@ import { TrendsAnalysisView } from '@/components/TrendsAnalysisView';
 import { LeaderboardView } from '@/components/LeaderboardView';
 import { ProfileView } from '@/components/ProfileView';
 import { BoardModal } from '@/components/BoardModal';
+import { AppDrawer } from '@/components/AppDrawer';
+import { ArrowLeft } from 'lucide-react';
 import { Footer as StatXamFooter } from '@/components/StatXamFooter';
 import { Toast } from '@/components/Toast';
 
@@ -42,7 +44,20 @@ export default function StatXamApp() {
   const [activeNoteId, setActiveNoteId] = useState<string>(SAMPLE_NOTES_DATA[0].id);
   const [bookmarks, setBookmarks] = useState<string[]>(['mh-math1-2024']);
   const [isBoardModalOpen, setIsBoardModalOpen] = useState<boolean>(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const screenTitles: Record<ScreenId, string> = {
+    'screen-home': 'Dashboard',
+    'screen-competitive': '🎯 Competitive Entrance FastTrack',
+    'screen-aitutor': '🤖 Arya AI Doubt Tutor (24/7 Voice & OCR)',
+    'screen-papers': '📚 20+ Years PYQ Papers Library',
+    'screen-question': '📝 Step-by-Step Solver & Proofs',
+    'screen-mocktest': '⚡ 10-Min Speed Mock Drill',
+    'screen-analysis': '📈 5-Year PYQ Weightage Trends',
+    'screen-leaderboard': '🏆 National Leaderboard & SM Coins Store',
+    'screen-profile': '👤 Student Profile & Settings',
+  };
 
   // Initialize Theme & Local Storage
   useEffect(() => {
@@ -151,11 +166,30 @@ export default function StatXamApp() {
         onToggleTheme={handleToggleTheme}
         onOpenBoardModal={() => setIsBoardModalOpen(true)}
         userAvatar={USER_DATA.avatar}
+        onOpenDrawer={() => setIsDrawerOpen(true)}
       />
 
       {/* 2. Main Content Container */}
-      <main className="flex-1 max-w-[1240px] w-full mx-auto px-3 sm:px-4 pt-4 sm:pt-6">
+      <main className="flex-1 max-w-[1240px] w-full mx-auto px-3 sm:px-4 pt-3 sm:pt-5">
         
+        {/* Active Screen Back Navigation Banner */}
+        {currentScreen !== 'screen-home' && (
+          <div className="flex items-center justify-between mb-4 bg-white/95 dark:bg-surface-dark/95 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl border border-cream-200 dark:border-surface-darkCard shadow-xs">
+            <button
+              onClick={() => setCurrentScreen('screen-home')}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-coral-500/10 hover:bg-coral-500 text-coral-600 hover:text-white dark:text-coral-400 dark:hover:text-white font-extrabold text-xs transition-all shadow-2xs group"
+            >
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
+              <span>Back to Dashboard</span>
+            </button>
+            <div className="flex items-center gap-2 pr-1">
+              <span className="text-[11px] sm:text-xs font-black text-neutral-800 dark:text-cream-50 uppercase tracking-wide">
+                {screenTitles[currentScreen]}
+              </span>
+            </div>
+          </div>
+        )}
+
         {currentScreen === 'screen-home' && (
           <DashboardView
             user={{ ...USER_DATA, coins: userCoins, streak: userStreak, board: currentBoard.name }}
@@ -247,6 +281,20 @@ export default function StatXamApp() {
       <MobileNav
         currentScreen={currentScreen}
         onNavigate={(screen) => setCurrentScreen(screen)}
+      />
+
+      {/* 3.5 App Slide-Over Navigation Drawer */}
+      <AppDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        currentScreen={currentScreen}
+        onNavigate={(screen) => setCurrentScreen(screen)}
+        user={{ ...USER_DATA, coins: userCoins, streak: userStreak, board: currentBoard.name }}
+        boards={BOARDS_DATA}
+        currentBoardCode={currentBoardCode}
+        onOpenBoardModal={() => setIsBoardModalOpen(true)}
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
       />
 
       {/* 4. Global Production Footer */}
