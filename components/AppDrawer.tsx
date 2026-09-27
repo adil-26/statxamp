@@ -21,7 +21,8 @@ import {
   ChevronRight,
   Sparkles,
   HelpCircle,
-  Award
+  Award,
+  Download
 } from 'lucide-react';
 
 interface AppDrawerProps {
@@ -198,6 +199,25 @@ export const AppDrawer: React.FC<AppDrawerProps> = ({
 
         {/* Drawer Footer Actions (Board Switcher & Theme Toggle) */}
         <div className="p-3 border-t border-cream-200 dark:border-surface-darkCard bg-cream-50/50 dark:bg-surface-darkCard/30 space-y-2">
+          {/* Install App / Download APK Banner in Drawer */}
+          <button
+            onClick={() => {
+              onClose();
+              if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('statxam_open_install_modal'));
+              }
+            }}
+            className="w-full flex items-center justify-between p-2.5 rounded-xl bg-gradient-to-r from-coral-500/15 via-sunset/15 to-gold-500/15 border border-coral-500/40 text-xs font-black text-coral-600 dark:text-coral-400 hover:scale-102 transition-transform shadow-2xs"
+          >
+            <div className="flex items-center gap-2">
+              <Download className="w-4 h-4 text-coral-500" />
+              <span>Install StatXam App / APK</span>
+            </div>
+            <span className="text-[9px] px-1.5 py-0.5 rounded bg-coral-500 text-white font-extrabold uppercase">
+              Free
+            </span>
+          </button>
+
           {/* Board Selector Button */}
           <button
             onClick={() => {

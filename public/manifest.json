@@ -1,22 +1,26 @@
 {
-  "name": "StatXam - AI Exam & Concept Studio",
+  "name": "StatXam - Smart State Board & Exam Preparation",
   "short_name": "StatXam",
-  "description": "AI-powered exam engineering and concept mastery app for CBSE, ICSE, Maharashtra Board, and JEE/NEET",
-  "start_url": "/dashboard",
+  "description": "Official StatXam Student App for Maharashtra SSC/HSC, CBSE, JEE & NEET with 24/7 Arya AI Tutor, 20+ Years PYQs and Speed Mock Tests.",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#080C14",
-  "theme_color": "#080C14",
+  "background_color": "#FBF8F3",
+  "theme_color": "#FF5E3A",
   "orientation": "portrait",
+  "categories": ["education", "books", "productivity"],
   "icons": [
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

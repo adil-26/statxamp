@@ -31,6 +31,7 @@ import { LeaderboardView } from '@/components/LeaderboardView';
 import { ProfileView } from '@/components/ProfileView';
 import { BoardModal } from '@/components/BoardModal';
 import { AppDrawer } from '@/components/AppDrawer';
+import { InstallAppPrompt } from '@/components/InstallAppPrompt';
 import { ArrowLeft } from 'lucide-react';
 import { Footer as StatXamFooter } from '@/components/StatXamFooter';
 import { Toast } from '@/components/Toast';
@@ -315,6 +316,9 @@ export default function StatXamApp() {
 
       {/* 6. Toast Notification */}
       <Toast message={toastMessage} />
+
+      {/* 7. Automatic Mobile App Install & APK Prompt */}
+      <InstallAppPrompt onShowToast={triggerToast} />
 
     </div>
   );

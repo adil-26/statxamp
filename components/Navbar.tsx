@@ -16,7 +16,8 @@ import {
   Sun, 
   Flame,
   Zap,
-  Menu
+  Menu,
+  Download
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -143,6 +144,20 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Coins className="w-3 h-3 text-gold-500" />
             <span>{coins} ?</span>
+          </button>
+
+          {/* Install App / APK button */}
+          <button
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('statxam_open_install_modal'));
+              }
+            }}
+            className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-full bg-gradient-to-r from-coral-500/15 to-sunset/15 border border-coral-500/40 text-[11px] font-extrabold text-coral-600 dark:text-coral-400 shadow-2xs hover:scale-105 active:scale-95 transition-all"
+            title="Install App / APK"
+          >
+            <Download className="w-3 h-3 text-coral-500" />
+            <span className="hidden sm:inline">Install App</span>
           </button>
 
           {/* Theme Toggle */}
