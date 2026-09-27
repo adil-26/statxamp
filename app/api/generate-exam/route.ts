@@ -16,6 +16,72 @@ const RequestSchema = z.object({
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
+
+    // 0. High-reliability handler for Live AI Chat & Multimodal File/Photo Doubts
+    if (body.message || body.file || body.format === 'Chat') {
+      const apiKey = process.env.GEMINI_API_KEY
+      if (!apiKey || !apiKey.trim()) {
+        return NextResponse.json({
+          reply: "Please set your GEMINI_API_KEY in .env.local to enable live AI Assistant responses."
+        })
+      }
+
+      const ai = new GoogleGenAI({ apiKey })
+      const systemInstruction = `You are StatXam AI ("Arya") — an elite 24/7 academic tutor and mentor specialized in Class 10 & 12 Board Exams (Maharashtra SSC/HSC, CBSE, ICSE) and National Competitive Exams (JEE Main/Advanced, NEET, MHT-CET, CUET).
+Your mission:
+1. Explain concepts with crystal clarity, provide step-by-step mathematical proofs/derivations using clear LaTeX math format ($$formula$$ or $inline$), explain chemical reactions and physical laws.
+2. If an image, handwritten notebook page, diagram, or question paper is uploaded, carefully examine it, transcribe the question accurately, highlight any potential pitfalls, and provide complete, verified solutions.
+3. Offer bilingual explanations when requested (English & Marathi - मराठी).
+4. Always structure answers with:
+   - **Key Concept / Theorem**
+   - **Step-by-Step Derivation / Solution** (with math formulas)
+   - **Board Exam Scoring Tip / Marking Scheme**
+5. Maintain an encouraging, friendly, and empowering tone for students.`
+
+      const userText = body.message && typeof body.message === 'string' && body.message.trim() 
+        ? body.message.trim() 
+        : 'Please analyze this uploaded document or image, identify the question or diagram, and provide a comprehensive step-by-step solution with mathematical steps.'
+
+      const promptText = `${systemInstruction}\n\nStudent Query:\n${userText}`
+      const parts: any[] = []
+
+      if (body.file && body.file.base64) {
+        const cleanBase64 = body.file.base64.replace(/^data:[^;]+;base64,/, '')
+        const mimeType = body.file.mimeType || 'image/jpeg'
+        parts.push({
+          inlineData: {
+            mimeType,
+            data: cleanBase64
+          }
+        })
+      }
+
+      parts.push({ text: promptText })
+
+      let replyText = ''
+      let usedModel = 'gemini-3.8-flash'
+      try {
+        const response = await ai.models.generateContent({
+          model: 'gemini-3.8-flash',
+          contents: parts
+        })
+        replyText = response.text ? response.text.trim() : ''
+      } catch (err: any) {
+        console.warn('Primary model error, fallback to gemini-3.6-flash:', err?.message)
+        usedModel = 'gemini-3.6-flash'
+        const fbResponse = await ai.models.generateContent({
+          model: 'gemini-3.6-flash',
+          contents: parts
+        })
+        replyText = fbResponse.text ? fbResponse.text.trim() : ''
+      }
+
+      return NextResponse.json({
+        reply: replyText || 'Could not generate a response. Please try again.',
+        source: usedModel
+      })
+    }
+
     const parsed = RequestSchema.safeParse(body)
 
     if (!parsed.success) {

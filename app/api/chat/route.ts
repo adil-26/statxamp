@@ -3,10 +3,11 @@ import { GoogleGenAI } from '@google/genai'
 
 export async function POST(req: NextRequest) {
   try {
-    const { message, history } = await req.json()
+    const body = await req.json()
+    const { message, file, history } = body
 
-    if (!message || typeof message !== 'string' || !message.trim()) {
-      return NextResponse.json({ error: 'Message cannot be empty' }, { status: 400 })
+    if ((!message || typeof message !== 'string' || !message.trim()) && !file) {
+      return NextResponse.json({ error: 'Please provide a message or upload an image/file' }, { status: 400 })
     }
 
     const apiKey = process.env.GEMINI_API_KEY
@@ -18,22 +19,67 @@ export async function POST(req: NextRequest) {
 
     const ai = new GoogleGenAI({ apiKey })
 
-    const systemInstruction = `You are StatXam AI — a world-class academic tutor and mentor specialized in Class 10 & 12 Board Exams (CBSE, ICSE, State Boards) and National Competitive Exams (JEE Main/Advanced, NEET, CUET).
-Your goal is to help students understand concepts with crystalline clarity, solve complex mathematical and physical derivations step-by-step, explain chemical mechanisms, and provide high-scoring exam presentation techniques based on the last 10 years of board paper patterns.
-Always be encouraging, precise, and use clean markdown formatting with bullet points, bold key terms, and clear formulas.`
+    const systemInstruction = `You are StatXam AI ("Arya") — an elite 24/7 academic tutor and mentor specialized in Class 10 & 12 Board Exams (Maharashtra SSC/HSC, CBSE, ICSE) and National Competitive Exams (JEE Main/Advanced, NEET, MHT-CET, CUET).
+Your mission:
+1. Explain concepts with crystal clarity, provide step-by-step mathematical proofs/derivations using clear LaTeX math format ($$formula$$ or $inline$), explain chemical reactions and physical laws.
+2. If an image, handwritten notebook page, diagram, or question paper is uploaded, carefully examine it, transcribe the question accurately, highlight any potential pitfalls, and provide complete, verified solutions.
+3. Offer bilingual explanations when requested (English & Marathi - मराठी).
+4. Always structure answers with:
+   - **Key Concept / Theorem**
+   - **Step-by-Step Derivation / Solution** (with math formulas)
+   - **Board Exam Scoring Tip / Marking Scheme**
+5. Maintain an encouraging, friendly, and empowering tone for students.`
 
-    const prompt = `${systemInstruction}\n\nStudent asks:\n"${message.trim()}"\n\nProvide an expert, thorough, and high-scoring explanation:`
+    const userText = message && message.trim() 
+      ? message.trim() 
+      : 'Please analyze this uploaded document or image, identify the question or diagram, and provide a comprehensive step-by-step solution with mathematical steps.'
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.6-flash',
-      contents: prompt
-    })
+    const promptText = `${systemInstruction}\n\nStudent Query:\n${userText}`
 
-    const replyText = response.text ? response.text.trim() : 'I was unable to generate a response at this moment. Please try again.'
+    // Prepare contents array
+    const parts: any[] = []
+
+    // If an image/file is uploaded, add as inlineData
+    if (file && file.base64) {
+      const cleanBase64 = file.base64.replace(/^data:[^;]+;base64,/, '')
+      const mimeType = file.mimeType || 'image/jpeg'
+      parts.push({
+        inlineData: {
+          mimeType,
+          data: cleanBase64
+        }
+      })
+    }
+
+    parts.push({ text: promptText })
+
+    // Try gemini-3.8-flash first, fallback to gemini-3.6-flash
+    let replyText = ''
+    let usedModel = 'gemini-3.8-flash'
+
+    try {
+      const response = await ai.models.generateContent({
+        model: 'gemini-3.8-flash',
+        contents: parts
+      })
+      replyText = response.text ? response.text.trim() : ''
+    } catch (primaryError: any) {
+      console.warn('gemini-3.8-flash attempt failed, falling back to gemini-3.6-flash:', primaryError?.message)
+      usedModel = 'gemini-3.6-flash'
+      const fallbackResponse = await ai.models.generateContent({
+        model: 'gemini-3.6-flash',
+        contents: parts
+      })
+      replyText = fallbackResponse.text ? fallbackResponse.text.trim() : ''
+    }
+
+    if (!replyText) {
+      replyText = 'I examined your doubt but could not generate a response. Please rephrase or try another image.'
+    }
 
     return NextResponse.json({
       reply: replyText,
-      source: 'gemini-3.6-flash'
+      source: usedModel
     })
   } catch (error: any) {
     console.error('Error in /api/chat:', error)
@@ -43,3 +89,4 @@ Always be encouraging, precise, and use clean markdown formatting with bullet po
     )
   }
 }
+
