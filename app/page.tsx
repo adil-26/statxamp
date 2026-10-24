@@ -51,7 +51,7 @@ export default function StatXamApp() {
   const screenTitles: Record<ScreenId, string> = {
     'screen-home': 'Dashboard',
     'screen-competitive': '🎯 Competitive Entrance FastTrack',
-    'screen-aitutor': '🤖 Arya AI Doubt Tutor (24/7 Voice & OCR)',
+    'screen-aitutor': '🤖 Stat AI Doubt Tutor (24/7 Voice & OCR)',
     'screen-papers': '📚 20+ Years PYQ Papers Library',
     'screen-question': '📝 Step-by-Step Solver & Proofs',
     'screen-mocktest': '⚡ 10-Min Speed Mock Drill',
@@ -278,7 +278,7 @@ export default function StatXamApp() {
 
       </main>
 
-      {/* 3. Floating Mobile Navigation (Home, Papers, Elevated Arya AI button, Mock, Profile) */}
+      {/* 3. Floating Mobile Navigation (Home, Papers, Elevated Stat AI button, Mock, Profile) */}
       <MobileNav
         currentScreen={currentScreen}
         onNavigate={(screen) => setCurrentScreen(screen)}

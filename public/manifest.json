@@ -1,7 +1,7 @@
 {
   "name": "StatXam - Smart State Board & Exam Preparation",
   "short_name": "StatXam",
-  "description": "Official StatXam Student App for Maharashtra SSC/HSC, CBSE, JEE & NEET with 24/7 Arya AI Tutor, 20+ Years PYQs and Speed Mock Tests.",
+  "description": "Official StatXam Student App for Maharashtra SSC/HSC, CBSE, JEE & NEET with 24/7 Stat AI Tutor, 20+ Years PYQs and Speed Mock Tests.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

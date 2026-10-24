@@ -36,7 +36,7 @@ export const USER_DATA: UserProfile = {
     { id: "streak_5", title: "5-Day Streak", icon: "Flame", color: "#FFB800", desc: "Practiced consistently 5 days in a row" },
     { id: "speed_tester", title: "Speed Demon", icon: "Zap", color: "#7C5CFC", desc: "Finished a Speed Mock in under 8 mins" },
     { id: "board_topper", title: "Board Contender", icon: "Trophy", color: "#00C49F", desc: "Top 20 in Pune District Mock Leaderboard" },
-    { id: "ai_pioneer", title: "AI Scholar", icon: "Brain", color: "#6366F1", desc: "Mastered 15 doubts with Arya AI Tutor" }
+    { id: "ai_pioneer", title: "AI Scholar", icon: "Brain", color: "#6366F1", desc: "Mastered 15 doubts with Stat AI Tutor" }
   ]
 };
 
@@ -704,7 +704,7 @@ export const SM_STORE_DATA: StoreItem[] = [
   },
   {
     id: "item-ai-turbo",
-    name: "Arya AI Turbo Solver Pack",
+    name: "Stat AI Turbo Solver Pack",
     cost: 150,
     icon: "Wand2",
     color: "#7C5CFC",

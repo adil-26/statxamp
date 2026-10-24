@@ -61,7 +61,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="space-y-2">
             <h5 className="font-bold text-neutral-900 dark:text-cream-100 text-sm">Core Intelligence</h5>
             <ul className="space-y-1.5">
-              <li><button onClick={() => onNavigate('screen-aitutor')} className="hover:text-coral-500">24/7 Arya AI Voice Tutor</button></li>
+              <li><button onClick={() => onNavigate('screen-aitutor')} className="hover:text-coral-500">24/7 Stat AI Voice Tutor</button></li>
               <li><button onClick={() => onNavigate('screen-papers')} className="hover:text-coral-500">20+ Years PYQ Library</button></li>
               <li><button onClick={() => onNavigate('screen-mocktest')} className="hover:text-coral-500">10-Min Speed Mock Drill</button></li>
               <li><button onClick={() => onNavigate('screen-analysis')} className="hover:text-coral-500">5-Year Weightage Intelligence</button></li>

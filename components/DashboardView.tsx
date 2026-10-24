@@ -239,7 +239,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
               <div className="space-y-1 max-w-xl">
                 <h3 className="text-base sm:text-lg font-black leading-tight text-white tracking-tight">
-                  Ask Arya — <span className="bg-gradient-to-r from-pink-400 via-rose-300 to-blue-300 bg-clip-text text-transparent">Instant AI Step Solutions</span>
+                  Ask Stat AI — <span className="bg-gradient-to-r from-pink-400 via-rose-300 to-blue-300 bg-clip-text text-transparent">Instant AI Step Solutions</span>
                 </h3>
                 <p className="text-[11px] sm:text-xs text-neutral-200/90 leading-snug">
                   Snap notebook pages or equations for instant proofs with real voice audio explanations.
@@ -363,7 +363,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
           </button>
 
-          {/* Card 3: Arya AI Tutor */}
+          {/* Card 3: Stat AI Tutor */}
           <button
             onClick={() => onNavigate('screen-aitutor')}
             className="p-3 rounded-xl bg-purple-500/10 hover:bg-purple-500/15 border border-purple-500/25 text-left transition-all hover:scale-102 flex flex-col justify-between group shadow-2xs"
@@ -378,7 +378,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
             <div>
               <h4 className="text-xs font-black text-neutral-900 dark:text-cream-50 group-hover:text-purple-600 transition-colors">
-                Arya AI Tutor
+                Stat AI Tutor
               </h4>
               <p className="text-[10px] text-neutral-500 dark:text-neutral-400 mt-0.5 line-clamp-1">
                 OCR & Voice Solutions

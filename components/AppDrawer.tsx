@@ -72,7 +72,7 @@ export const AppDrawer: React.FC<AppDrawerProps> = ({
     {
       title: 'AI & Exam Intelligence',
       items: [
-        { id: 'screen-aitutor' as ScreenId, label: 'Arya AI Tutor (24/7)', desc: 'Voice explanations & handwritten OCR', icon: Wand2, color: 'text-purple-500', badge: 'Live AI' },
+        { id: 'screen-aitutor' as ScreenId, label: 'Stat AI Tutor (24/7)', desc: 'Voice explanations & handwritten OCR', icon: Wand2, color: 'text-purple-500', badge: 'Live AI' },
         { id: 'screen-analysis' as ScreenId, label: '5-Year PYQ Trends', desc: 'Guaranteed questions & diagnostics', icon: BarChart3, color: 'text-pink-500', badge: '98% Match' },
         { id: 'screen-competitive' as ScreenId, label: 'Competitive FastTrack', desc: 'MHT-CET, JEE Main, NEET & shortcuts', icon: Atom, color: 'text-cyan-500', badge: 'CET/JEE' },
       ]

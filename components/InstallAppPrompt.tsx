@@ -225,7 +225,7 @@ export const InstallAppPrompt: React.FC<InstallAppPromptProps> = ({ onShowToast 
                   <Zap className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="font-bold text-neutral-900 dark:text-cream-50">24/7 Arya AI Camera Doubt Solver</div>
+                  <div className="font-bold text-neutral-900 dark:text-cream-50">24/7 Stat AI Camera Doubt Solver</div>
                   <div className="text-[11px] text-neutral-500 dark:text-neutral-400">Snap handwritten notes or textbook pages for instant proofs.</div>
                 </div>
               </div>

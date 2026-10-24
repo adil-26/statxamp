@@ -38,7 +38,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ currentScreen, onNavigate 
           <button
             onClick={() => onNavigate('screen-aitutor')}
             className="w-12 h-12 rounded-full bg-gradient-to-tr from-pink-500 via-rose-500 to-blue-500 text-white flex items-center justify-center shadow-md border-2 border-cream-50 dark:border-surface-darkBg animate-pulse"
-            title="Ask Arya AI Tutor"
+            title="Ask Stat AI Tutor"
           >
             <Wand2 className="w-5 h-5" />
           </button>

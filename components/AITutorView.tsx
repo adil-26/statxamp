@@ -68,7 +68,7 @@ export const AITutorView: React.FC<AITutorViewProps> = ({
     {
       id: 'welcome',
       sender: 'ai',
-      text: `Hello! I am **Arya**, your 24/7 AI Board & Competitive Exam Tutor.
+      text: `Hello! I am **Stat AI**, your 24/7 AI Board & Competitive Exam Tutor.
       
 You can ask me any math/science doubt, paste formulas, or **upload a photo of your handwritten notebook, textbook question, or diagram**!
 
@@ -230,8 +230,8 @@ How can I help you ace your preparation today?`,
       };
 
       setMessages(prev => [...prev, aiMessage]);
-      onClaimCoins(10, 'Arya AI Doubt Solved');
-      showToast('Solved by Arya AI! +10 Coins earned 🎉');
+      onClaimCoins(10, 'Stat AI Doubt Solved');
+      showToast('Solved by Stat AI! +10 Coins earned 🎉');
     } catch (err: any) {
       setMessages(prev => [
         ...prev,
@@ -413,7 +413,7 @@ How can I help you ace your preparation today?`,
         onChange={handleFileChange}
       />
 
-      {/* Top Banner with Arya AI Branding & Coin Bonus */}
+      {/* Top Banner with Stat AI Branding & Coin Bonus */}
       <div className="space-y-3">
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#221338] via-[#31153D] to-[#121E3B] text-white p-5 sm:p-6 border border-pink-500/30 shadow-glow-ai flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3.5 relative z-10">
@@ -423,7 +423,7 @@ How can I help you ace your preparation today?`,
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-lg sm:text-xl font-black text-white">
-                  24/7 AI Tutor ("Arya")
+                  24/7 AI Tutor ("Stat AI")
                 </h2>
                 <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10px] font-extrabold uppercase flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -438,7 +438,7 @@ How can I help you ace your preparation today?`,
 
           <div className="flex items-center gap-2 self-start sm:self-center">
             <button
-              onClick={() => onClaimCoins(10, 'Arya Doubt Study Reward')}
+              onClick={() => onClaimCoins(10, 'Stat AI Doubt Study Reward')}
               className="px-4 py-2 rounded-full bg-gradient-to-r from-gold-500 to-amber-500 text-amber-950 font-extrabold text-xs shadow-glow-gold flex items-center gap-1.5 hover:scale-105 transition-transform flex-shrink-0"
             >
               <Coins className="w-4 h-4 text-amber-950" /> Claim AI Study Bonus (+10 ₵)
@@ -514,7 +514,7 @@ How can I help you ace your preparation today?`,
                   >
                     {/* Sender Label & Timestamp */}
                     <div className="flex items-center gap-1.5 text-[10px] text-neutral-400 font-semibold px-1">
-                      <span>{isUser ? 'You (Student)' : 'Arya AI Tutor'}</span>
+                      <span>{isUser ? 'You (Student)' : 'Stat AI Tutor'}</span>
                       <span>•</span>
                       <span>{m.timestamp}</span>
                       {m.model && (
@@ -596,7 +596,7 @@ How can I help you ace your preparation today?`,
               {isGenerating && (
                 <div className="flex flex-col items-start space-y-1.5 animate-in fade-in">
                   <div className="flex items-center gap-1.5 text-[10px] text-pink-600 font-bold px-1">
-                    <span>Arya AI Tutor</span>
+                    <span>Stat AI Tutor</span>
                     <span>•</span>
                     <span>Analyzing & Solving...</span>
                   </div>
@@ -753,7 +753,7 @@ How can I help you ace your preparation today?`,
                 Snap Handwritten Doubt with Camera
               </h4>
               <p className="text-[11px] text-neutral-500 dark:text-neutral-400 leading-relaxed mb-2">
-                Arya AI transcribes your notebook page and generates step proofs.
+                Stat AI transcribes your notebook page and generates step proofs.
               </p>
               <span className="px-3.5 py-1.5 rounded-full bg-pink-500 text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-xs">
                 <Camera className="w-3.5 h-3.5" /> Open Camera Solver
