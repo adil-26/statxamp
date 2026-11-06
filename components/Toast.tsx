@@ -11,7 +11,7 @@ export const Toast: React.FC<ToastProps> = ({ message }) => {
   if (!message) return null;
 
   return (
-    <div className="fixed bottom-20 sm:bottom-6 right-6 z-50 bg-neutral-900 dark:bg-cream-50 text-white dark:text-neutral-900 px-5 py-3 rounded-full shadow-2xl font-bold text-xs flex items-center gap-2.5 animate-bounce">
+    <div className="fixed bottom-[4.75rem] left-1/2 z-50 flex w-[min(24rem,calc(100%-1.5rem))] max-w-[400px] -translate-x-1/2 items-center gap-2.5 rounded-full bg-neutral-900 px-4 py-3 text-xs font-bold text-white shadow-2xl dark:bg-cream-50 dark:text-neutral-900 lg:bottom-6 lg:left-auto lg:right-6 lg:w-auto lg:translate-x-0">
       <CheckCircle2 className="w-4 h-4 text-mint-400 dark:text-mint-600" />
       <span>{message}</span>
     </div>

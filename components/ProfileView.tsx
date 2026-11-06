@@ -1,7 +1,9 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { UserProfile, Board } from '@/types';
+import { useAuth } from '@/lib/auth';
 import { 
   User, 
   Award, 
@@ -33,6 +35,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   theme,
   onToggleTheme
 }) => {
+  const { user: account, profile, signOut } = useAuth();
   const getBadgeIcon = (iconName: string) => {
     switch (iconName) {
       case 'Calculator': return <Calculator className="w-5 h-5 text-white" />;
@@ -45,7 +48,36 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
   return (
     <div className="max-w-4xl mx-auto space-y-7 pb-10">
-      
+      <div className="rounded-3xl border border-cream-200 bg-white p-5 dark:border-surface-darkCard dark:bg-surface-dark">
+        {account ? (
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="text-sm font-extrabold text-neutral-900 dark:text-cream-50">{profile?.full_name || user.name}</div>
+              <div className="text-xs text-neutral-500">{account.email}</div>
+              <div className="mt-1 text-xs font-semibold text-neutral-400">{profile?.board || user.board} · {profile?.class_level || user.classLevel}</div>
+            </div>
+            <button
+              type="button"
+              onClick={() => signOut()}
+              className="rounded-full border border-cream-200 px-4 py-2 text-xs font-bold text-neutral-700 dark:border-neutral-700 dark:text-cream-100"
+            >
+              Sign out
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="text-sm font-extrabold text-neutral-900 dark:text-cream-50">Sign in to save your account</div>
+              <div className="text-xs text-neutral-500">Board, class, and progress stay on your Supabase profile.</div>
+            </div>
+            <div className="flex gap-2">
+              <Link href="/sign-in" className="rounded-full bg-coral-500 px-4 py-2 text-xs font-bold text-white">Sign in</Link>
+              <Link href="/sign-up" className="rounded-full border border-cream-200 px-4 py-2 text-xs font-bold text-neutral-700 dark:border-neutral-700 dark:text-cream-100">Sign up</Link>
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Profile Header */}
       <div className="bg-surface-light dark:bg-surface-dark border border-cream-200 dark:border-surface-darkCard rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
         <div className="w-24 h-24 rounded-full border-4 border-coral-500 overflow-hidden shadow-glow-coral flex-shrink-0">
@@ -83,7 +115,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           Academic Configuration
         </h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+        <div className="grid grid-cols-1 gap-4 text-xs sm:grid-cols-2">
           <div className="p-4 rounded-2xl bg-cream-50 dark:bg-surface-darkCard border border-cream-200/60 dark:border-neutral-800 flex items-center justify-between">
             <div className="space-y-0.5">
               <div className="font-bold text-neutral-800 dark:text-cream-100 flex items-center gap-1.5">
@@ -133,7 +165,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           Achievement Badges Shelf
         </h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
           {user.badges.map(b => (
             <div
               key={b.id}

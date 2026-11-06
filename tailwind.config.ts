@@ -71,9 +71,9 @@ const config: Config = {
         },
       },
       fontFamily: {
-        heading: ['Poppins', 'sans-serif'],
-        sans: ['Plus Jakarta Sans', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        heading: ['var(--font-heading)', 'sans-serif'],
+        sans: ['var(--font-sans)', 'sans-serif'],
+        mono: ['var(--font-mono)', 'monospace'],
       },
       boxShadow: {
         'glow-coral': '0 8px 24px rgba(255, 94, 58, 0.28)',

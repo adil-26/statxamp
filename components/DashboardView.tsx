@@ -165,7 +165,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     <div className="space-y-5 pb-10">
       
       {/* 1. Rich User Greeting Strip */}
-      <div className="bg-white/90 dark:bg-surface-dark/90 backdrop-blur-md border border-cream-200 dark:border-surface-darkCard rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div className="flex flex-col gap-3 rounded-2xl border border-cream-200 bg-white/90 p-3.5 shadow-sm backdrop-blur-md dark:border-surface-darkCard dark:bg-surface-dark/90 lg:flex-row lg:items-center lg:justify-between lg:p-4">
         <div>
           <div className="flex items-center gap-2">
             <h2 className="text-lg sm:text-xl font-black text-neutral-900 dark:text-cream-50 tracking-tight">
@@ -181,7 +181,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-2.5 w-full sm:w-auto justify-between sm:justify-start">
+        <div className="grid w-full grid-cols-3 gap-2 lg:flex lg:w-auto">
           <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-mint-500/10 border border-mint-500/20 shadow-2xs">
             <div className="w-6 h-6 rounded-lg bg-mint-500/20 flex items-center justify-center text-mint-600 dark:text-mint-400">
               <ClipboardCheck className="w-3.5 h-3.5" />
@@ -236,10 +236,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
 
             {/* Title & Actions in Sleek Horizontal Row */}
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+            <div className="flex flex-col items-start gap-3 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-1 max-w-xl">
                 <h3 className="text-base sm:text-lg font-black leading-tight text-white tracking-tight">
-                  Ask Stat AI — <span className="bg-gradient-to-r from-pink-400 via-rose-300 to-blue-300 bg-clip-text text-transparent">Instant AI Step Solutions</span>
+                  Ask StatXam AI — <span className="bg-gradient-to-r from-pink-400 via-rose-300 to-blue-300 bg-clip-text text-transparent">Instant AI Step Solutions</span>
                 </h3>
                 <p className="text-[11px] sm:text-xs text-neutral-200/90 leading-snug">
                   Snap notebook pages or equations for instant proofs with real voice audio explanations.
@@ -316,7 +316,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 pt-1">
+        <div className="grid grid-cols-2 gap-2.5 pt-1 lg:grid-cols-4">
           {/* Card 1: PYQ Papers */}
           <button
             onClick={() => onNavigate('screen-papers')}
@@ -363,7 +363,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
           </button>
 
-          {/* Card 3: Stat AI Tutor */}
+          {/* Card 3: StatXam AI Tutor */}
           <button
             onClick={() => onNavigate('screen-aitutor')}
             className="p-3 rounded-xl bg-purple-500/10 hover:bg-purple-500/15 border border-purple-500/25 text-left transition-all hover:scale-102 flex flex-col justify-between group shadow-2xs"
@@ -378,7 +378,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
             <div>
               <h4 className="text-xs font-black text-neutral-900 dark:text-cream-50 group-hover:text-purple-600 transition-colors">
-                Stat AI Tutor
+                StatXam AI Tutor
               </h4>
               <p className="text-[10px] text-neutral-500 dark:text-neutral-400 mt-0.5 line-clamp-1">
                 OCR & Voice Solutions
@@ -558,7 +558,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-4">
               {class10Subjects.map((sub) => {
                 const Icon = sub.icon;
                 return (
@@ -611,7 +611,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-4">
               {class12Subjects.map((sub) => {
                 const Icon = sub.icon;
                 return (
@@ -657,7 +657,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       </div>
 
       {/* 4. Daily Practice Mission & High-Yield Exam Alert */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
+      <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
         
         {/* Daily Mission Card */}
         <div className="bg-white/90 dark:bg-surface-dark/90 backdrop-blur-md border border-cream-200 dark:border-surface-darkCard rounded-2xl p-3.5 sm:p-4 shadow-sm flex items-center gap-3.5 hover:border-coral-500/50 transition-colors">
@@ -744,7 +744,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+        <div className="grid grid-cols-1 gap-3.5 lg:grid-cols-3">
           {exams.slice(0, 3).map((exam) => (
             <div
               key={exam.id}
@@ -786,7 +786,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <span>Live Regional Peer Activity (Maharashtra & Pune District)</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-1 gap-2.5 lg:grid-cols-4">
           {peers.map((peer, idx) => (
             <div
               key={idx}

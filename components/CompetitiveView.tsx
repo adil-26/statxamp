@@ -72,7 +72,7 @@ export const CompetitiveView: React.FC<CompetitiveViewProps> = ({
           <span className="text-[10px] text-neutral-400">Save 2-3 mins/Q</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {shortcuts.map(sc => (
             <div
               key={sc.id}
@@ -116,7 +116,7 @@ export const CompetitiveView: React.FC<CompetitiveViewProps> = ({
           Target Entrance Shift Papers & Drills
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {filteredExams.map(exam => (
             <div
               key={exam.id}

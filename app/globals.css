@@ -42,7 +42,7 @@
       radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.07) 0px, transparent 50%);
     background-attachment: fixed;
     color: var(--text-primary);
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -52,7 +52,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font-heading), sans-serif;
   }
 }
 
@@ -178,4 +178,30 @@
 /* Safe area padding */
 .pb-safe {
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* Capacitor / installed app: phone chrome, not the marketing site */
+html.native-app,
+html.native-app body {
+  background: #fbf8f3;
+  overflow-x: hidden;
+}
+
+html.native-app .site-footer,
+html.native-app .desktop-chrome,
+html.native-app .install-banner,
+html.native-app .browser-only {
+  display: none !important;
+}
+
+html.native-app .mobile-tab-bar {
+  display: block !important;
+}
+
+html.native-app .app-screen {
+  padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)) !important;
+}
+
+.mobile-tab-bar {
+  padding-bottom: env(safe-area-inset-bottom);
 }

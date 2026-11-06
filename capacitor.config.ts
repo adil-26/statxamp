@@ -4,14 +4,17 @@ const config: CapacitorConfig = {
   appId: 'com.statxam.app',
   appName: 'StatXam',
   webDir: 'out',
+  appendUserAgent: 'StatXamApp',
   server: {
-    // Points to live Vercel app so any update is immediately reflected in the APK
+    // Live site, so the installed app picks up UI fixes without a new APK.
     url: 'https://statxamp.vercel.app',
-    cleartext: true,
+    androidScheme: 'https',
+    cleartext: false,
   },
   android: {
-    allowMixedContent: true,
+    allowMixedContent: false,
     backgroundColor: '#FBF8F3',
+    captureInput: true,
   },
 };
 

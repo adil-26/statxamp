@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Download, 
   Smartphone, 
@@ -35,53 +35,52 @@ export const InstallAppPrompt: React.FC<InstallAppPromptProps> = ({ onShowToast 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isIOS, setIsIOS] = useState<boolean>(false);
   const [isInstalled, setIsInstalled] = useState<boolean>(false);
+  const onShowToastRef = useRef(onShowToast);
+  onShowToastRef.current = onShowToast;
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // Check if running as standalone PWA or Capacitor native app
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
                          (window.navigator as any).standalone === true ||
+                         /StatXamApp/i.test(window.navigator.userAgent) ||
+                         (window as any).Capacitor?.isNativePlatform?.() === true ||
                          (window as any).Capacitor !== undefined;
-    
+
     if (isStandalone) {
       setIsInstalled(true);
       setShowBanner(false);
-      return;
+    } else {
+      const ua = window.navigator.userAgent.toLowerCase();
+      setIsIOS(/iphone|ipad|ipod/.test(ua));
     }
 
-    const ua = window.navigator.userAgent.toLowerCase();
-    const isApple = /iphone|ipad|ipod/.test(ua);
-    setIsIOS(isApple);
-
-    // Listen to browser beforeinstallprompt
     const handleBeforeInstall = (e: Event) => {
-      e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
       setShowBanner(true);
     };
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
-
-    // Listen for custom trigger from Navbar, AppDrawer, or Dashboard
     const handleOpenCustom = () => {
       setIsModalOpen(true);
     };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
     window.addEventListener('statxam_open_install_modal', handleOpenCustom);
 
-    // Show polite welcoming toast
-    const timer = setTimeout(() => {
-      if (onShowToast) {
-        onShowToast('📲 StatXam App Ready: Install for instant offline access & AI camera doubt solver!');
-      }
-    }, 1200);
+    let timer: number | undefined;
+    if (!isStandalone && sessionStorage.getItem('statxam_install_hint') !== '1') {
+      timer = window.setTimeout(() => {
+        sessionStorage.setItem('statxam_install_hint', '1');
+        onShowToastRef.current?.('📲 StatXam App Ready: Install for instant offline access & AI camera doubt solver!');
+      }, 1200);
+    }
 
     return () => {
-      clearTimeout(timer);
+      if (timer) window.clearTimeout(timer);
       window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
       window.removeEventListener('statxam_open_install_modal', handleOpenCustom);
     };
-  }, [onShowToast]);
+  }, []);
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
@@ -109,8 +108,8 @@ export const InstallAppPrompt: React.FC<InstallAppPromptProps> = ({ onShowToast 
     <>
       {/* 1. Prominent Top Notification Bar (Visible on mobile & desktop upon opening site) */}
       {showBanner && !isModalOpen && (
-        <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#221338] via-[#2F1522] to-[#121E3B] text-white px-3 sm:px-4 py-2.5 shadow-lg border-b border-coral-500/40 animate-in slide-in-from-top duration-300">
-          <div className="max-w-7xl mx-auto flex items-center justify-between gap-2.5">
+        <div className="install-banner fixed top-0 left-0 right-0 z-50 hidden border-b border-coral-500/40 bg-gradient-to-r from-[#221338] via-[#2F1522] to-[#121E3B] px-4 py-2.5 text-white shadow-lg lg:block">
+          <div className="flex items-center justify-between gap-2.5">
             
             {/* Left: App Icon & Announcement */}
             <div className="flex items-center gap-2.5 min-w-0">
@@ -167,7 +166,7 @@ export const InstallAppPrompt: React.FC<InstallAppPromptProps> = ({ onShowToast 
       {!showBanner && !isModalOpen && (
         <button
           onClick={() => setIsModalOpen(true)}
-          className="fixed bottom-20 sm:bottom-6 right-3 sm:right-6 z-40 px-3.5 py-2 rounded-full bg-gradient-to-r from-coral-500 via-sunset to-amber-500 text-white font-black text-xs shadow-glow-coral flex items-center gap-2 hover:scale-105 active:scale-95 transition-all border border-white/30 animate-bounce duration-1000"
+          className="fixed bottom-[4.75rem] right-3 z-40 flex items-center gap-1.5 rounded-full bg-coral-500 px-3 py-2 text-xs font-black text-white shadow-lg lg:hidden"
         >
           <Smartphone className="w-4 h-4" />
           <span>Install App / APK</span>
@@ -225,7 +224,7 @@ export const InstallAppPrompt: React.FC<InstallAppPromptProps> = ({ onShowToast 
                   <Zap className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="font-bold text-neutral-900 dark:text-cream-50">24/7 Stat AI Camera Doubt Solver</div>
+                  <div className="font-bold text-neutral-900 dark:text-cream-50">24/7 StatXam AI Camera Doubt Solver</div>
                   <div className="text-[11px] text-neutral-500 dark:text-neutral-400">Snap handwritten notes or textbook pages for instant proofs.</div>
                 </div>
               </div>

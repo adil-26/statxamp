@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { PAST_PAPERS_DATABASE, PastPaper } from '@/lib/exam-data'
+import { BoardArchive } from '@/components/BoardArchive'
 
 export default function PreviousYearPapersPage() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -78,6 +79,8 @@ export default function PreviousYearPapersPage() {
           </button>
         </Link>
       </div>
+
+      <BoardArchive />
 
       {/* Download Alert Toast */}
       <AnimatePresence>

@@ -36,7 +36,7 @@ export const TrendsAnalysisView: React.FC<TrendsAnalysisViewProps> = ({
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         
         {/* Left Column: Chapter Weightage Progress Bars (7 Cols) */}
         <div className="lg:col-span-7 bg-surface-light dark:bg-surface-dark border border-cream-200 dark:border-surface-darkCard rounded-3xl p-6 sm:p-8 shadow-sm space-y-5">

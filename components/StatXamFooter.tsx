@@ -10,7 +10,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   return (
-    <footer className="mt-auto border-t border-cream-200 dark:border-surface-darkCard bg-surface-light dark:bg-surface-dark pt-12 pb-16 lg:pb-12 text-xs text-neutral-500 dark:text-neutral-400">
+    <footer className="site-footer mt-auto hidden border-t border-cream-200 bg-surface-light pt-12 pb-12 text-xs text-neutral-500 dark:border-surface-darkCard dark:bg-surface-dark dark:text-neutral-400 lg:block">
       <div className="max-w-[1240px] mx-auto px-4 space-y-8">
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -61,7 +61,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="space-y-2">
             <h5 className="font-bold text-neutral-900 dark:text-cream-100 text-sm">Core Intelligence</h5>
             <ul className="space-y-1.5">
-              <li><button onClick={() => onNavigate('screen-aitutor')} className="hover:text-coral-500">24/7 Stat AI Voice Tutor</button></li>
+              <li><button onClick={() => onNavigate('screen-aitutor')} className="hover:text-coral-500">24/7 StatXam AI Voice Tutor</button></li>
               <li><button onClick={() => onNavigate('screen-papers')} className="hover:text-coral-500">20+ Years PYQ Library</button></li>
               <li><button onClick={() => onNavigate('screen-mocktest')} className="hover:text-coral-500">10-Min Speed Mock Drill</button></li>
               <li><button onClick={() => onNavigate('screen-analysis')} className="hover:text-coral-500">5-Year Weightage Intelligence</button></li>

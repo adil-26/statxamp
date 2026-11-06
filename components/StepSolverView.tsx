@@ -163,7 +163,7 @@ export const StepSolverView: React.FC<StepSolverViewProps> = ({
       </div>
 
       {/* ELI5 & Marking Guide Drawers */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/30 text-blue-900 dark:text-blue-300 text-xs space-y-1">
           <div className="font-bold flex items-center gap-1.5">
             <Lightbulb className="w-4 h-4 text-blue-500" /> Explain Simply (ELI5 Analogy)

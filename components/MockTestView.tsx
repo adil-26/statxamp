@@ -149,7 +149,7 @@ export const MockTestView: React.FC<MockTestViewProps> = ({
 
       {/* 2. Active Test View */}
       {testState === 'active' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           
           {/* Question Area (8 Cols) */}
           <div className="lg:col-span-8 bg-surface-light dark:bg-surface-dark border border-cream-200 dark:border-surface-darkCard rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between min-h-[500px]">

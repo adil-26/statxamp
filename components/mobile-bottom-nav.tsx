@@ -35,7 +35,7 @@ export function MobileBottomNav() {
   return (
     <nav 
       aria-label="Mobile Bottom App Navigation"
-      className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-slate-200/90 px-3 py-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-lg"
+      className="mobile-tab-bar lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-slate-200/90 px-3 py-2 shadow-lg"
     >
       <div className="flex items-center justify-around max-w-md mx-auto relative">
         {navItems.map((item) => {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { GoogleGenAI } from '@google/genai'
 import OpenAI from 'openai'
+import { askStatXam, hasGroqKey } from '@/lib/groq'
 
 const RequestSchema = z.object({
   topic: z.string().min(2, 'Topic must have at least 2 characters'),
@@ -19,6 +20,15 @@ export async function POST(req: NextRequest) {
 
     // 0. High-reliability handler for Live AI Chat & Multimodal File/Photo Doubts
     if (body.message || body.file || body.format === 'Chat') {
+      const userText = body.message && typeof body.message === 'string' && body.message.trim()
+        ? body.message.trim()
+        : 'Please solve the question in the attached photo.'
+
+      if (hasGroqKey()) {
+        const groqReply = await askStatXam(userText, body.file)
+        if (groqReply) return NextResponse.json(groqReply)
+      }
+
       const apiKey = process.env.GEMINI_API_KEY
       if (!apiKey || !apiKey.trim()) {
         return NextResponse.json({
@@ -27,7 +37,7 @@ export async function POST(req: NextRequest) {
       }
 
       const ai = new GoogleGenAI({ apiKey })
-      const systemInstruction = `You are StatXam AI ("Stat AI") — an elite 24/7 academic tutor and mentor specialized in Class 10 & 12 Board Exams (Maharashtra SSC/HSC, CBSE, ICSE) and National Competitive Exams (JEE Main/Advanced, NEET, MHT-CET, CUET).
+      const systemInstruction = `You are StatXam AI, a 24/7 academic tutor. Call yourself StatXam AI. You specialize in Class 10 & 12 Board Exams (Maharashtra SSC/HSC, CBSE, ICSE) and National Competitive Exams (JEE Main/Advanced, NEET, MHT-CET, CUET).
 Your mission:
 1. Explain concepts with crystal clarity, provide step-by-step mathematical proofs/derivations using clear LaTeX math format ($$formula$$ or $inline$), explain chemical reactions and physical laws.
 2. If an image, handwritten notebook page, diagram, or question paper is uploaded, carefully examine it, transcribe the question accurately, highlight any potential pitfalls, and provide complete, verified solutions.
@@ -37,10 +47,6 @@ Your mission:
    - **Step-by-Step Derivation / Solution** (with math formulas)
    - **Board Exam Scoring Tip / Marking Scheme**
 5. Maintain an encouraging, friendly, and empowering tone for students.`
-
-      const userText = body.message && typeof body.message === 'string' && body.message.trim() 
-        ? body.message.trim() 
-        : 'Please analyze this uploaded document or image, identify the question or diagram, and provide a comprehensive step-by-step solution with mathematical steps.'
 
       const promptText = `${systemInstruction}\n\nStudent Query:\n${userText}`
       const parts: any[] = []

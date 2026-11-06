@@ -10,7 +10,6 @@ import {
   Volume2, 
   VolumeX, 
   Languages, 
-  Coins, 
   Brain, 
   Lightbulb, 
   Award, 
@@ -53,6 +52,34 @@ interface ChatMessage {
   timestamp: string;
 }
 
+function shrinkPhoto(file: File) {
+  return new Promise<string>((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.onload = () => {
+      const max = 1280;
+      const scale = Math.min(1, max / Math.max(image.width, image.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(32, Math.round(image.width * scale));
+      canvas.height = Math.max(32, Math.round(image.height * scale));
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        URL.revokeObjectURL(url);
+        reject(new Error('canvas'));
+        return;
+      }
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL('image/jpeg', 0.72));
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('image'));
+    };
+    image.src = url;
+  });
+}
+
 export const AITutorView: React.FC<AITutorViewProps> = ({
   sampleNotes,
   activeNoteId,
@@ -68,13 +95,8 @@ export const AITutorView: React.FC<AITutorViewProps> = ({
     {
       id: 'welcome',
       sender: 'ai',
-      text: `Hello! I am **Stat AI**, your 24/7 AI Board & Competitive Exam Tutor.
-      
-You can ask me any math/science doubt, paste formulas, or **upload a photo of your handwritten notebook, textbook question, or diagram**!
-
-How can I help you ace your preparation today?`,
-      timestamp: 'Just now',
-      model: 'gemini-3.8-flash'
+      text: `Hello, I am **StatXam AI**. Ask a doubt, or attach a photo of the question and I will read it and solve it.`,
+      timestamp: 'Just now'
     }
   ]);
   const [chatInput, setChatInput] = useState('');
@@ -103,9 +125,10 @@ How can I help you ace your preparation today?`,
 
   const currentSampleNote = sampleNotes.find(n => n.id === activeNoteId) || sampleNotes[0];
 
-  // Auto-switch tab if user clicked a specific sample note from dashboard
+  const openedNote = useRef(activeNoteId);
   useEffect(() => {
-    if (activeNoteId && activeNoteId !== 'note-math-trig') {
+    if (activeNoteId !== openedNote.current) {
+      openedNote.current = activeNoteId;
       setActiveTab('sample-notes');
     }
   }, [activeNoteId]);
@@ -127,31 +150,29 @@ How can I help you ace your preparation today?`,
   }, []);
 
   // Handle file or image selection
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    e.target.value = '';
     if (!file) return;
 
-    if (file.size > 10 * 1024 * 1024) {
-      showToast('File size must be under 10MB.');
+    if (!file.type.startsWith('image/')) {
+      showToast('Send a photo of the question. PDF files are not read yet.');
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64 = reader.result as string;
+    try {
+      const base64 = await shrinkPhoto(file);
       setAttachedFile({
         file,
         base64,
-        previewUrl: file.type.startsWith('image/') ? base64 : '',
-        mimeType: file.type || 'image/jpeg',
+        previewUrl: base64,
+        mimeType: 'image/jpeg',
         name: file.name
       });
-      showToast(`Attached: ${file.name} 📎`);
-    };
-    reader.readAsDataURL(file);
-
-    // Reset input so same file can be re-selected if removed
-    e.target.value = '';
+      showToast('Photo attached. Ask StatXam AI to solve it.');
+    } catch {
+      showToast('That photo could not be read. Try another picture.');
+    }
   };
 
   // Send Chat Message with optional file
@@ -230,15 +251,15 @@ How can I help you ace your preparation today?`,
       };
 
       setMessages(prev => [...prev, aiMessage]);
-      onClaimCoins(10, 'Stat AI Doubt Solved');
-      showToast('Solved by Stat AI! +10 Coins earned 🎉');
+      onClaimCoins(10, 'StatXam AI Doubt Solved');
+      showToast('Solved by StatXam AI! +10 Coins earned 🎉');
     } catch (err: any) {
       setMessages(prev => [
         ...prev,
         {
           id: 'err_' + Date.now(),
           sender: 'ai',
-          text: `I encountered an issue connecting to the AI model. Please verify your GEMINI_API_KEY or network connection.`,
+          text: `I could not reach the tutor. Check the Groq key in .env.local, or the network, and try again.`,
           timestamp: 'Now',
           model: 'error'
         }
@@ -394,7 +415,7 @@ How can I help you ace your preparation today?`,
   ];
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="flex min-h-0 flex-1 flex-col gap-3">
       
       {/* Hidden file inputs for Camera and Document uploads */}
       <input
@@ -413,41 +434,17 @@ How can I help you ace your preparation today?`,
         onChange={handleFileChange}
       />
 
-      {/* Top Banner with Stat AI Branding & Coin Bonus */}
-      <div className="space-y-3">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#221338] via-[#31153D] to-[#121E3B] text-white p-5 sm:p-6 border border-pink-500/30 shadow-glow-ai flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5 relative z-10">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-500 via-rose-500 to-blue-500 flex items-center justify-center shadow-glow-coral flex-shrink-0">
-              <Brain className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg sm:text-xl font-black text-white">
-                  24/7 AI Tutor ("Stat AI")
-                </h2>
-                <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10px] font-extrabold uppercase flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Online
-                </span>
-              </div>
-              <p className="text-xs text-neutral-200/90 mt-0.5">
-                Type questions or upload photos of handwritten notes, question papers & diagrams. Powered by Gemini.
-              </p>
-            </div>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-pink-500 via-rose-500 to-blue-500">
+            <Brain className="h-5 w-5 text-white" />
           </div>
-
-          <div className="flex items-center gap-2 self-start sm:self-center">
-            <button
-              onClick={() => onClaimCoins(10, 'Stat AI Doubt Study Reward')}
-              className="px-4 py-2 rounded-full bg-gradient-to-r from-gold-500 to-amber-500 text-amber-950 font-extrabold text-xs shadow-glow-gold flex items-center gap-1.5 hover:scale-105 transition-transform flex-shrink-0"
-            >
-              <Coins className="w-4 h-4 text-amber-950" /> Claim AI Study Bonus (+10 ₵)
-            </button>
+          <div>
+            <h2 className="text-base font-black text-neutral-900 dark:text-cream-50">StatXam AI</h2>
+            <p className="text-[11px] font-semibold text-neutral-500">Photo and typed doubts</p>
           </div>
         </div>
-
-        {/* View Toggle Tabs: Live AI Chat vs Verified Board Sample Doubts */}
-        <div className="flex items-center gap-2 p-1 rounded-2xl bg-white dark:bg-surface-dark border border-cream-200 dark:border-surface-darkCard shadow-xs max-w-md mx-auto sm:mx-0">
+        <div className="flex rounded-full bg-white p-1 dark:bg-surface-dark">
           <button
             onClick={() => setActiveTab('live-chat')}
             className={`flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 ${
@@ -457,7 +454,7 @@ How can I help you ace your preparation today?`,
             }`}
           >
             <MessageSquare className="w-3.5 h-3.5" />
-            <span>Live AI Chat & Photo Solver</span>
+            <span>Chat</span>
           </button>
 
           <button
@@ -469,7 +466,7 @@ How can I help you ace your preparation today?`,
             }`}
           >
             <BookOpen className="w-3.5 h-3.5" />
-            <span>Curated Sample Proofs</span>
+            <span>Samples</span>
           </button>
         </div>
       </div>
@@ -478,7 +475,7 @@ How can I help you ace your preparation today?`,
       {/* TAB 1: LIVE INTERACTIVE AI CHAT & MULTIMODAL PHOTO SOLVER */}
       {/* ======================================================== */}
       {activeTab === 'live-chat' && (
-        <div className="space-y-4">
+        <div className="flex min-h-0 flex-1 flex-col gap-3">
           
           {/* Quick Syllabus Doubt Shortcut Pills */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
@@ -498,7 +495,7 @@ How can I help you ace your preparation today?`,
           </div>
 
           {/* Main Chat Container */}
-          <div className="bg-white dark:bg-surface-dark border border-cream-200 dark:border-surface-darkCard rounded-3xl overflow-hidden shadow-sm flex flex-col h-[600px] sm:h-[650px]">
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-3xl border border-cream-200 bg-white shadow-sm dark:border-surface-darkCard dark:bg-surface-dark">
             
             {/* Chat Messages Feed */}
             <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
@@ -514,22 +511,17 @@ How can I help you ace your preparation today?`,
                   >
                     {/* Sender Label & Timestamp */}
                     <div className="flex items-center gap-1.5 text-[10px] text-neutral-400 font-semibold px-1">
-                      <span>{isUser ? 'You (Student)' : 'Stat AI Tutor'}</span>
+                      <span>{isUser ? 'You (Student)' : 'StatXam AI Tutor'}</span>
                       <span>•</span>
                       <span>{m.timestamp}</span>
-                      {m.model && (
-                        <span className="px-1.5 py-0.2 rounded-full bg-pink-500/10 text-pink-600 dark:text-pink-400 text-[9px] font-extrabold uppercase">
-                          {m.model}
-                        </span>
-                      )}
                     </div>
 
                     {/* Message Bubble */}
                     <div
-                      className={`max-w-[92%] sm:max-w-[85%] rounded-3xl p-4 sm:p-5 text-xs sm:text-sm leading-relaxed border shadow-xs ${
+                      className={`rounded-3xl border p-4 text-sm leading-relaxed shadow-xs sm:p-5 ${
                         isUser
-                          ? 'bg-gradient-to-br from-pink-600 via-rose-600 to-coral-600 text-white border-transparent rounded-tr-none'
-                          : 'bg-cream-50/80 dark:bg-surface-darkCard border-cream-200/80 dark:border-neutral-800 text-neutral-900 dark:text-cream-50 rounded-tl-none'
+                          ? 'max-w-[85%] border-transparent bg-gradient-to-br from-pink-600 via-rose-600 to-coral-600 text-white rounded-tr-none'
+                          : 'w-full border-cream-200/80 bg-white text-neutral-900 dark:border-neutral-800 dark:bg-surface-darkCard dark:text-cream-50'
                       }`}
                     >
                       {/* If user attached a file, show thumbnail */}
@@ -596,7 +588,7 @@ How can I help you ace your preparation today?`,
               {isGenerating && (
                 <div className="flex flex-col items-start space-y-1.5 animate-in fade-in">
                   <div className="flex items-center gap-1.5 text-[10px] text-pink-600 font-bold px-1">
-                    <span>Stat AI Tutor</span>
+                    <span>StatXam AI Tutor</span>
                     <span>•</span>
                     <span>Analyzing & Solving...</span>
                   </div>
@@ -634,7 +626,7 @@ How can I help you ace your preparation today?`,
                       {attachedFile.name}
                     </div>
                     <div className="text-[10px] text-pink-600 dark:text-pink-400 font-semibold">
-                      Ready to analyze with Gemini Vision
+                      Ready for StatXam AI to read
                     </div>
                   </div>
                 </div>
@@ -718,10 +710,7 @@ How can I help you ace your preparation today?`,
                 </button>
               </form>
 
-              <div className="flex items-center justify-between text-[10px] text-neutral-400 pt-2 px-1">
-                <span>📎 Supports JPG, PNG, PDF photos of notebooks & textbooks</span>
-                <span>⚡ Powered by Google Gemini AI Model</span>
-              </div>
+              <p className="px-1 pt-2 text-[10px] text-neutral-400">JPG, PNG, or a photo of the notebook. StatXam AI reads the question from the picture.</p>
             </div>
 
           </div>
@@ -733,7 +722,7 @@ How can I help you ace your preparation today?`,
       {/* TAB 2: CURATED BOARD EXAM SAMPLE SOLUTIONS & OCR LIBRARY */}
       {/* ======================================================== */}
       {activeTab === 'sample-notes' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid min-h-0 flex-1 grid-cols-1 gap-6 overflow-y-auto lg:grid-cols-12">
           
           {/* Left Column: Sample Doubt Shelf & Quick Snap */}
           <div className="lg:col-span-4 space-y-4">
@@ -753,7 +742,7 @@ How can I help you ace your preparation today?`,
                 Snap Handwritten Doubt with Camera
               </h4>
               <p className="text-[11px] text-neutral-500 dark:text-neutral-400 leading-relaxed mb-2">
-                Stat AI transcribes your notebook page and generates step proofs.
+                StatXam AI transcribes your notebook page and generates step proofs.
               </p>
               <span className="px-3.5 py-1.5 rounded-full bg-pink-500 text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-xs">
                 <Camera className="w-3.5 h-3.5" /> Open Camera Solver

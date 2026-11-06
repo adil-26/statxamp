@@ -11,8 +11,8 @@ interface MobileNavProps {
 
 export const MobileNav: React.FC<MobileNavProps> = ({ currentScreen, onNavigate }) => {
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-14 bg-white/95 dark:bg-surface-dark/95 backdrop-blur-md border-t border-cream-200 dark:border-surface-darkCard z-50 px-2 shadow-lg">
-      <div className="h-full flex items-center justify-around relative">
+    <nav className="mobile-tab-bar fixed bottom-0 left-0 right-0 z-50 border-t border-cream-200 bg-white/95 px-2 shadow-lg backdrop-blur-md dark:border-surface-darkCard dark:bg-surface-dark/95 lg:hidden">
+      <div className="h-14 flex items-center justify-around relative">
         <button
           onClick={() => onNavigate('screen-home')}
           className={`flex flex-col items-center gap-0.5 text-[10px] font-semibold transition-colors ${
@@ -38,7 +38,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ currentScreen, onNavigate 
           <button
             onClick={() => onNavigate('screen-aitutor')}
             className="w-12 h-12 rounded-full bg-gradient-to-tr from-pink-500 via-rose-500 to-blue-500 text-white flex items-center justify-center shadow-md border-2 border-cream-50 dark:border-surface-darkBg animate-pulse"
-            title="Ask Stat AI Tutor"
+            title="Ask StatXam AI"
           >
             <Wand2 className="w-5 h-5" />
           </button>

@@ -1,5 +1,29 @@
 import type { Metadata, Viewport } from 'next';
+import { JetBrains_Mono, Plus_Jakarta_Sans, Poppins } from 'next/font/google';
 import './globals.css';
+import { NativeApp } from '@/components/NativeApp';
+import { AuthProvider } from '@/lib/auth';
+
+const sans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const heading = Poppins({
+  subsets: ['latin'],
+  weight: ['600', '700', '800', '900'],
+  variable: '--font-heading',
+  display: 'swap',
+});
+
+const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['500', '700'],
+  variable: '--font-mono',
+  display: 'swap',
+});
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -19,6 +43,9 @@ export const metadata: Metadata = {
     statusBarStyle: 'default',
     title: 'StatXam',
   },
+  other: {
+    'mobile-web-app-capable': 'yes',
+  },
   formatDetection: {
     telephone: false,
   },
@@ -30,17 +57,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="light">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@600;700;800;900&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="antialiased min-h-screen overscroll-none select-none-touch font-sans">
-        {children}
+    <html lang="en" data-theme="light" className={`${sans.variable} ${heading.variable} ${mono.variable}`}>
+      <body className="antialiased min-h-screen overscroll-none font-sans">
+        <AuthProvider>
+          <NativeApp />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

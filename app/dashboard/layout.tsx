@@ -102,7 +102,7 @@ export default function DashboardLayout({
   return (
     <div className={`min-h-screen bg-slate-50 text-slate-900 flex flex-col lg:flex-row antialiased ${sightComfort ? 'sight-comfortable' : ''}`}>
       {/* Sidebar for desktop screens */}
-      <div className="hidden lg:block shrink-0">
+      <div className="desktop-chrome hidden lg:block shrink-0">
         <Sidebar />
       </div>
 
@@ -238,7 +238,7 @@ export default function DashboardLayout({
       {/* Main App Canvas */}
       <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
         {/* App-Style Header (Sticky on Mobile & Desktop) */}
-        <header className="h-14 sm:h-16 border-b border-slate-200/80 px-4 sm:px-6 flex items-center justify-between bg-white/90 backdrop-blur-md sticky top-0 z-40 shadow-xs">
+        <header className="app-header min-h-14 border-b border-slate-200/80 px-4 sm:px-6 pt-[env(safe-area-inset-top)] flex items-center justify-between bg-white/90 backdrop-blur-md sticky top-0 z-40 shadow-xs">
           {/* Left: Mobile App Bar Header / Brand */}
           <div className="flex items-center gap-3">
             <button 
